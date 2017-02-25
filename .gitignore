@@ -2,3 +2,6 @@
 /other
 /bin
 /pkg
+/src/github.com
+/src/bitbucket.org
+/src/gopkg.in
