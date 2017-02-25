@@ -1,5 +1,13 @@
 package pack
 
-func Add(a, b int) int {
-	return a + b
+func Add(numbers ...int) int {
+	var result int
+	if len(numbers) == 0 {
+		println("No arguments provided")
+		return 0
+	}
+	for _, num := range numbers {
+		result += num
+	}
+	return result
 }
