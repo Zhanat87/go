@@ -3,7 +3,24 @@ package pack
 import (
 	"testing"
 	"time"
+	"os"
 )
+
+var addTable = []struct {
+	in []int
+	out int
+} {
+	{[]int{1, 2}, 3},
+	{[]int{1, 2, 3, 4}, 10},
+}
+
+func TestMain(m *testing.M) {
+	println("Tests are about to run")
+	// go test pack -v
+	result := m.Run()
+	println("Tests done executing")
+	os.Exit(result)
+}
 
 // все тестовые методы должны начинаться с 'Test'
 func TestCanAddNumbers(t *testing.T) {
@@ -80,4 +97,15 @@ func TestCanDivideNumbers(t *testing.T) {
 	//if result != 5040 {
 	//	t.Fatal("divide numbers error 2")
 	//}
+}
+
+func TestCanAddNumbers2(t *testing.T) {
+	t.Parallel()
+	var result int
+	for _, entry := range addTable {
+		result = Add(entry.in...)
+		if result != entry.out {
+			t.Fatal("TestCanAddNumbers2 error")
+		}
+	}
 }
