@@ -10,7 +10,7 @@ func TestCanAddNumbers(t *testing.T) {
 	result := Add(1, 2)
 	if result != 3 {
 		t.Log("add numbers error")
-		t.Fail()
+		t.FailNow()
 	}
 	// go test pack -timeout 2s
 	time.Sleep(3 * time.Second)
@@ -27,15 +27,15 @@ func TestCanAddNumbers(t *testing.T) {
 }
 
 func TestCanSubtractNumbers(t *testing.T) {
-	result := Subtract(81, 1, 2, 82)
+	result := Subtract(2, 1)
+	if result != 1 {
+		t.Fatal("subtract numbers error 2")
+	}
+
+	result = Subtract(81, 1, 2, 82)
 	if result != -4 {
 		t.Log("subtract numbers error")
 		t.Fail()
-	}
-
-	result = Subtract(2, 1)
-	if result != 1 {
-		t.Error("subtract numbers error 2")
 	}
 
 	result = Subtract(2)
