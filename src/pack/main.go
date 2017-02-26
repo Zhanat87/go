@@ -22,3 +22,15 @@ func Subtract(initial int, numbers ...int) int {
 	}
 	return initial
 }
+
+func Multiply(numbers ...int) int {
+	if len(numbers) == 0 {
+		println("No arguments provided")
+		return 0
+	}
+	result := 1
+	for _, num := range numbers {
+		result *= num
+	}
+	return result
+}
