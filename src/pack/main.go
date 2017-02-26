@@ -11,3 +11,14 @@ func Add(numbers ...int) int {
 	}
 	return result
 }
+
+func Subtract(initial int, numbers ...int) int {
+	if len(numbers) == 0 {
+		println("No arguments provided")
+		return initial
+	}
+	for _, num := range numbers {
+		initial -= num
+	}
+	return initial
+}
