@@ -2,11 +2,13 @@ package pack
 
 import (
 	"testing"
-	//"time"
+	"time"
 )
 
 // все тестовые методы должны начинаться с 'Test'
 func TestCanAddNumbers(t *testing.T) {
+	// укаывается для всех тестов, которые могут запускаться параллельно
+	t.Parallel()
 	// go test pack -v -short
 	if testing.Short() {
 		t.Skip("Skipping long tests")
@@ -31,10 +33,12 @@ func TestCanAddNumbers(t *testing.T) {
 }
 
 func TestCanSubtractNumbers(t *testing.T) {
+	//t.Parallel()
 	result := Subtract(2, 1)
 	if result != 1 {
 		t.Fatal("subtract numbers error 2")
 	}
+	time.Sleep(time.Second)
 
 	result = Subtract(81, 1, 2, 82)
 	if result != -4 {
@@ -49,6 +53,7 @@ func TestCanSubtractNumbers(t *testing.T) {
 }
 
 func TestCanMultiplyNumbers(t *testing.T) {
+	t.Parallel()
 	result := Multiply()
 	if result != 0 {
 		t.Fatal("multiply numbers error")
@@ -61,6 +66,7 @@ func TestCanMultiplyNumbers(t *testing.T) {
 }
 
 func TestCanDivideNumbers(t *testing.T) {
+	t.Parallel()
 	// go test pack -v
 	if testing.Verbose() {
 		t.Skip("Not implemented yet")
