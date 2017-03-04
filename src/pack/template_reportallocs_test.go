@@ -5,6 +5,7 @@ import (
 )
 
 func BenchmarkTemplateReportallocs(b *testing.B) {
+	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		user := NewUserReportallocs("test2")
 		SayHelloReportallocs(user)
@@ -12,6 +13,7 @@ func BenchmarkTemplateReportallocs(b *testing.B) {
 }
 
 func BenchmarkTemplateCopy(b *testing.B) {
+	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		user := NewUserReportallocs("test2")
 		SayHelloReportallocs(user)
