@@ -68,20 +68,21 @@ func getNextDetailId() int {
 }
 
 func init() {
-	var receiver *Receiver
 	receivers := GetReceivers()
+	vendors, _ := GetVendors()
+	var receiver *Receiver
 	if len(receivers) >= 1 {
 		receiver = receivers[1]
 	} else {
 		receiver = &Receiver{}
 	}
 	var vendor *Vendor
-	vendors := GetVendors()
 	if len(vendors) >= 2 {
 		vendor = vendors[2]
 	} else {
 		vendor = &Vendor{}
 	}
+
 	orders = []*PurchaseOrder{
 		{
 			ID:       getNextOrderId(),

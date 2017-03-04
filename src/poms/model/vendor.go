@@ -16,12 +16,15 @@ type Vendor struct {
 	Contact *Contact `json:"contact"`
 }
 
-func GetVendors() []*Vendor {
+var VendorServiceURL = "http://localhost:4000/api/vendors?type=manufacturing"
+
+func GetVendors() ([]*Vendor, error) {
 	var result []*Vendor
 
-	resp, err := http.Get("http://localhost:4000/api/vendors?type=manufacturing")
+	resp, err := http.Get(VendorServiceURL)
+
 	if err != nil {
-		return result
+		return nil, err
 	}
 
 	data := make([]byte, resp.ContentLength)
@@ -29,5 +32,5 @@ func GetVendors() []*Vendor {
 
 	json.Unmarshal(data, &result)
 
-	return result
+	return result, nil
 }
