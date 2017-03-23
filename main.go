@@ -6,11 +6,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"sync"
 	"text/template"
 
+	"chat3"
 	"trace"
-	"chat2"
 	"github.com/stretchr/gomniauth"
 	"github.com/stretchr/gomniauth/providers/facebook"
 	"github.com/stretchr/gomniauth/providers/github"
@@ -20,16 +19,15 @@ import (
 
 // templ represents a single template
 type templateHandler struct {
-	once     sync.Once
 	filename string
 	templ    *template.Template
 }
 
 // ServeHTTP handles the HTTP request.
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	t.once.Do(func() {
+	if t.templ == nil {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
-	})
+	}
 
 	data := map[string]interface{}{
 		"Host": r.Host,
@@ -50,18 +48,34 @@ func main() {
 	// setup gomniauth
 	gomniauth.SetSecurityKey("98dfbg7iu2nb4uywevihjw4tuiyub34noilk")
 	gomniauth.WithProviders(
-		github.New("3d1e6ba69036e0624b61", "7e8938928d802e7582908a5eadaaaf22d64babf1", "http://localhost:8080/auth/callback/github"),
-		google.New("44166123467-o6brs9o43tgaek9q12lef07bk48m3jmf.apps.googleusercontent.com", "rpXpakthfjPVoFGvcf9CVCu7", "http://localhost:8080/auth/callback/google"),
-		facebook.New("537611606322077", "f9f4d77b3d3f4f5775369f5c9f88f65e", "http://localhost:8080/auth/callback/facebook"),
+		github.New("18bb6368c337eb52f14a", "4a11076e6dd0d530c59dc6ae66e7d0f63b0ef023", "http://localhost:8080/auth/callback/github"),
+		google.New("1072036801883-fh2jjqu78nd1ilcr19vlr44p4bjias2a.apps.googleusercontent.com", "728fTYJ9IzRy7tKEWpazr4J-", "http://localhost:8080/auth/callback/google"),
+		facebook.New("1850676378534447", "f3b73607847cf9fc8c184e5d9bab478b", "http://localhost:8080/auth/callback/facebook"),
 	)
 
-	r := chat2.NewRoom()
+	r := chat3.NewRoom()
 	r.Tracer = trace.New(os.Stdout)
 
-	http.Handle("/chat", chat2.MustAuth(&templateHandler{filename: "chat.html"}))
+	http.Handle("/chat", chat3.MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
-	http.HandleFunc("/auth/", chat2.LoginHandler)
+	http.HandleFunc("/auth/", chat3.LoginHandler)
 	http.Handle("/room", r)
+	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+		http.SetCookie(w, &http.Cookie{
+			Name:   "auth",
+			Value:  "",
+			Path:   "/",
+			MaxAge: -1,
+		})
+		w.Header().Set("Location", "/chat")
+		w.WriteHeader(http.StatusTemporaryRedirect)
+	})
+	http.Handle("/upload", &templateHandler{filename: "upload.html"})
+	http.HandleFunc("/uploader", chat3.UploaderHandler)
+
+	http.Handle("/avatars/",
+		http.StripPrefix("/avatars/",
+			http.FileServer(http.Dir("./avatars"))))
 
 	// get the room going
 	go r.Run()

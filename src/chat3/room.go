@@ -1,13 +1,12 @@
-package chat2
+package chat3
 
 import (
 	"log"
 	"net/http"
 
-	"github.com/stretchr/objx"
-
 	"github.com/gorilla/websocket"
 	"trace"
+	"github.com/stretchr/objx"
 )
 
 type room struct {
@@ -30,8 +29,7 @@ type room struct {
 	Tracer trace.Tracer
 }
 
-// newRoom makes a new room that is ready to
-// go.
+// newRoom makes a new room that is ready to go.
 func NewRoom() *room {
 	return &room{
 		forward: make(chan *message),
@@ -70,7 +68,10 @@ const (
 	messageBufferSize = 256
 )
 
-var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
+var upgrader = &websocket.Upgrader{
+	ReadBufferSize:  socketBufferSize,
+	WriteBufferSize: socketBufferSize,
+}
 
 func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	socket, err := upgrader.Upgrade(w, req, nil)
