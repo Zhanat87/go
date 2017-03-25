@@ -6,7 +6,7 @@ LDFLAGS:=-ldflags "-X github.com/Zhanat87/go/app.Version=${VERSION}"
 default: run
 
 depends:
-	../../../../bin/glide up
+	bin/glide up
 
 test:
 	echo "mode: count" > coverage-all.out
