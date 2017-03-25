@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	DEFAULT_PAGE_SIZE int = 100
-	MAX_PAGE_SIZE     int = 1000
+	DEFAULT_PAGE_SIZE int = 10
+	MAX_PAGE_SIZE     int = 100
 )
 
 func getPaginatedListFromRequest(c *routing.Context, count int) *util.PaginatedList {
