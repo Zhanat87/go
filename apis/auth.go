@@ -38,7 +38,7 @@ func Auth(signingKey string) routing.Handler {
 		if err != nil {
 			return errors.Unauthorized(err.Error())
 		}
-		signInResponse := &responses.SignInResponse{Data: {Token: token, Username: identity.GetName()}}
+		signInResponse := &responses.SignInResponse{Data: responses.SignInData{Token: token, Username: identity.GetName()}}
 		return c.Write(signInResponse)
 	}
 }
