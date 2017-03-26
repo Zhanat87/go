@@ -12,6 +12,6 @@ type Album struct {
 func (m Album) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Title, validation.Required, validation.Length(0, 120)),
-		validation.Field(&m.ArtistId, validation.Required, validation.ToInt(&m.ArtistId)),
+		validation.Field(&m.ArtistId, validation.Required),
 	)
 }
