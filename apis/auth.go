@@ -38,8 +38,8 @@ func Auth(signingKey string) routing.Handler {
 		if err != nil {
 			return errors.Unauthorized(err.Error())
 		}
-		signInResponse := &responses.SignInResponse{Data: responses.SignInData{Token: token, Username: identity.GetName()}}
-		return c.Write(signInResponse)
+
+		return c.Write(responses.MakeSignInSuccessResponse(token, identity))
 	}
 }
 

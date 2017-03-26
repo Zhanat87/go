@@ -12,11 +12,11 @@ type APISuccess struct {
 	Data struct{} `json:"data,omitempty"`
 }
 
-// http://choly.ca/post/go-json-marshalling/
-func (s *APISuccess) MarshalJSON() ([]byte, error) {
-	return []byte(`{"status":200,"message":"ok"}`), nil
-	//return json.Marshal(&APISuccess{
-	//	Status:  200,
-	//	Message: "ok",
-	//})
-}
+/*
+http://choly.ca/post/go-json-marshalling/
+https://play.golang.org/p/qiGyjRbNHg
+https://play.golang.org/p/VfZYuNkjmq
+ */
+//func (s *APISuccess) MarshalJSON() ([]byte, error) {
+//	return []byte(`{"status":200,"message":"ok"}`), nil
+//}
