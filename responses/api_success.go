@@ -7,5 +7,5 @@ type APISuccess struct {
 	// Message is the error message that may be displayed to end users
 	Message string `json:"ok"`
 	// Data specifies the additional response information
-	Data interface{} `json:"data,omitempty"`
+	Data struct{} `json:"data,omitempty"`
 }
