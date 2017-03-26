@@ -78,6 +78,9 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB) *routing.Router {
 	artistDAO := daos.NewArtistDAO()
 	apis.ServeArtistResource(rg, services.NewArtistService(artistDAO))
 
+	albumDAO := daos.NewAlbumDAO()
+	apis.ServeAlbumResource(rg, services.NewAlbumService(albumDAO))
+
 	// wire up more resource APIs here
 
 	return router

@@ -10,5 +10,6 @@ CREATE TABLE "public"."user" (
     "phones" character varying(100) NOT NULL,
     "status" smallint,
     "created_at" timestamp,
-    "updated_at" timestamp
+    "updated_at" timestamp,
+    "deleted_at" timestamp
 ) WITH (oids = false);
