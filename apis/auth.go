@@ -9,6 +9,7 @@ import (
 	"github.com/Zhanat87/go/app"
 	"github.com/Zhanat87/go/errors"
 	"github.com/Zhanat87/go/models"
+	"github.com/Zhanat87/go/responses"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -37,10 +38,8 @@ func Auth(signingKey string) routing.Handler {
 		if err != nil {
 			return errors.Unauthorized(err.Error())
 		}
-
-		return c.Write(map[string]string{
-			"token": token,
-		})
+		signInResponse := &responses.SignInResponse{Data: {Token: token, Username: identity.GetName()}}
+		return c.Write(signInResponse)
 	}
 }
 
