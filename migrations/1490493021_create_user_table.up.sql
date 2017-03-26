@@ -1,7 +1,7 @@
 CREATE SEQUENCE user_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
 
 CREATE TABLE "public"."user" (
-    "id" integer DEFAULT nextval('user_id_seq'),
+    "id" integer DEFAULT nextval('user_id_seq') UNIQUE,
     "username" character varying(100),
     "email" character varying(100),
     "password" character varying(72),
