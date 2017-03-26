@@ -7,7 +7,7 @@ import (
 
 // go run console/generatePasswordHash/main.go
 func main() {
-	password := []byte("demo")
+	password := []byte("pass")
 
 	// Hashing the password with the default cost of 10
 	hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)

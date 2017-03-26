@@ -52,8 +52,8 @@ func authenticate(c Credential) models.Identity {
 }
 
 func validatePassword(password string) bool {
-	// demo hash
-	hashedPassword := "$2a$10$t1RYRtQK.K2hjmCpX4ti7./3q4F.jww79M4VSHCtCFWpUsYrUFQiK"
+	// "pass" hash
+	hashedPassword := []byte("$2a$10$YOGE3lBg7SXbhEa8kr8B3OBFimlWLrytjad8VquOFWBYIVY1UP.xa")
 	err := bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
 	if err != nil {
 		return false
