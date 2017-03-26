@@ -45,16 +45,16 @@ func Auth(signingKey string) routing.Handler {
 }
 
 func authenticate(c Credential) models.Identity {
-	if c.Username == "demo" && validatePassword([]byte(c.Password)) {
+	if c.Username == "demo" && validatePassword(c.Password) {
 		return &models.User{ID: "100", Name: "demo"}
 	}
 	return nil
 }
 
-func validatePassword([]byte password) bool {
+func validatePassword(password string) bool {
 	// demo hash
 	hashedPassword := "$2a$10$t1RYRtQK.K2hjmCpX4ti7./3q4F.jww79M4VSHCtCFWpUsYrUFQiK"
-	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
+	err := bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
 	if err != nil {
 		return false
 	}
