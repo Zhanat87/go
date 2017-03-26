@@ -13,7 +13,7 @@ type SignInData struct  {
 }
 
 func MakeSignInSuccessResponse(token string, identity models.Identity) SignInSuccessResponse {
-	return &SignInSuccessResponse{
+	return SignInSuccessResponse{
 		APISuccess: APISuccess{Status: 200, Message: "ok"},
 		Data: SignInData{
 			Token: token,
