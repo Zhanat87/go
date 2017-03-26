@@ -12,9 +12,10 @@ type APISuccess struct {
 	Data struct{} `json:"data,omitempty"`
 }
 
+// http://choly.ca/post/go-json-marshalling/
 func (s *APISuccess) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&APISuccess{
-		Status:       200,
-		Message:     "ok",
+		Status:  200,
+		Message: "ok",
 	})
 }
