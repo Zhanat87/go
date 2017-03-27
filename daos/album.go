@@ -23,7 +23,7 @@ func (dao *AlbumDAO) Get2(rs app.RequestScope, id int) (*models.Album, error) {
 
 // Get reads the album with the specified ID from the database.
 func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (album *models.Album, err error) {
-	q := rs.Tx().Select("album.id", "title", "artist.name AS artist_name").
+	q := rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name").
 		From("album").Where(dbx.HashExp{"album.id": 100}).
 		LeftJoin("artist", dbx.NewExp("\"artist\".\"id\" = \"album\".\"artist_id\""))
 
@@ -60,15 +60,26 @@ func (dao *AlbumDAO) Delete(rs app.RequestScope, id int) error {
 }
 
 // Count returns the number of the album records in the database.
-func (dao *AlbumDAO) Count(rs app.RequestScope) (int, error) {
-	var count int
-	err := rs.Tx().Select("COUNT(*)").From("album").Row(&count)
-	return count, err
+func (dao *AlbumDAO) Count(rs app.RequestScope) (count int, err error) {
+	err = rs.Tx().Select("COUNT(*)").From("album").Row(&count)
+	return
 }
 
 // Query retrieves the album records with the specified offset and limit from the database.
-func (dao *AlbumDAO) Query(rs app.RequestScope, offset, limit int) ([]models.Album, error) {
+func (dao *AlbumDAO) Query2(rs app.RequestScope, offset, limit int) ([]models.Album, error) {
 	albums := []models.Album{}
 	err := rs.Tx().Select().OrderBy("id").Offset(int64(offset)).Limit(int64(limit)).All(&albums)
 	return albums, err
+}
+
+// Query retrieves the album records with the specified offset and limit from the database.
+func (dao *AlbumDAO) Query(rs app.RequestScope, offset, limit int) (albums []models.Album, err error) {
+	err = rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name").
+		From("album").
+		LeftJoin("artist", dbx.NewExp("\"artist\".\"id\" = \"album\".\"artist_id\"")).
+		OrderBy("album.id").
+		Offset(int64(offset)).
+		Limit(int64(limit)).
+		All(&albums)
+	return
 }

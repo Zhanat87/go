@@ -35,15 +35,15 @@ func ServeAlbumResource(rg *routing.RouteGroup, service albumService) {
 	rg.Delete("/albums/<id>", r.delete)
 }
 
-func (r *albumResource) get(c *routing.Context) error {
+func (r *albumResource) get(c *routing.Context) (err error) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return err
+		return
 	}
 
 	response, err := r.service.Get(app.GetRequestScope(c), id)
 	if err != nil {
-		return err
+		return
 	}
 
 	return c.Write(response)
