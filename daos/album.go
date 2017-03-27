@@ -3,7 +3,6 @@ package daos
 import (
 	"github.com/Zhanat87/go/app"
 	"github.com/Zhanat87/go/models"
-	"github.com/Zhanat87/go/db"
 	"github.com/go-ozzo/ozzo-dbx"
 )
 
@@ -23,17 +22,16 @@ func (dao *AlbumDAO) Get2(rs app.RequestScope, id int) (*models.Album, error) {
 }
 
 // Get reads the album with the specified ID from the database.
-func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (*models.Album, error) {
+func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (album *models.Album, err error) {
 	q := rs.Tx().Select("album.id", "title", "artist.name AS artist_name").
 		From("album").Where(dbx.HashExp{"album.id": 100}).
 		Join("LEFT INNER JOIN", "artist", dbx.NewExp("`artist`.`id` = `album`.`artist_id`"))
 
-	var album *models.Album
-	err := q.One(&album)
+	err = q.One(&album)
 	if err != nil {
 		println("Exec err:", err.Error())
 	}
-	return &album, err
+	return
 }
 
 // Create saves a new album record in the database.
