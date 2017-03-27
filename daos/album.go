@@ -25,7 +25,7 @@ func (dao *AlbumDAO) Get2(rs app.RequestScope, id int) (*models.Album, error) {
 func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (album *models.Album, err error) {
 	q := rs.Tx().Select("album.id", "title", "artist.name AS artist_name").
 		From("album").Where(dbx.HashExp{"album.id": 100}).
-		LeftJoin("artist", dbx.NewExp("`artist`.`id` = `album`.`artist_id`"))
+		LeftJoin("artist", dbx.NewExp("\"artist\".\"id\" = \"album\".\"artist_id\""))
 
 	err = q.One(&album)
 	if err != nil {
