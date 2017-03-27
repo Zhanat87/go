@@ -3,6 +3,8 @@ package daos
 import (
 	"github.com/Zhanat87/go/app"
 	"github.com/Zhanat87/go/models"
+	"github.com/Zhanat87/go/db"
+	"github.com/go-ozzo/ozzo-dbx"
 )
 
 // AlbumDAO persists album data in database
@@ -14,9 +16,23 @@ func NewAlbumDAO() *AlbumDAO {
 }
 
 // Get reads the album with the specified ID from the database.
-func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (*models.Album, error) {
+func (dao *AlbumDAO) Get2(rs app.RequestScope, id int) (*models.Album, error) {
 	var album models.Album
 	err := rs.Tx().Select().Model(id, &album)
+	return &album, err
+}
+
+// Get reads the album with the specified ID from the database.
+func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (*models.Album, error) {
+	q := rs.Tx().Select("album.id", "title", "artist.name AS artist_name").
+		From("album").Where(dbx.HashExp{"album.id": 100}).
+		Join("LEFT INNER JOIN", "artist", dbx.NewExp("`artist`.`id` = `album`.`artist_id`"))
+
+	var album *models.Album
+	err := q.One(&album)
+	if err != nil {
+		println("Exec err:", err.Error())
+	}
 	return &album, err
 }
 

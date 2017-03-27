@@ -13,9 +13,10 @@ need select by separate queries,
 find parent model and then related models by foreign id(s)
  */
 type Album struct {
-	Id       int    `json:"id" db:"id"`
-	Title    string `json:"title" db:"title"`
-	ArtistId uint   `json:"artistId" db:"artist_id"`
+	Id         int    `json:"id" db:"id"`
+	Title      string `json:"title" db:"title"`
+	ArtistId   uint   `json:"artistId" db:"artist_id"`
+	ArtistName string   `json:"artistName" db:"artist_name"`
 }
 
 // Validate validates the Artist fields.
