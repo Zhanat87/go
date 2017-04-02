@@ -14,6 +14,7 @@ import (
 )
 
 type Credential struct {
+	Email    string `json:"email"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -33,6 +34,7 @@ func Auth(signingKey string) routing.Handler {
 		token, err := auth.NewJWT(jwt.MapClaims{
 			"id":   identity.GetID(),
 			"name": identity.GetName(),
+			"email": identity.GetEmail(),
 			"exp":  time.Now().Add(time.Hour * 72).Unix(),
 		}, signingKey)
 		if err != nil {
@@ -44,8 +46,8 @@ func Auth(signingKey string) routing.Handler {
 }
 
 func authenticate(c Credential) models.Identity {
-	if c.Username == "demo" && validatePassword(c.Password) {
-		return &models.User{ID: "100", Name: "demo"}
+	if (c.Username == "demo" || c.Email == "user@demo.com") && validatePassword(c.Password) {
+		return &models.User{ID: "100", Name: "demo", , Email: "user@demo.com"}
 	}
 	return nil
 }
