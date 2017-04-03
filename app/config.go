@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/go-ozzo/ozzo-validation"
+	"os"
 )
 
 // Config stores the application-wide configurations
@@ -17,6 +18,7 @@ type appConfig struct {
 	ServerPort         int    `mapstructure:"server_port"`
 	// the data source name (DSN) for connecting to the database. required.
 	DSN                string `mapstructure:"dsn"`
+	DSN_DOCKER         string `mapstructure:"dsn_docker"`
 	// the signing method for JWT. Defaults to "HS256"
 	JWTSigningMethod   string `mapstructure:"jwt_signing_method"`
 	// JWT signing key. required.
@@ -28,9 +30,20 @@ type appConfig struct {
 func (config appConfig) Validate() error {
 	return validation.ValidateStruct(&config,
 		validation.Field(&config.DSN, validation.Required),
+		validation.Field(&config.DSN_DOCKER, validation.Required),
 		validation.Field(&config.JWTSigningKey, validation.Required),
 		validation.Field(&config.JWTVerificationKey, validation.Required),
 	)
+}
+
+func (config appConfig) GetDSN() string {
+	_, issetDocker := os.LookupEnv("POSTGRESQL_PORT")
+	if issetDocker {
+		return fmt.Sprintf(config.DSN_DOCKER, os.Getenv("POSTGRESQL_ENV_POSTGRES_USER"),
+			os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
+			os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
+	}
+	return config.DSN
 }
 
 // LoadConfig loads configuration from the given list of paths and populates it into the Config variable.

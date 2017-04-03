@@ -1,5 +1,6 @@
 # golang image where workspace (GOPATH) configured at /go.
 # FROM golang:1.6-onbuild
+# https://hub.docker.com/_/golang/
 FROM golang:latest
 #FROM golang - подтянул 1.7.4, когда последняя версия 1.8
 # сначала надо залить все файлы в github
@@ -22,9 +23,9 @@ FROM golang:latest
 # Run the stack-auth command when the container starts.
 #ENTRYPOINT /go/bin/go
 
-ADD /bin/go /go/bin/go
+ADD /bin/go /go/go_restful
 ADD config /go/config
-ENTRYPOINT /go/bin/go
+ENTRYPOINT /go/go_restful
 
 # Service listens on port 8080.
 EXPOSE 8080
