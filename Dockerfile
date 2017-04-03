@@ -27,7 +27,6 @@ ADD /bin/go /go/go_restful
 ADD /bin/migrate /go/migrate
 ADD config /go/config
 ADD migrations /go/migrations
-RUN migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful -path ./migrations up
 ENTRYPOINT /go/go_restful
 
 # Service listens on port 8080.
