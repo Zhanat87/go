@@ -1,5 +1,10 @@
 package errors
 
+/*
+{"error_code":"INTERNAL_SERVER_ERROR",
+"message":"We have encountered an internal server error.",
+"developer_message":"Internal server error: pq: relation \"album\" does not exist"}
+ */
 // APIError represents an error that can be sent in an error response.
 type APIError struct {
 	// Status represents the HTTP status code
