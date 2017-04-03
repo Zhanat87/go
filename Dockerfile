@@ -31,3 +31,7 @@ ENTRYPOINT /go/go_restful
 
 # Service listens on port 8080.
 EXPOSE 8080
+
+CMD echo "before text" >> /go/before.txt
+CMD /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+CMD echo "after text" >> /go/after.txt

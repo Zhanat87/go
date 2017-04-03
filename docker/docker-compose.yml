@@ -128,8 +128,11 @@ golang:
   ports:
     - "8080:8080"
 # https://github.com/docker/compose/issues/1809
-  command:
-    - exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+#  command: exec -it golang /bin/bash echo from golang
+#  command:
+#    - echo from golang
+#    - exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+# docker exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
 
 ################################################################################
 ## dictionary
