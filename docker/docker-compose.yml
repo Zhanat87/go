@@ -20,7 +20,7 @@ adminer:
     - "8888:8888"
   links:
 #    - stack-mysql
-    - stack-postgres
+    - postgresql
 
 #stack-mysql:
 ##  image: mariadb
@@ -55,18 +55,18 @@ adminer:
 # docker inspect stack-postgres
 # docker ps
 # docker-compose up
-stack-postgres:
+postgresql:
   image: postgres:latest
-  container_name: stack-postgres
+  container_name: postgresql
   ports:
     - "5433:5432"
   volumes:
     - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 #  Set environment to use a database
   environment:
-    - POSTGRES_USER=stack
-    - POSTGRES_PASSWORD=stack
-    - POSTGRES_DB=stack
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_DB=go_restful
 #  env_file:
 #    - ./postgres/.env
 
@@ -106,6 +106,8 @@ stack-postgres:
 # docker-compose logs stack-auth
 # docker-compose rm stack-auth
 # docker-compose build golang
+# https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
+# docker-images
 golang:
 # Builds from Dockerfile located under ./golang
   build: ../
@@ -116,7 +118,7 @@ golang:
   volumes:
     - ./bin/go:/go/src/github.com/Zhanat87/go
   links:
-    - stack-postgres
+    - postgresql
 #    - stack-mongodb
 #    - stack-rabbitmq
   ports:

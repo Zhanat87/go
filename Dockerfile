@@ -1,7 +1,7 @@
 # golang image where workspace (GOPATH) configured at /go.
 # FROM golang:1.6-onbuild
-# FROM golang:latest
-FROM golang
+FROM golang:latest
+#FROM golang - подтянул 1.7.4, когда последняя версия 1.8
 # сначала надо залить все файлы в github
 # затем обновить все файлы с github'а
 # и тогда обновления появятся в докере
