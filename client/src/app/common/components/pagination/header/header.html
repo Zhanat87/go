@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-{{ canCreate ? 5 : 6 }}">
+        <div class="form-group">
+            <select (change)="onChangePerPage($event)" class="form-control" id="perPageSelect">
+                <option *ngFor="let perPage of perPages" [value]="perPage">
+                    {{perPage}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-{{ canCreate ? 5 : 6 }}">
+        <div class="input-group">
+            <input class="form-control with-danger-addon" placeholder="Search for..." type="text" #searchInput />
+            <span class="input-group-btn">
+                <button class="btn btn-danger" type="button" (click)="goSearch(searchInput.value)">Go!</button>
+            </span>
+        </div>
+    </div>
+    <div class="col-md-2" *ngIf="canCreate">
+        <a class="btn btn-success" [href]="createUrl">Add new record</a>
+    </div>
+</div>routerLink

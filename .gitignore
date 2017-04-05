@@ -8,7 +8,7 @@
 /src/golang.org
 /node_modules
 /avatars
-/client
+/client/node_modules
 /docker
 
 ############### start from api ozzo

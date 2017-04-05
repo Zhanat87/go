@@ -1,0 +1,10 @@
+<div class="content-top clearfix">
+    <h1 class="al-title">{{ activePageTitle }}</h1>
+
+    <ul class="breadcrumb al-breadcrumb">
+        <li class="breadcrumb-item" [ngClass]="{'active' : !breadCrumb.link}" *ngFor="let breadCrumb of breadCrumbs;">
+            <a routerLink="{{ breadCrumb.link }}" *ngIf="breadCrumb.link">{{ breadCrumb.title }}</a>
+            <span *ngIf="!breadCrumb.link">{{ breadCrumb.title }}</span>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-12 text-center">
+        <ul class="pagination">
+            <li class="page-item" *ngIf="!isFirstPage()">
+                <a aria-label="First" class="page-link" (click)="previous()">
+                    <span aria-hidden="true">«</span>
+                    <span class="sr-only">First</span>
+                </a>
+            </li>
+            <li class="page-item " *ngFor="let page of pages" [ngClass]="getCurrent() === page.value ? 'active' : ''">
+                <a class="page-link" (click)="setCurrent(page.value)" *ngIf="getCurrent() !== page.value">{{ page.label }}</a>
+                <span class="page-link" *ngIf="getCurrent() === page.value">{{ page.label }} <span class="sr-only">(current)</span></span>
+            </li>
+            <li class="page-item" *ngIf="!isLastPage()">
+                <a aria-label="Last" class="page-link" (click)="next()">
+                    <span aria-hidden="true">»</span>
+                    <span class="sr-only">Last</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
