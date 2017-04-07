@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS "artist";
+DROP SEQUENCE IF EXISTS artist_id_seq;

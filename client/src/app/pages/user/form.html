@@ -1,0 +1,133 @@
+<div class="row" *ngIf="active">
+    <div class="col-lg-12">
+        <form (ngSubmit)="onSubmit()" #UserForm="ngForm">
+
+            <div class="form-group">
+                <label for="exampleInputName">Name</label>
+                <input type="text" class="form-control" id="exampleInputName" placeholder="Name" required [(ngModel)]="model.name" name="name">
+                <br><br><br>
+                <div *ngIf="errors['name']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['name']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputSurname">Surname</label>
+                <input type="text" class="form-control" id="exampleInputSurname" placeholder="Surname" required [(ngModel)]="model.surname" name="surname">
+                <br><br><br>
+                <div *ngIf="errors['surname']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['surname']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputCountry">Country</label>
+                <select (change)="onChangeCountry($event)" class="form-control" id="exampleInputCountry" required [(ngModel)]="model.country_id" name="country_id">
+                    <template ngFor let-row [ngForOf]="countries | iterable">
+                        <option [value]="row.key.id">
+                            {{row.key.translation?.en.name}}
+                        </option>
+                    </template>
+                </select>
+                <br><br><br>
+                <div *ngIf="errors['country_id']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['country_id']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="exampleInputEmail">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail" placeholder="Email" [(ngModel)]="model.email" name="email">
+                <br><br><br>
+                <div *ngIf="errors['email']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['email']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername">Username</label>
+                <input type="text" class="form-control" id="exampleInputUsername" placeholder="Username" [(ngModel)]="model.username" name="username">
+                <br><br><br>
+                <div *ngIf="errors['username']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['username']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPhone">Phone</label>
+                <div class="input-group">
+                    <span class="input-group-addon input-group-addon-primary addon-left">{{dialCode}}</span>
+                    <input type="text" class="form-control with-primary-addon" id="exampleInputPhone" placeholder="Phone"
+                           [(ngModel)]="model.phone" name="phone" (keypress)="isNumber($event)">
+                </div>
+                <br><br><br>
+                <div *ngIf="errors['phone']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['phone']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPhoneSecondary">PhoneSecondary</label>
+                <div class="input-group">
+                    <span class="input-group-addon input-group-addon-primary addon-left" id="basic-addon1">{{dialCode}}</span>
+                    <input type="text" class="form-control with-primary-addon" id="exampleInputPhoneSecondary"
+                           placeholder="PhoneSecondary" [(ngModel)]="model.phone_secondary" name="phone_secondary" (keypress)="isNumber($event)">
+                </div>
+                <br><br><br>
+                <div *ngIf="errors['phone_secondary']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['phone_secondary']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUrl">Url</label>
+                <input type="text" class="form-control" id="exampleInputUrl" placeholder="Url" [(ngModel)]="model.url" name="url">
+                <br><br><br>
+                <div *ngIf="errors['url']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['url']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="exampleInputPassword">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" [(ngModel)]="model.password" name="password">
+                <br><br><br>
+                <div *ngIf="errors['password']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['password']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2" [class.hidden]="editMode">
+                    <a class="btn btn-info" [routerLink]="[listUrl]">cancel</a>
+                    <button class="btn btn-success" type="submit" [disabled]="blocked || !UserForm.form.valid">create</button>
+                </div>
+
+                <div class="col-sm-11 col-sm-offset-1" [class.hidden]="!editMode">
+                    <a class="btn btn-info" [routerLink]="[listUrl]">cancel</a>
+                    <button class="btn btn-success" type="submit" [disabled]="blocked || !UserForm.form.valid">save</button>
+
+                    <button class="btn btn-danger pull-right" type="button" (click)="remove($event)"
+                            id="Are you sure that you want delete this record?">delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

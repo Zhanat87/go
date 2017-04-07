@@ -1,0 +1,21 @@
+$errorColor: #cc5965;
+
+.hidden {
+  visibility: hidden;
+}
+.pull-right {
+  float: right;
+}
+
+/* Validation */
+label.error {
+  color: $errorColor;
+  display: inline-block;
+  margin-left: 5px;
+}
+.form-control.error {
+  border: 1px dotted $errorColor;
+}
+.error {
+  color: $errorColor;
+}
