@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from "./user.service";
 import {BaseListPagination} from "../../common/base/baseListPagination";
 import {User} from "./user";
-import {ModalDirective} from 'ng2-bootstrap';
+import {ModalDirective} from 'ngx-bootstrap';
 import {GlobalState} from "../../global.state";
 
 @Component({
