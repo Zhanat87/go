@@ -1,0 +1,248 @@
+# https://docs.docker.com/compose/compose-file/#dns
+
+###############################################################################
+# Docker for frontend
+###############################################################################
+
+#stack-memcached:
+#  image: phpdockerio/memcached:latest
+#  container_name: stack-memcached
+
+#stack-redis:
+#  image: phpdockerio/redis:latest
+#  container_name: stack-redis
+
+# https://hub.docker.com/r/hardware/adminer/
+# порт adminer'а 8888, поэтому его надо перенаправить на 8083,
+# затем можно просто открыть localhost:8083
+adminer:
+  image: hardware/adminer
+  container_name: adminer
+  ports:
+    - "8888:8888"
+  links:
+#    - stack-mysql
+    - postgresql
+
+#stack-mysql:
+##  image: mariadb
+##  image: mysql:5.7
+## latest mysql image === mysql:latest
+#  image: mysql
+#  container_name: stack-mysql
+#  ports:
+##  Error starting userland proxy: listen tcp 0.0.0.0:3306: bind: address already in use
+##  нельзя выводить в первый порт такой же который уже занят в системе самим mysql,
+##  надо менять наружный порт "3306:3306", например на "3333:3306"
+#    - "3333:3306"
+#  environment:
+##    - MYSQL_USER=heaven11
+##    - MYSQL_PASSWORD=h4UgSa
+##    - MYSQL_ROOT_PASSWORD=h4UgSa
+##    - MYSQL_DATABASE=heaven11-v1
+#    MYSQL_ROOT_PASSWORD: root
+#    MYSQL_DATABASE: stack_db
+##    MYSQL_USER: dev
+##    MYSQL_PASSWORD: 123456
+#  volumes:
+#    - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+##   restart: always
+
+# docker exec -it stack-postgres /bin/bash
+# psql -h localhost -U postgres
+# \l or \list - show databases
+# \connect stack - use db
+# \dt - show tables
+# \q - close connection and exit
+# docker inspect stack-postgres
+# docker ps
+# docker-compose up
+# https://hub.docker.com/_/postgres/
+postgresql:
+  image: postgres:latest
+  container_name: postgresql
+  ports:
+    - "5433:5432"
+  volumes:
+    - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+#  Set environment to use a database
+  environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_DB=go_restful
+#  env_file:
+#    - ./postgres/.env
+#  dns: 8.8.8.8
+
+#stack-mongodb:
+#  image: mongo
+#  container_name: stack-mongodb
+#  ports:
+#    - "27019:27017"
+##  environment:
+##    - MONGO_URL=mongodb://mongodb:27019
+#  command:
+#    mongod --smallfiles --quiet --logpath=/dev/null
+
+#stack-elasticsearch:
+#  build: .
+#  dockerfile: elasticsearch/Dockerfile
+#  container_name: stack-elasticsearch
+#  ports:
+#    - "9200:9200"
+#    - "9300:9300"
+
+#stack-rabbitmq:
+#  image: rabbitmq:3-management
+#  container_name: stack-rabbitmq
+#  ports:
+#    - "15672:15672"
+#    - "5672:5672"
+#  environment:
+#    - RABBITMQ_DEFAULT_USER=stack-rabbitmq
+#    - RABBITMQ_DEFAULT_PASS=stack-rabbitmq
+#    - RABBITMQ_DEFAULT_VHOST=/
+
+################################################################################
+## auth
+################################################################################
+
+# docker-compose logs stack-auth
+# docker-compose rm stack-auth
+# docker-compose build golang
+# https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
+# docker-images
+golang:
+# Builds from Dockerfile located under ./golang
+  build: ../
+#  user: 777:777
+  restart: always
+  dockerfile: Dockerfile
+  container_name: golang
+  volumes:
+    - ./bin/go:/go/src/github.com/Zhanat87/go
+  links:
+    - postgresql
+#    - stack-mongodb
+#    - stack-rabbitmq
+  ports:
+    - "8080:8080"
+# https://github.com/docker/compose/issues/1809
+#  command: exec -it golang /bin/bash echo from golang
+#  command:
+#    - echo from golang
+#    - exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+# docker exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+
+################################################################################
+## dictionary
+################################################################################
+
+#stack-dictionary:
+#  build: ../stack-dictionary
+#  restart: always
+#  dockerfile: Dockerfile
+#  container_name: stack-dictionary
+#  volumes:
+#    - ../stack-dictionary:/usr/src/app
+##  Expose and map ports for containers
+##  в expose порты, которые должны быть разрешены в firewall
+##  expose:
+##    - 3000
+## как в docker run -p 8081:8081
+#  ports:
+#    - "8081:8081"
+## как в docker run --link
+#  links:
+#    - stack-mongodb
+##    - stack-auth
+##  Label the service
+#  labels:
+#    com.dockerinaction.chapter: "11"
+#    com.dockerinaction.example: "Coffee API"
+#    com.dockerinaction.role: "Application Logic"
+
+################################################################################
+## node.js express
+################################################################################
+# for node.js app need first run "npm i" local and then build container
+# чтобы обновить новый код в node.js app надо просто перезапустить контейнер
+# docker-compose restart nodejs-express
+#nodejs-express:
+#  build: ../nodejs-express
+#  restart: always
+#  dockerfile: Dockerfile
+#  container_name: nodejs-express
+#  volumes:
+#    - ../nodejs-express:/usr/src/app
+#  ports:
+#    - "8081:8081"
+#  links:
+#    - stack-mongodb
+
+################################################################################
+## symfony3-api
+################################################################################
+
+#symfony3-api-nginx:
+#  image: phpdockerio/nginx:latest
+#  container_name: symfony3-api-nginx
+#  volumes:
+#    - ../../symfony3-api:/var/www/symfony3-api
+#    - ./symfony3-api/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+#    - ./symfony3-api/nginx/logs:/var/log/nginx
+#  ports:
+#    - "8084:80"
+#  links:
+#    - symfony3-api-php-fpm
+
+#symfony3-api-php-fpm:
+#  build: .
+#  dockerfile: symfony3-api/php-fpm/Dockerfile
+#  container_name: symfony3-api-php-fpm
+#  volumes:
+#    - ../../symfony3-api:/var/www/symfony3-api
+#    - ./symfony3-api/php-fpm/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
+#  links:
+#    - stack-dictionary
+#    - stack-auth
+#    - stack-mongodb
+#    - stack-mysql
+#    - stack-postgres
+#    - stack-elasticsearch
+#    - stack-rabbitmq
+
+###############################################################################
+# Frontend
+###############################################################################
+
+#stack-frontend-nginx:
+#  image: phpdockerio/nginx:latest
+#  container_name: stack-frontend-nginx
+#  volumes:
+#    - ../stack-frontend:/var/www/stack-frontend
+##  Inject configuration via volume
+#    - ./stack-frontend/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+#    - ./stack-frontend/nginx/passwd:/etc/nginx/conf.d/passwd
+#    - ./stack-frontend/nginx/logs:/var/log/nginx
+#  ports:
+#    - "8080:80"
+#  links:
+#    - stack-frontend-php-fpm
+
+#stack-frontend-php-fpm:
+#  build: ../stack-frontend
+#  dockerfile: stack-frontend/php-fpm/Dockerfile
+#  container_name: stack-frontend-php-fpm
+#  volumes:
+#    - ../stack-frontend:/var/www/stack-frontend
+#    - ./stack-frontend/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
+#  links:
+#    - stack-auth
+#    - stack-dictionary
+#    - stack-mongodb
+#    - stack-mysql
+#    - stack-postgres
+#    - stack-elasticsearch
+#    - stack-rabbitmq
+#    - symfony3-api-nginx

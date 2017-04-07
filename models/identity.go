@@ -1,13 +1,15 @@
-package models
+ckage models
 
 type Identity interface {
-	GetID() string
-	GetName() string
+	GetID()    string
+	GetName()  string
+	GetEmail() string
 }
 
 type User struct {
-	ID   string
-	Name string
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 func (u User) GetID() string {
@@ -17,3 +19,8 @@ func (u User) GetID() string {
 func (u User) GetName() string {
 	return u.Name
 }
+
+func (u User) GetEmail() string {
+	return u.Email
+}
+

@@ -2,7 +2,7 @@ import {NgModule}      from '@angular/core';
 import {CommonModule}  from '@angular/common';
 import {NgaModule} from '../../theme/nga.module';
 import {Ng2PaginationModule} from 'ng2-pagination';
-import { ModalModule } from 'ng2-bootstrap';
+import { ModalModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 // note: http or authHttp module include here

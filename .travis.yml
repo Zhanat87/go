@@ -1,0 +1,27 @@
+language: go
+
+go:
+  - 1.6
+  - 1.7
+  - tip
+
+cache:
+  directories:
+    - vendor
+
+services:
+  - postgresql
+
+install:
+  - go get golang.org/x/tools/cmd/cover
+  - go get github.com/mattn/goveralls
+  - go get github.com/axw/gocov/gocov
+  - go get -u github.com/Masterminds/glide
+  - glide up -s -u
+
+before_script:
+  - psql -U postgres -c 'CREATE DATABASE go_restful;';
+
+script:
+  - make test
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage-all.out -service=travis-ci

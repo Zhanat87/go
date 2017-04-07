@@ -1,5 +1,5 @@
 import {CommonListPagination} from "../list/pagination";
-import {ModalDirective} from 'ng2-bootstrap';
+import {ModalDirective} from 'ngx-bootstrap';
 import { ViewChild } from '@angular/core';
 
 export abstract class BaseListPagination extends CommonListPagination {
