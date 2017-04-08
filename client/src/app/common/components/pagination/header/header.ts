@@ -24,7 +24,7 @@ export class CommonPaginationHeaderComponent {
     }
 
     get createUrl(): string {
-        return window.location.hash + '/create';
+        return window.location.pathname + '/create';
     }
 
 }

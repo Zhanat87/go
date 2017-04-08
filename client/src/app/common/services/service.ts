@@ -1,6 +1,7 @@
 import { Response, URLSearchParams} from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import {Environment} from "../environment";
+import {LocalStorageService} from "angular-2-local-storage";
 
 export abstract class CommonService {
 
@@ -11,6 +12,8 @@ export abstract class CommonService {
     public params = {};
 
     public get_params = {};
+
+    protected localStorageService: LocalStorageService;
 
     public getUrl() {
         let url = this.url;

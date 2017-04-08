@@ -9,4 +9,4 @@ export const routes: Routes = [
   // { path: '**', redirectTo: 'pages/home' } // 404
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(routes, { useHash: true });
+export const routing: ModuleWithProviders = RouterModule.forRoot(routes); // , { useHash: true }

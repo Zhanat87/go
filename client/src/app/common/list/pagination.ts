@@ -4,6 +4,8 @@ import {CommonPaginationFooterComponent} from "../components/pagination/footer/f
 import {Router} from "@angular/router";
 import {GlobalState} from "../../global.state";
 import {BreadCrumb} from "../entities/breadCrumb";
+import {ServerError} from "../entities/serverError";
+import {LocalStorageService} from "angular-2-local-storage";
 
 export abstract class CommonListPagination implements OnInit, OnDestroy {
     public active = false;
@@ -34,6 +36,8 @@ export abstract class CommonListPagination implements OnInit, OnDestroy {
     public title: string;
 
     protected _state: GlobalState;
+
+    protected localStorageService: LocalStorageService;
 
     @ViewChild(CommonPaginationFooterComponent) vc:CommonPaginationFooterComponent;
 
@@ -91,7 +95,14 @@ export abstract class CommonListPagination implements OnInit, OnDestroy {
             data => {
                 this.data = data[0];
             },
-            err => console.error(err)
+            err => {
+                console.error(err);
+                // let error = err as ServerError;
+                // if (error.status_code == 401) {
+                //     console.log('ServerError', error.message);
+                //     this.logout();
+                // }
+            }
         );
     }
 
@@ -100,6 +111,12 @@ export abstract class CommonListPagination implements OnInit, OnDestroy {
         breadCrumbs.push(new BreadCrumb(this.title));
         localStorage.setItem('breadCrumbs', JSON.stringify(breadCrumbs));
         this._state.notifyChanged('breadCrumbs');
+    }
+
+    private logout(): void {
+        localStorage.clear();
+        localStorage.setItem('referrer', window.location.pathname);
+        this.router.navigate(['/login']);
     }
 
 }
