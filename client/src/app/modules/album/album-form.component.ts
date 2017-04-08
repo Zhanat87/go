@@ -59,7 +59,7 @@ export class AlbumFormComponent extends BaseForm {
     }
 
     getBreadCrumbTitle(): string {
-        return this.editMode ? 'Album: ' + this.model.name : 'Create new album';
+        return this.editMode ? 'Album: ' + this.model.title : 'Create new album';
     }
 
 }
