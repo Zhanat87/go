@@ -8,8 +8,8 @@ type SignInSuccessResponse struct {
 }
 
 type SignInData struct  {
-	Token    string `json:"token"`
-	Username string `json:"username"`
+	Token string      `json:"token"`
+	User  models.User `json:"user"`
 }
 
 func MakeSignInSuccessResponse(token string, identity models.Identity) SignInSuccessResponse {
@@ -17,7 +17,7 @@ func MakeSignInSuccessResponse(token string, identity models.Identity) SignInSuc
 		APISuccess: APISuccess{Status: 200, Message: "ok"},
 		Data: SignInData{
 			Token: token,
-			Username: identity.GetName(),
+			User:  models.User{ID: identity.GetID(), Name: identity.GetName(), Email: identity.GetEmail()},
 		},
 	}
 }
