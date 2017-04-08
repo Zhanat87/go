@@ -1,4 +1,4 @@
-ckage models
+package models
 
 type Identity interface {
 	GetID()    string
