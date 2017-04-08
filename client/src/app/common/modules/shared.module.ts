@@ -4,6 +4,7 @@ import {NgaModule} from '../../theme/nga.module';
 import {Ng2PaginationModule} from 'ng2-pagination';
 import { ModalModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
+import {RouterModule} from "@angular/router";
 
 // note: http or authHttp module include here
 
@@ -19,6 +20,7 @@ import { IterablePipe } from "../pipes/iterable";
         Ng2PaginationModule,
         ModalModule.forRoot(),
         FormsModule,
+        RouterModule,
     ],
     declarations: [
         CommonPaginationFooterComponent,
@@ -31,6 +33,7 @@ import { IterablePipe } from "../pipes/iterable";
         Ng2PaginationModule,
         ModalModule,
         FormsModule,
+        RouterModule,
 
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
