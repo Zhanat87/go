@@ -28,6 +28,8 @@ services:
     container_name: golang
     volumes:
       - ./bin/go:/go/src/github.com/Zhanat87/go
+    links:
+      - postgresql
     depends_on:
       - postgresql
     command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
@@ -68,7 +70,7 @@ services:
     container_name: adminer
     ports:
       - "8888:8888"
-    depends_on:
+    links:
       - postgresql
 
   # docker exec -it stack-postgres /bin/bash

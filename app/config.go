@@ -13,18 +13,19 @@ var Config appConfig
 
 type appConfig struct {
 	// the path to the error message file. Defaults to "config/errors.yaml"
-	ErrorFile          string `mapstructure:"error_file"`
+	ErrorFile             string `mapstructure:"error_file"`
 	// the server port. Defaults to 8080
-	ServerPort         int    `mapstructure:"server_port"`
+	ServerPort            int    `mapstructure:"server_port"`
 	// the data source name (DSN) for connecting to the database. required.
-	DSN                string `mapstructure:"dsn"`
-	DSN_DOCKER         string `mapstructure:"dsn_docker"`
+	DSN                   string `mapstructure:"dsn"`
+	DSN_DOCKER            string `mapstructure:"dsn_docker"`
+	DSN_DOCKER_COMPOSE_V3 string `mapstructure:"dsn_docker_compose_v3"`
 	// the signing method for JWT. Defaults to "HS256"
-	JWTSigningMethod   string `mapstructure:"jwt_signing_method"`
+	JWTSigningMethod      string `mapstructure:"jwt_signing_method"`
 	// JWT signing key. required.
-	JWTSigningKey      string `mapstructure:"jwt_signing_key"`
+	JWTSigningKey         string `mapstructure:"jwt_signing_key"`
 	// JWT verification key. required.
-	JWTVerificationKey string `mapstructure:"jwt_verification_key"`
+	JWTVerificationKey    string `mapstructure:"jwt_verification_key"`
 }
 
 func (config appConfig) Validate() error {
@@ -37,13 +38,14 @@ func (config appConfig) Validate() error {
 }
 
 func (config appConfig) GetDSN() string {
-	_, issetDocker := os.LookupEnv("POSTGRESQL_PORT")
-	if issetDocker {
-		return fmt.Sprintf(config.DSN_DOCKER, os.Getenv("POSTGRESQL_ENV_POSTGRES_USER"),
-			os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
-			os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
-	}
-	return config.DSN
+	//_, issetDocker := os.LookupEnv("POSTGRESQL_PORT")
+	//if issetDocker {
+	//	return fmt.Sprintf(config.DSN_DOCKER, os.Getenv("POSTGRESQL_ENV_POSTGRES_USER"),
+	//		os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
+	//		os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
+	//}
+	//return config.DSN
+	return config.DSN_DOCKER_COMPOSE_V3
 }
 
 // LoadConfig loads configuration from the given list of paths and populates it into the Config variable.
