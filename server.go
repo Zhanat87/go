@@ -16,7 +16,6 @@ import (
 	"github.com/Zhanat87/go/daos"
 	"github.com/Zhanat87/go/errors"
 	"github.com/Zhanat87/go/services"
-	"os"
 )
 
 func main() {
