@@ -23,6 +23,12 @@ FROM golang:latest
 # Run the stack-auth command when the container starts.
 #ENTRYPOINT /go/bin/go
 
+ARG buildno
+ARG password
+
+RUN echo "Build number: $buildno"
+RUN echo "password: $password"
+
 ADD /bin/go /go/go_restful
 ADD /bin/migrate /go/migrate
 ADD config /go/config
@@ -32,6 +38,7 @@ ENTRYPOINT /go/go_restful
 # Service listens on port 8080.
 EXPOSE 8080
 
-CMD echo "before text" >> /go/before.txt
-CMD /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
-CMD echo "after text" >> /go/after.txt
+#CMD echo "before text" >> /go/before.txt
+#CMD /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+#CMD echo "after text" >> /go/after.txt
+

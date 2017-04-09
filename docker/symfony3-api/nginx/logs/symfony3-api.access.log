@@ -1,7 +1,0 @@
-192.168.33.1 - - [06/Jan/2017:07:08:28 +0000] "GET / HTTP/1.1" 403 101 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
-192.168.33.1 - - [06/Jan/2017:07:08:28 +0000] "GET /favicon.ico HTTP/1.1" 200 6518 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
-192.168.33.1 - - [06/Jan/2017:07:09:16 +0000] "GET / HTTP/1.1" 200 57 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
-192.168.33.1 - - [06/Jan/2017:07:09:52 +0000] "GET / HTTP/1.1" 200 8132 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
-192.168.33.1 - - [06/Jan/2017:07:09:54 +0000] "GET /_wdt/15dae3 HTTP/1.1" 200 6493 "http://192.168.33.14:8084/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
-192.168.33.1 - - [06/Jan/2017:07:18:41 +0000] "GET / HTTP/1.1" 200 8130 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
-192.168.33.1 - - [06/Jan/2017:07:18:42 +0000] "GET /_wdt/c15b14 HTTP/1.1" 200 6489 "http://192.168.33.14:8084/" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
