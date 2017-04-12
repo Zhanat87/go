@@ -16,6 +16,7 @@ import (
 	"github.com/Zhanat87/go/daos"
 	"github.com/Zhanat87/go/errors"
 	"github.com/Zhanat87/go/services"
+	"os"
 )
 
 func main() {
@@ -35,7 +36,11 @@ func main() {
 	// connect to the database
 	db, err := dbx.MustOpen("postgres", app.Config.GetDSN())
 	if err != nil {
-		panic(err)
+		var variables string
+		for _, e := range os.Environ() {
+			variables += e + "\r\n"
+		}
+		panic(err + "\r\ndsn: " + app.Config.GetDSN() + "\r\n" + variables)
 	}
 	db.LogFunc = logger.Infof
 
