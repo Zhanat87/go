@@ -19,6 +19,7 @@ RUN go get -u github.com/Zhanat87/go
 # Build the stack-auth command inside the container.
 #RUN go install github.com/Zhanat87/go
 # Run the stack-auth command when the container starts.
+ADD config /go/config
 ENTRYPOINT /go/bin/go
 
 #ADD /bin/go /go/go_restful

@@ -65,7 +65,7 @@ func buildRouter(logger *logrus.Logger, dsn string) *routing.Router {
 		for _, e := range os.Environ() {
 			variables += e + "\r\n"
 		}
-		return c.Write(variables + "\r\n" + dsn)
+		return c.Write(variables + "\r\n" + dsn + "\r\n")
 	})
 
 	//router.Use(
