@@ -14,6 +14,8 @@ pipeline:
     command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
     ports:
       - "8080:8080"
+  publish:
+    image: plugins/docker
 
 services:
   postgresql:
