@@ -5,17 +5,17 @@ import (
 	"net/http"
 
 	"github.com/Sirupsen/logrus"
-	//"github.com/go-ozzo/ozzo-dbx"
+	"github.com/go-ozzo/ozzo-dbx"
 	"github.com/go-ozzo/ozzo-routing"
-	//"github.com/go-ozzo/ozzo-routing/auth"
-	//"github.com/go-ozzo/ozzo-routing/content"
-	//"github.com/go-ozzo/ozzo-routing/cors"
-	//_ "github.com/lib/pq"
-	//"github.com/Zhanat87/go/apis"
+	"github.com/go-ozzo/ozzo-routing/auth"
+	"github.com/go-ozzo/ozzo-routing/content"
+	"github.com/go-ozzo/ozzo-routing/cors"
+	_ "github.com/lib/pq"
+	"github.com/Zhanat87/go/apis"
 	"github.com/Zhanat87/go/app"
-	//"github.com/Zhanat87/go/daos"
+	"github.com/Zhanat87/go/daos"
 	"github.com/Zhanat87/go/errors"
-	//"github.com/Zhanat87/go/services"
+	"github.com/Zhanat87/go/services"
 	"os"
 )
 
@@ -34,15 +34,14 @@ func main() {
 	logger := logrus.New()
 
 	// connect to the database
-	//db, err := dbx.MustOpen("postgres", app.Config.GetDSN())
-	//if err != nil {
-	//	panic(err)
-	//}
-	//db.LogFunc = logger.Infof
-	//
-	//// wire up API routing
-	//http.Handle("/", buildRouter(logger, db))
-	http.Handle("/", buildRouter(logger, app.Config.GetDSN()))
+	db, err := dbx.MustOpen("postgres", app.Config.GetDSN())
+	if err != nil {
+		panic(err)
+	}
+	db.LogFunc = logger.Infof
+
+	// wire up API routing
+	http.Handle("/", buildRouter(logger, db, app.Config.GetDSN()))
 
 	// start the server
 	address := fmt.Sprintf(":%v", app.Config.ServerPort)
@@ -50,8 +49,7 @@ func main() {
 	panic(http.ListenAndServe(address, nil))
 }
 
-func buildRouter(logger *logrus.Logger, dsn string) *routing.Router {
-//func buildRouter(logger *logrus.Logger, db *dbx.DB) *routing.Router {
+func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router {
 	router := routing.New()
 
 	router.To("GET,HEAD", "/ping", func(c *routing.Context) error {
@@ -68,30 +66,30 @@ func buildRouter(logger *logrus.Logger, dsn string) *routing.Router {
 		return c.Write(variables + "\r\n" + dsn + "\r\n")
 	})
 
-	//router.Use(
-	//	app.Init(logger),
-	//	content.TypeNegotiator(content.JSON),
-	//	cors.Handler(cors.Options{
-	//		AllowOrigins: "*",
-	//		AllowHeaders: "*",
-	//		AllowMethods: "*",
-	//	}),
-	//	app.Transactional(db),
-	//)
-	//
-	//rg := router.Group("/v1")
-	//
-	//rg.Post("/auth", apis.Auth(app.Config.JWTSigningKey))
-	//rg.Use(auth.JWT(app.Config.JWTVerificationKey, auth.JWTOptions{
-	//	SigningMethod: app.Config.JWTSigningMethod,
-	//	TokenHandler:  apis.JWTHandler,
-	//}))
-	//
-	//artistDAO := daos.NewArtistDAO()
-	//apis.ServeArtistResource(rg, services.NewArtistService(artistDAO))
-	//
-	//albumDAO := daos.NewAlbumDAO()
-	//apis.ServeAlbumResource(rg, services.NewAlbumService(albumDAO))
+	router.Use(
+		app.Init(logger),
+		content.TypeNegotiator(content.JSON),
+		cors.Handler(cors.Options{
+			AllowOrigins: "*",
+			AllowHeaders: "*",
+			AllowMethods: "*",
+		}),
+		app.Transactional(db),
+	)
+
+	rg := router.Group("/v1")
+
+	rg.Post("/auth", apis.Auth(app.Config.JWTSigningKey))
+	rg.Use(auth.JWT(app.Config.JWTVerificationKey, auth.JWTOptions{
+		SigningMethod: app.Config.JWTSigningMethod,
+		TokenHandler:  apis.JWTHandler,
+	}))
+
+	artistDAO := daos.NewArtistDAO()
+	apis.ServeArtistResource(rg, services.NewArtistService(artistDAO))
+
+	albumDAO := daos.NewAlbumDAO()
+	apis.ServeAlbumResource(rg, services.NewAlbumService(albumDAO))
 
 	// wire up more resource APIs here
 
