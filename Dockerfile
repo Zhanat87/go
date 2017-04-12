@@ -8,6 +8,7 @@ FROM golang:latest
 # в главном docker-compose.yml файле, restart: always
 # note: когда делается go get -u github.com/Zhanat87/go, то собирается bin/go файл
 RUN go get -u github.com/Zhanat87/go
+RUN go get -u github.com/mattes/migrate
 # Copy the local package files to the container’s workspace.
 #ADD . /go/src/github.com/Zhanat87/go
 # Setting up working directory
@@ -19,7 +20,9 @@ RUN go get -u github.com/Zhanat87/go
 # Build the stack-auth command inside the container.
 #RUN go install github.com/Zhanat87/go
 # Run the stack-auth command when the container starts.
+ADD migrations /go/migrations
 ADD config /go/config
+#RUN /go/bin/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
 ENTRYPOINT /go/bin/go
 
 #ADD /bin/go /go/go_restful
