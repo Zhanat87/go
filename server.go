@@ -42,7 +42,7 @@ func main() {
 	//
 	//// wire up API routing
 	//http.Handle("/", buildRouter(logger, db))
-	http.Handle("/", buildRouter(logger))
+	http.Handle("/", buildRouter(logger, app.Config.GetDSN()))
 
 	// start the server
 	address := fmt.Sprintf(":%v", app.Config.ServerPort)
@@ -50,7 +50,7 @@ func main() {
 	panic(http.ListenAndServe(address, nil))
 }
 
-func buildRouter(logger *logrus.Logger) *routing.Router {
+func buildRouter(logger *logrus.Logger, dsn string) *routing.Router {
 //func buildRouter(logger *logrus.Logger, db *dbx.DB) *routing.Router {
 	router := routing.New()
 
@@ -65,7 +65,7 @@ func buildRouter(logger *logrus.Logger) *routing.Router {
 		for _, e := range os.Environ() {
 			variables += e + "\r\n"
 		}
-		return c.Write(variables)
+		return c.Write(variables + "\r\n" + dsn)
 	})
 
 	//router.Use(
