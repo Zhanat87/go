@@ -16,8 +16,9 @@ services:
   # docker-compose build golang
   # https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
   # docker-images
-#  golang:
-#  #  user: 777:777
+  golang:
+    image: zhanat87/golang:latest
+  #  user: 777:777
 #    restart: always
 #    build:
 #      context: ../
@@ -25,20 +26,20 @@ services:
 #      args:
 #        buildno: 1
 #        password: secret
-#    container_name: golang
+    container_name: golang
 #    volumes:
 #      - ./bin/go:/go/src/github.com/Zhanat87/go
-#    links:
-#      - postgresql
-#    depends_on:
-#      - postgresql
+    links:
+      - postgresql
+    depends_on:
+      - postgresql
 #    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
-  #    - stack-mongodb
-  #    - stack-rabbitmq
-  #  https://docs.docker.com/compose/startup-order/
+#      - stack-mongodb
+#      - stack-rabbitmq
+#    https://docs.docker.com/compose/startup-order/
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "python", "app.py"]
-#    ports:
-#      - "8080:8080"
+    ports:
+      - "8080:8080"
   # https://github.com/docker/compose/issues/1809
   #  command: exec -it golang /bin/bash echo from golang
 #    command:
