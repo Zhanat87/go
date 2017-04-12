@@ -29,3 +29,13 @@ ENTRYPOINT /go/bin/go
 
 # Service listens on port 8080.
 EXPOSE 8080
+
+# docker build -t zhanat87/golang .
+# docker run -d -p 8080:8080 zhanat87/golang
+# docker images
+# docker ps
+# docker stop $(docker ps -q --filter ancestor=zhanat87/golang)
+# https://docs.docker.com/engine/reference/commandline/ps/#filtering
+# docker ps -q --filter name=golang
+# docker stop $(docker ps -q --filter name=golang)
+# docker push zhanat87/golang
