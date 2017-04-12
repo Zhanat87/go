@@ -88,7 +88,7 @@ services:
     image: postgres:latest
     container_name: postgresql
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
   #  Set environment to use a database
