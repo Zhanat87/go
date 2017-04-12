@@ -33,7 +33,7 @@ services:
       - postgresql
     depends_on:
       - postgresql
-    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "/go/bin/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up"]
+    command: ["./docker/golang/wait-for-postgres.sh", "postgresql"]
 #      - stack-mongodb
 #      - stack-rabbitmq
 #    https://docs.docker.com/compose/startup-order/
@@ -87,6 +87,7 @@ services:
   # https://hub.docker.com/_/postgres/
   postgresql:
     image: postgres:latest
+    restart: always
     container_name: postgresql
     ports:
       - "5432:5432"
@@ -100,6 +101,7 @@ services:
   #  env_file:
   #    - ./postgres/.env
   #  dns: 8.8.8.8
+
   drone-server:
       image: drone/drone:0.5
       ports:

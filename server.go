@@ -63,7 +63,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		for _, e := range os.Environ() {
 			variables += e + "\r\n"
 		}
-		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\n")
+		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy2\r\n")
 	})
 
 	router.Use(
