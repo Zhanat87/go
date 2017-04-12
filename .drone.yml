@@ -1,0 +1,47 @@
+pipeline:
+  build:
+    image: zhanat87/golang
+    commands:
+      - go get
+      - go build
+      - go test
+    volumes:
+      - ./bin/go:/go/src/github.com/Zhanat87/go
+    links:
+      - postgresql
+    depends_on:
+      - postgresql
+    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
+    ports:
+      - "8080:8080"
+
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_restful
+
+  client-nginx:
+    image: phpdockerio/nginx:latest
+    container_name: client-nginx
+    volumes:
+      - ./client:/var/www/client-nginx
+      - ./docker/client-nginx:/etc/nginx/conf.d
+      - ./docker/client-nginx/logs:/var/log/nginx
+    ports:
+      - "8081:80"
+
+  adminer:
+    image: hardware/adminer
+    container_name: adminer
+    ports:
+      - "8888:8888"
+    links:
+      - postgresql

@@ -6,4 +6,5 @@
 export class Environment {
     public static API_ENDPOINT = process.env.ENV == 'production' ?
         'http://zhanat.site:8080/' : 'http://localhost:8080/';
+    // public static API_ENDPOINT = 'http://localhost:8080/';
 }
