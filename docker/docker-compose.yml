@@ -33,7 +33,7 @@ services:
       - postgresql
     depends_on:
       - postgresql
-#    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
+    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
 #      - stack-mongodb
 #      - stack-rabbitmq
 #    https://docs.docker.com/compose/startup-order/
@@ -100,35 +100,35 @@ services:
   #  env_file:
   #    - ./postgres/.env
   #  dns: 8.8.8.8
-  drone-server:
-      image: drone/drone:0.5
-      ports:
-        - 8000:8000
-      volumes:
-        - ./drone:/var/lib/drone/
-      restart: always
-      environment:
-        - DRONE_OPEN=true
-        - DRONE_GITHUB=true
-#       https://docs.docker.com/compose/environment-variables/#setting-environment-variables-with-docker-compose-run
-        - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
-        - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
-#        - DRONE_SECRET=${DRONE_SECRET}
-        - DRONE_SECRET=test
-        - DRONE_AGENT_SECRET=test
-  drone-agent:
-    image: drone/drone:0.5
-    command: agent
-    restart: always
-    depends_on: [ drone-server ]
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-#      - DRONE_SERVER=ws://zhanat.site:8000/ws/broker
-      - DRONE_SERVER=ws://drone-server:8000/ws/broker
-#      - DRONE_SECRET=${DRONE_SECRET}
-      - DRONE_SECRET=test
-      - DRONE_AGENT_SECRET=test
+#  drone-server:
+#      image: drone/drone:0.5
+#      ports:
+#        - 8000:8000
+#      volumes:
+#        - ./drone:/var/lib/drone/
+#      restart: always
+#      environment:
+#        - DRONE_OPEN=true
+#        - DRONE_GITHUB=true
+##       https://docs.docker.com/compose/environment-variables/#setting-environment-variables-with-docker-compose-run
+#        - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
+#        - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
+##        - DRONE_SECRET=${DRONE_SECRET}
+#        - DRONE_SECRET=test
+#        - DRONE_AGENT_SECRET=test
+#  drone-agent:
+#    image: drone/drone:0.5
+#    command: agent
+#    restart: always
+#    depends_on: [ drone-server ]
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    environment:
+##      - DRONE_SERVER=ws://zhanat.site:8000/ws/broker
+#      - DRONE_SERVER=ws://drone-server:8000/ws/broker
+##      - DRONE_SECRET=${DRONE_SECRET}
+#      - DRONE_SECRET=test
+#      - DRONE_AGENT_SECRET=test
 
   #stack-mysql:
   ##  image: mariadb
