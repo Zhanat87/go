@@ -87,7 +87,7 @@ services:
   # https://hub.docker.com/_/postgres/
   postgresql:
     image: postgres:latest
-    restart: always
+#    restart: always
     container_name: postgresql
     ports:
       - "5432:5432"

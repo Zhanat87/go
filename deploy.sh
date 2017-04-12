@@ -11,3 +11,5 @@ go get -u github.com/Zhanat87/go
 # create new docker image and push to docker hub
 docker build -t zhanat87/golang .
 docker push zhanat87/golang
+
+# simple docker golang with drone.io deploy

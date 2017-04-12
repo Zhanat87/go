@@ -1,5 +1,8 @@
-CREATE DATABASE go_restful;
-GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;
+-- CREATE DATABASE go_restful;
+-- go_restful created while created container, because it was in environments in docker-compose.yml
+GRANT ALL PRIVILEGES ON DATABASE go_restful TO postgres;
+
+-- SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower('dbname');
 
 -- CREATE DATABASE stack;
 -- GRANT ALL PRIVILEGES ON DATABASE stack TO stack;
@@ -19,9 +22,9 @@ GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;
 -------------------------------------------------------------------------------------------
 ---------------- create user table
 -------------------------------------------------------------------------------------------
-CREATE SEQUENCE user_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS user_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
 
-CREATE TABLE "public"."user" (
+CREATE TABLE IF NOT EXISTS "public"."user" (
     "id" integer DEFAULT nextval('user_id_seq') UNIQUE,
     "username" character varying(100),
     "email" character varying(100),
@@ -39,9 +42,9 @@ CREATE TABLE "public"."user" (
 -------------------------------------------------------------------------------------------
 ---------------- create artist table
 -------------------------------------------------------------------------------------------
-CREATE SEQUENCE artist_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS artist_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
 
-CREATE TABLE "public"."artist" (
+CREATE TABLE IF NOT EXISTS "public"."artist" (
     "id" integer DEFAULT nextval('artist_id_seq') NOT NULL UNIQUE,
     "name" character varying(120) NOT NULL,
     "created_at" timestamp,
@@ -52,9 +55,9 @@ CREATE TABLE "public"."artist" (
 -------------------------------------------------------------------------------------------
 ---------------- create album table
 -------------------------------------------------------------------------------------------
-CREATE SEQUENCE album_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS album_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
 
-CREATE TABLE "public"."album" (
+CREATE TABLE IF NOT EXISTS "public"."album" (
     "id" integer DEFAULT nextval('album_id_seq') UNIQUE,
     "title" character varying(160),
     "artist_id" integer,
