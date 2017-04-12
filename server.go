@@ -58,7 +58,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB) *routing.Router {
 
 	router.To("GET,HEAD", "/test", func(c *routing.Context) error {
 		c.Abort()  // skip all other middlewares/handlers
-		return c.Write("test")
+		return c.Write("test2")
 	})
 
 	router.Use(
