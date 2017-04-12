@@ -11,7 +11,9 @@ pipeline:
       - postgresql
     depends_on:
       - postgresql
-    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
+#   https://github.com/drone/drone-exec/blob/master/yaml/transform/validate_test.go
+#    ERROR: Cannot set plugin Command
+#    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "docker/golang/test.go"]
     ports:
       - "8080:8080"
   publish:
