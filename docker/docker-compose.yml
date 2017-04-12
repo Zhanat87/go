@@ -109,8 +109,9 @@ services:
       environment:
         - DRONE_OPEN=true
         - DRONE_GITHUB=true
-        - DRONE_GITHUB_CLIENT=d903e61e709e7a4af517
-        - DRONE_GITHUB_SECRET=fe93e4905a66f878170ac1bde2d5fc1e63544c08
+#       https://docs.docker.com/compose/environment-variables/#setting-environment-variables-with-docker-compose-run
+        - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
+        - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
 #        - DRONE_SECRET=${DRONE_SECRET}
         - DRONE_SECRET=test
         - DRONE_AGENT_SECRET=test
