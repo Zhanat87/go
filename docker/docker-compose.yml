@@ -33,7 +33,7 @@ services:
       - postgresql
     depends_on:
       - postgresql
-    command: ["./docker/golang/wait-for-postgres.sh", "postgresql"]
+    command: ["./docker/golang/wait-for-postgres.sh", "postgresql", "go", "run", "./docker/golang/test.go"]
 #      - stack-mongodb
 #      - stack-rabbitmq
 #    https://docs.docker.com/compose/startup-order/
