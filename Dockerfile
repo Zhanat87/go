@@ -7,10 +7,10 @@ FROM golang:latest
 # так же надо все время перезапускать контейнер
 # в главном docker-compose.yml файле, restart: always
 # note: когда делается go get -u github.com/Zhanat87/go, то собирается bin/go файл
-ADD migrations /go/migrations
-ADD config /go/config
-RUN go get -u github.com/Zhanat87/go
-RUN go get -u github.com/mattes/migrate
+#ADD migrations /go/migrations
+#ADD config /go/config
+#RUN go get -u github.com/Zhanat87/go
+#RUN go get -u github.com/mattes/migrate
 # Copy the local package files to the container’s workspace.
 #ADD . /go/src/github.com/Zhanat87/go
 # Setting up working directory
@@ -23,13 +23,13 @@ RUN go get -u github.com/mattes/migrate
 #RUN go install github.com/Zhanat87/go
 # Run the stack-auth command when the container starts.
 #RUN /go/bin/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
-ENTRYPOINT /go/bin/go
+#ENTRYPOINT /go/bin/go
 
-#ADD /bin/go /go/go_restful
-#ADD /bin/migrate /go/migrate
-#ADD config /go/config
-#ADD migrations /go/migrations
-#ENTRYPOINT /go/go_restful
+ADD /bin/go /go/go_restful
+ADD /bin/migrate /go/migrate
+ADD config /go/config
+ADD migrations /go/migrations
+ENTRYPOINT /go/go_restful
 
 # Service listens on port 8080.
 EXPOSE 8080
