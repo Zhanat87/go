@@ -10,4 +10,6 @@ docker rmi $(docker images --filter=reference='zhanat87/golang') -f
 docker rm postgresql
 docker rmi postgres
 # start docker-compose
-cd docker && docker-compose up
+cd docker && docker-compose up -d
+docker exec -it golang /go/bin/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
+

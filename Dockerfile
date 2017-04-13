@@ -7,10 +7,10 @@ FROM golang:latest
 # так же надо все время перезапускать контейнер
 # в главном docker-compose.yml файле, restart: always
 # note: когда делается go get -u github.com/Zhanat87/go, то собирается bin/go файл
-#ADD migrations /go/migrations
+ADD migrations /go/migrations
 ADD config /go/config
 RUN go get -u github.com/Zhanat87/go
-#RUN go get -u github.com/mattes/migrate
+RUN go get -u github.com/mattes/migrate
 # Copy the local package files to the container’s workspace.
 #ADD . /go/src/github.com/Zhanat87/go
 # Setting up working directory
