@@ -37,8 +37,8 @@ func main() {
 	db, err := dbx.MustOpen("postgres", app.Config.GetDSN())
 	if err != nil {
 		// docker compose can't start and docker image can't build
-		//panic(err)
-		fmt.Println(err)
+		panic(err)
+		//fmt.Println(err)
 	}
 	db.LogFunc = logger.Infof
 

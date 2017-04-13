@@ -4,9 +4,10 @@
 # Docker config
 ###############################################################################
 
-version: '3'
+#version: '3'
+#version: '2'
 
-services:
+#services:
   ###############################################################################
   # golang
   ###############################################################################
@@ -31,10 +32,10 @@ services:
 #      - ./bin/go:/go/src/github.com/Zhanat87/go
     links:
       - postgresql
-    depends_on:
-      - postgresql
+#    depends_on:
+#      - postgresql
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
-    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
+#    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
 #      - stack-mongodb
 #      - stack-rabbitmq
 #    https://docs.docker.com/compose/startup-order/
@@ -92,7 +93,7 @@ services:
 #    restart: always
     container_name: postgresql
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
 #     not work init sql for  create and seed tables
 # need run migrations in install.sh a-la 'docker run -it ...'
@@ -126,7 +127,9 @@ services:
     image: drone/drone:0.5
     command: agent
     restart: always
-    depends_on: [ drone-server ]
+#    depends_on: [ drone-server ]
+    links:
+      - drone-server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:

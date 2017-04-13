@@ -4,8 +4,11 @@ rm -rf src/google.golang.org/appengine/
 git add .
 git commit -m 'install'
 git pull origin master
+# stop & remove all docker containers
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 # remove container
-docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
+#docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
 # remove image
 docker rmi $(docker images --filter=reference='zhanat87/golang') -f
 # rm postgresql if needed

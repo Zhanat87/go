@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 git add . && git commit -m 'deploy' && git push origin master
+# stop & remove all docker containers
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 # remove container
-docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
+#docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
 # remove image
 docker rmi $(docker images --filter=reference='zhanat87/golang') -f
 # remove old src and upload new src
