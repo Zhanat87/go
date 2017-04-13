@@ -5,9 +5,40 @@
 ###############################################################################
 
 #version: '3'
-#version: '2'
+version: '2'
 
-#services:
+services:
+
+  # docker exec -it stack-postgres /bin/bash
+  # psql -h localhost -U postgres
+  # \l or \list - show databases
+  # \connect stack - use db
+  # \dt - show tables
+  # \q - close connection and exit
+  # docker inspect stack-postgres
+  # docker ps
+  # docker-compose up
+  # https://hub.docker.com/_/postgres/
+  # docker exec -it postgresql psql -U postgres -d go_restful
+  postgresql:
+    image: postgres:latest
+#    restart: always
+    container_name: postgresql
+    ports:
+      - "5433:5432"
+    volumes:
+#     not work init sql for  create and seed tables
+# need run migrations in install.sh a-la 'docker run -it ...'
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #  Set environment to use a database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_restful
+  #  env_file:
+  #    - ./postgres/.env
+  #  dns: 8.8.8.8
+
   ###############################################################################
   # golang
   ###############################################################################
@@ -32,8 +63,8 @@
 #      - ./bin/go:/go/src/github.com/Zhanat87/go
     links:
       - postgresql
-#    depends_on:
-#      - postgresql
+    depends_on:
+      - postgresql
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
 #      - stack-mongodb
@@ -77,36 +108,6 @@
     links:
       - postgresql
 
-  # docker exec -it stack-postgres /bin/bash
-  # psql -h localhost -U postgres
-  # \l or \list - show databases
-  # \connect stack - use db
-  # \dt - show tables
-  # \q - close connection and exit
-  # docker inspect stack-postgres
-  # docker ps
-  # docker-compose up
-  # https://hub.docker.com/_/postgres/
-  # docker exec -it postgresql psql -U postgres -d go_restful
-  postgresql:
-    image: postgres:latest
-#    restart: always
-    container_name: postgresql
-    ports:
-      - "5433:5432"
-    volumes:
-#     not work init sql for  create and seed tables
-# need run migrations in install.sh a-la 'docker run -it ...'
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #  Set environment to use a database
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=go_restful
-  #  env_file:
-  #    - ./postgres/.env
-  #  dns: 8.8.8.8
-
   drone-server:
       image: drone/drone:0.5
       ports:
@@ -127,9 +128,9 @@
     image: drone/drone:0.5
     command: agent
     restart: always
-#    depends_on: [ drone-server ]
-    links:
-      - drone-server
+    depends_on: [ drone-server ]
+#    links:
+#      - drone-server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:

@@ -17,6 +17,7 @@ import (
 	"github.com/Zhanat87/go/errors"
 	"github.com/Zhanat87/go/services"
 	"os"
+	"time"
 )
 
 func main() {
@@ -36,9 +37,12 @@ func main() {
 	// connect to the database
 	db, err := dbx.MustOpen("postgres", app.Config.GetDSN())
 	if err != nil {
-		// docker compose can't start and docker image can't build
-		panic(err)
-		//fmt.Println(err)
+		// docker compose can't start and docker image can't build, need first timeout for connect
+		time.Sleep(20 * time.Second)
+		db, err = dbx.MustOpen("postgres", app.Config.GetDSN())
+		if err != nil {
+			panic(err)
+		}
 	}
 	db.LogFunc = logger.Infof
 
