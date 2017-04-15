@@ -17,6 +17,7 @@ import (
 	"github.com/Zhanat87/go/errors"
 	//"github.com/Zhanat87/go/services"
 	"os"
+	"database/sql"
 )
 
 func main() {
@@ -69,6 +70,12 @@ func buildRouter(logger *logrus.Logger, dsn string) *routing.Router {
 		var variables string
 		for _, e := range os.Environ() {
 			variables += e + "\r\n"
+		}
+		_, err := sql.Open("postgres", dsn)
+		if err != nil {
+			variables += err.Error() + "\r\n"
+		} else {
+			variables += "success connected\r\n"
 		}
 		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\n")
 	})
