@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/go-ozzo/ozzo-validation"
-	//"os"
+	"os"
 )
 
 // Config stores the application-wide configurations
@@ -38,14 +38,14 @@ func (config appConfig) Validate() error {
 }
 
 func (config appConfig) GetDSN() string {
-	//_, issetDocker := os.LookupEnv("POSTGRESQL_PORT")
-	//if issetDocker {
-	//	return fmt.Sprintf(config.DSN_DOCKER, os.Getenv("POSTGRESQL_ENV_POSTGRES_USER"),
-	//		os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
-	//		os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
-	//}
-	//return config.DSN
-	return config.DSN_DOCKER_COMPOSE_V3
+	_, issetDocker := os.LookupEnv("POSTGRESQL_PORT")
+	if issetDocker {
+		return fmt.Sprintf(config.DSN_DOCKER, os.Getenv("POSTGRESQL_ENV_POSTGRES_USER"),
+			os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
+			os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
+	}
+	return config.DSN
+	//return config.DSN_DOCKER_COMPOSE_V3
 }
 
 // LoadConfig loads configuration from the given list of paths and populates it into the Config variable.
