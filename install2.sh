@@ -16,3 +16,4 @@ docker ps -a
 #./migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
 
 echo "install2 success"
+docker exec -it golang ./migrate -url postgres://postgres:postgres@localhost:5432/go_restful?sslmode=disable -path ./migrations up

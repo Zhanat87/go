@@ -25,7 +25,7 @@ services:
 #    restart: always
     container_name: postgresql
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
 #     not work init sql for  create and seed tables
 # need run migrations in install.sh a-la 'docker run -it ...'
@@ -37,7 +37,7 @@ services:
       - POSTGRES_DB=go_restful
 #   note: if port not same like default, i.e. it was not exposed in dockerfile, need expose it here
     expose:
-      - "5433"
+      - "5432"
   #  env_file:
   #    - ./postgres/.env
   #  dns: 8.8.8.8
