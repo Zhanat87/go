@@ -23,4 +23,5 @@ docker pull postgres
 # sudo service postgresql stop
 #cd docker && docker-compose up -d
 #docker exec -it zhanat87/golang /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
-
+# list of all docker images on host machine
+docker images

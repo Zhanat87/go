@@ -1,7 +1,7 @@
 # The Data Source Name for the database
 # Make sure you override this in production with the environment variable: RESTFUL_DSN
 dsn: "postgres://postgres:postgres@127.0.0.1:5432/go_restful?sslmode=disable"
-dsn_docker: "postgres://%s:%s@%s:%s/%s?sslmode=disable"
+#dsn_docker: "postgres://%s:%s@%s:%s/%s?sslmode=disable"
 # https://docs.docker.com/compose/networking/
 dsn_docker_compose_v3: "postgres://postgres:postgres@postgresql:5433/go_restful?sslmode=disable"
 
