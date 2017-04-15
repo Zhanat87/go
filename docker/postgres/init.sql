@@ -1,4 +1,4 @@
-CREATE DATABASE go_restful;
+-- CREATE DATABASE go_restful;
 -- go_restful created while created container, because it was in environments in docker-compose.yml
 GRANT ALL PRIVILEGES ON DATABASE go_restful TO postgres;
 
