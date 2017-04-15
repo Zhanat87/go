@@ -35,7 +35,8 @@ func main() {
 	logger := logrus.New()
 
 	// connect to the database
-	db, err := dbx.MustOpen("postgres", app.Config.GetDSN())
+	//db, err := dbx.MustOpen("postgres", app.Config.GetDSN())
+	db, err := dbx.Open("postgres", app.Config.GetDSN())
 	if err != nil {
 		// docker compose can't start and docker image can't build, need first timeout for connect
 		//time.Sleep(20 * time.Second)
