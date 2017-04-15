@@ -17,7 +17,7 @@ $conn_string = "host=" . $_SERVER["POSTGRESQL_PORT_5432_TCP_ADDR"] .
     " password=" . $_SERVER["POSTGRESQL_ENV_POSTGRES_DB"];
 try {
     $dbconn = pg_connect($conn_string);
-    echo 'success connected' . PHP_EOL;
+    echo 'success connected to: ' . $conn_string . PHP_EOL;
 } catch (Exception $e) {
     var_dump($e->getMessage(), $e->getCode());
 }
