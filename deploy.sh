@@ -14,6 +14,7 @@ docker rmi $(docker images -q)
 rm -rf src/github.com/Zhanat87
 rm bin/go
 go get -u github.com/Zhanat87/go
+cd cd src/github.com/Zhanat87/go/ && go install && cd ../../../../
 # create new docker image and push to docker hub
 docker build -t zhanat87/golang .
 docker push zhanat87/golang
