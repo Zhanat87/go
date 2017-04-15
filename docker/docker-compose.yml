@@ -66,8 +66,8 @@
 #      - ./bin/go:/go/src/github.com/Zhanat87/go
     links:
       - postgresql
-    depends_on:
-      - postgresql
+#    depends_on:
+#      - postgresql
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
     command: ["./wait-for-it.sh", "postgresql:5433", "--", "php", "test.php"]
