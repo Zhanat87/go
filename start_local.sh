@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # pull docker containers
-docker pull zhanat87/golang
-docker pull postgres
+#docker pull zhanat87/golang
+#docker pull postgres
 # stop local postgres
 sudo service postgresql stop
 # link postgres to golang and start containers
