@@ -4,10 +4,10 @@
 # Docker config
 ###############################################################################
 
-#version: '3'
+version: '3'
 #version: '2'
 
-#services:
+services:
 
   # docker exec -it stack-postgres /bin/bash
   # psql -h localhost -U postgres
@@ -70,7 +70,7 @@
 #      - postgresql
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
-    command: ["./wait-for-it.sh", "postgresql:5433", "--", "php", "test.php"]
+#    command: ["./wait-for-it.sh", "postgresql:5433", "--", "php", "test.php"]
 #      - stack-mongodb
 #      - stack-rabbitmq
 #    https://docs.docker.com/compose/startup-order/

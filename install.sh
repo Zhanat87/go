@@ -25,3 +25,8 @@ docker pull postgres
 #docker exec -it zhanat87/golang /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
 # list of all docker images on host machine
 docker images
+# after docker containers start
+#docker exec -it restful /bin/bash
+#./migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+
+echo "install success"

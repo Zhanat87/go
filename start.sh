@@ -14,3 +14,5 @@ docker run -d -p 8080:8080 --name restful --link postgres:postgresql zhanat87/go
 # отладка
 #docker run -it -p 8080:8080 --name restful --link postgres:postgres zhanat87/golang bash
 docker ps -a
+
+echo "start success"

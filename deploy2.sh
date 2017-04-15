@@ -5,11 +5,8 @@ git add . && git commit -m 'deploy' && git push origin master
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 # delete all images
-#docker rmi $(docker images -q)
+docker rmi $(docker images -q)
 # remove container
-#docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
-# remove image
-docker rmi $(docker images --filter=reference='zhanat87/golang') -f
 # remove old src and upload new src
 rm -rf src/github.com/Zhanat87
 rm bin/go
@@ -21,6 +18,6 @@ docker push zhanat87/golang
 # list of all docker images on host machine
 docker images
 
-echo "deploy success"
+echo "deploy2 success"
 
 # simple docker golang with drone.io deploy
