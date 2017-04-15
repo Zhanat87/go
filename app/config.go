@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/go-ozzo/ozzo-validation"
+	"os"
 )
 
 // Config stores the application-wide configurations
@@ -19,6 +20,7 @@ type appConfig struct {
 	DSN                   string `mapstructure:"dsn"`
 	DSN_DOCKER            string `mapstructure:"dsn_docker"`
 	DSN_DOCKER_COMPOSE_V3 string `mapstructure:"dsn_docker_compose_v3"`
+	DSN_DOCKER_TCP        string `mapstructure:"dsn_docker_tcp"`
 	// the signing method for JWT. Defaults to "HS256"
 	JWTSigningMethod      string `mapstructure:"jwt_signing_method"`
 	// JWT signing key. required.
@@ -35,14 +37,25 @@ func (config appConfig) Validate() error {
 		validation.Field(&config.JWTVerificationKey, validation.Required),
 	)
 }
-
+/*
+POSTGRESQL_PORT_5432_TCP_ADDR=172.17.0.2
+POSTGRESQL_ENV_POSTGRES_PASSWORD=postgres
+POSTGRESQL_PORT_5432_TCP_PORT=5432
+POSTGRESQL_PORT_5432_TCP_PROTO=tcp
+POSTGRESQL_ENV_POSTGRES_USER=postgres
+POSTGRESQL_PORT=tcp://172.17.0.2:5432
+POSTGRESQL_PORT_5432_TCP=tcp://172.17.0.2:5432
+POSTGRESQL_NAME=/restful/postgresql
+POSTGRESQL_ENV_POSTGRES_DB=go_restful
+ */
 func (config appConfig) GetDSN() string {
-	//_, issetDocker := os.LookupEnv("POSTGRESQL_PORT")
-	//if issetDocker {
-	//	return fmt.Sprintf(config.DSN_DOCKER, os.Getenv("POSTGRESQL_ENV_POSTGRES_USER"),
-	//		os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
-	//		os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
-	//}
+	_, issetDocker := os.LookupEnv("POSTGRESQL_PORT")
+	if issetDocker {
+		return fmt.Sprintf(config.DSN_DOCKER_TCP,
+			os.Getenv("POSTGRESQL_PORT_5432_TCP_PROTO"), os.Getenv("POSTGRESQL_ENV_POSTGRES_USER"),
+			os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
+			os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
+	}
 	return config.DSN
 	//return config.DSN_DOCKER_COMPOSE_V3
 }
