@@ -104,6 +104,9 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	albumDAO := daos.NewAlbumDAO()
 	apis.ServeAlbumResource(rg, services.NewAlbumService(albumDAO))
 
+	userDAO := daos.NewUserDAO()
+	apis.ServeUserResource(rg, services.NewUserService(userDAO))
+
 	// wire up more resource APIs here
 
 	return router

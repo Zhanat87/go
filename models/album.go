@@ -19,7 +19,7 @@ type Album struct {
 	ArtistName string `json:"artistName" db:"artist_name"`
 }
 
-// Validate validates the Artist fields.
+// Validate validates the Album fields.
 func (m Album) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Title, validation.Required, validation.Length(0, 120)),

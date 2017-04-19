@@ -47,7 +47,7 @@ func Auth(signingKey string) routing.Handler {
 
 func authenticate(c Credential) models.Identity {
 	if (c.Username == "demo" || c.Email == "user@demo.com") && validatePassword(c.Password) {
-		return &models.User{ID: "100", Name: "demo", Email: "user@demo.com"}
+		return &models.User{Id: "100", Username: "demo", Email: "user@demo.com"}
 	}
 	return nil
 }
