@@ -32,8 +32,8 @@ func Auth(signingKey string) routing.Handler {
 		}
 
 		token, err := auth.NewJWT(jwt.MapClaims{
-			"id":   identity.GetID(),
-			"name": identity.GetName(),
+			"id":   identity.GetId(),
+			"username": identity.GetUsername(),
 			"email": identity.GetEmail(),
 			"exp":  time.Now().Add(time.Hour * 72).Unix(),
 		}, signingKey)
@@ -47,7 +47,7 @@ func Auth(signingKey string) routing.Handler {
 
 func authenticate(c Credential) models.Identity {
 	if (c.Username == "demo" || c.Email == "user@demo.com") && validatePassword(c.Password) {
-		return &models.User{Id: "100", Username: "demo", Email: "user@demo.com"}
+		return &models.User{Id: 100, Username: "demo", Email: "user@demo.com"}
 	}
 	return nil
 }

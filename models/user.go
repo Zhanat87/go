@@ -27,7 +27,7 @@ func (m User) Validate() error {
 	)
 }
 
-func (m User) GetId() string {
+func (m User) GetId() int {
 	return m.Id
 }
 

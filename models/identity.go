@@ -1,7 +1,7 @@
 package models
 
 type Identity interface {
-	GetId()    string
+	GetId()    int
 	GetUsername()  string
 	GetEmail() string
 }
