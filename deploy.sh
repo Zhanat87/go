@@ -15,9 +15,10 @@ rm -rf src/github.com/Zhanat87
 rm bin/go
 go get -u github.com/Zhanat87/go
 cd src/github.com/Zhanat87/go/ && go install && cd ../../../../
-# create new docker image and push to docker hub
-docker build -t zhanat87/golang .
-docker push zhanat87/golang
+# create new docker image, push to docker hub and pull
+#docker build -t zhanat87/golang .
+#docker push zhanat87/golang
+#docker pull zhanat87/golang
 # list of all docker images on host machine
 docker images
 
