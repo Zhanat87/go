@@ -17,7 +17,7 @@ func MakeSignInSuccessResponse(token string, identity models.Identity) SignInSuc
 		APISuccess: APISuccess{Status: 200, Message: "ok"},
 		Data: SignInData{
 			Token: token,
-			User:  models.User{ID: identity.GetID(), Name: identity.GetName(), Email: identity.GetEmail()},
+			User:  models.User{Id: identity.GetId(), Username: identity.GetUsername(), Email: identity.GetEmail()},
 		},
 	}
 }
