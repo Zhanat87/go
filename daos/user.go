@@ -3,6 +3,7 @@ package daos
 import (
 	"github.com/Zhanat87/go/app"
 	"github.com/Zhanat87/go/models"
+	"github.com/go-ozzo/ozzo-dbx"
 )
 
 // UserDAO persists user data in database
@@ -24,6 +25,7 @@ func (dao *UserDAO) Get(rs app.RequestScope, id int) (*models.User, error) {
 // The User.Id field will be populated with an automatically generated ID upon successful saving.
 func (dao *UserDAO) Create(rs app.RequestScope, user *models.User) error {
 	user.Id = 0
+	user.BeforeInsert()
 	return rs.Tx().Model(user).Insert()
 }
 
@@ -33,6 +35,7 @@ func (dao *UserDAO) Update(rs app.RequestScope, id int, user *models.User) error
 		return err
 	}
 	user.Id = id
+	user.BeforeUpdate()
 	return rs.Tx().Model(user).Exclude("Id").Update()
 }
 
@@ -57,4 +60,20 @@ func (dao *UserDAO) Query(rs app.RequestScope, offset, limit int) ([]models.User
 	users := []models.User{}
 	err := rs.Tx().Select().OrderBy("id").Offset(int64(offset)).Limit(int64(limit)).All(&users)
 	return users, err
+}
+
+// Get reads the user with the specified email from the database.
+func (dao *UserDAO) FindByEmail(rs app.RequestScope, email string) (*models.User, error) {
+	var user models.User
+	// if not found, return error
+	err := rs.Tx().Select().From("user").Where(dbx.HashExp{"email": email}).One(&user)
+	return &user, err
+}
+
+// Get reads the user with the specified username from the database.
+func (dao *UserDAO) FindByUsername(rs app.RequestScope, username string) (*models.User, error) {
+	var user models.User
+	// if not found, return error
+	err := rs.Tx().Select().From("user").Where(dbx.HashExp{"username": username}).One(&user)
+	return &user, err
 }

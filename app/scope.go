@@ -3,6 +3,7 @@ package app
 import (
 	"net/http"
 	"time"
+	"strconv"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/go-ozzo/ozzo-dbx"
@@ -12,9 +13,9 @@ import (
 type RequestScope interface {
 	Logger
 	// UserID returns the ID of the user for the current request
-	UserID() string
+	UserID() int
 	// SetUserID sets the ID of the currently authenticated user
-	SetUserID(id string)
+	SetUserID(id int)
 	// RequestID returns the ID of the current request
 	RequestID() string
 	// Tx returns the currently active database transaction that can be used for DB query purpose
@@ -33,17 +34,17 @@ type requestScope struct {
 	Logger              // the logger tagged with the current request information
 	now       time.Time // the time when the request is being processed
 	requestID string    // an ID identifying one or multiple correlated HTTP requests
-	userID    string    // an ID identifying the current user
+	userID    int       // an ID identifying the current user
 	rollback  bool      // whether to roll back the current transaction
 	tx        *dbx.Tx   // the currently active transaction
 }
 
-func (rs *requestScope) UserID() string {
+func (rs *requestScope) UserID() int {
 	return rs.userID
 }
 
-func (rs *requestScope) SetUserID(id string) {
-	rs.Logger.SetField("UserID", id)
+func (rs *requestScope) SetUserID(id int) {
+	rs.Logger.SetField("UserID", strconv.Itoa(id))
 	rs.userID = id
 }
 

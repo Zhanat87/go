@@ -8,9 +8,11 @@ import (
 	"github.com/go-ozzo/ozzo-routing/auth"
 	"github.com/Zhanat87/go/app"
 	"github.com/Zhanat87/go/errors"
-	"github.com/Zhanat87/go/models"
 	"github.com/Zhanat87/go/responses"
-	"golang.org/x/crypto/bcrypt"
+	//golang_errors "errors"
+	//"strconv"
+	"github.com/Zhanat87/go/daos"
+	"github.com/Zhanat87/go/models"
 )
 
 type Credential struct {
@@ -22,48 +24,52 @@ type Credential struct {
 func Auth(signingKey string) routing.Handler {
 	return func(c *routing.Context) error {
 		var credential Credential
-		if err := c.Read(&credential); err != nil {
+		err := c.Read(&credential)
+		if err != nil {
 			return errors.Unauthorized(err.Error())
 		}
 
-		identity := authenticate(credential)
-		if identity == nil {
-			return errors.Unauthorized("invalid credential")
+		rs := app.GetRequestScope(c)
+		var user *models.User
+		if len(credential.Email) > 0 {
+			user, err = daos.NewUserDAO().FindByEmail(rs, credential.Email)
+			if err != nil {
+				return errors.Unauthorized("user with this email not found")
+			}
+		} else {
+			user, err = daos.NewUserDAO().FindByUsername(rs, credential.Username)
+			if err != nil {
+				return errors.Unauthorized("user with this username not found")
+			}
+		}
+		if !user.ValidatePassword(credential.Password) {
+			return errors.Unauthorized("password not valid")
 		}
 
 		token, err := auth.NewJWT(jwt.MapClaims{
-			"id":   identity.GetId(),
-			"username": identity.GetUsername(),
-			"email": identity.GetEmail(),
+			"id":   user.GetId(),
+			"username": user.GetUsername(),
+			"email": user.GetEmail(),
 			"exp":  time.Now().Add(time.Hour * 72).Unix(),
 		}, signingKey)
 		if err != nil {
 			return errors.Unauthorized(err.Error())
 		}
 
-		return c.Write(responses.MakeSignInSuccessResponse(token, identity))
+		return c.Write(responses.MakeSignInSuccessResponse(token, user))
 	}
-}
-
-func authenticate(c Credential) models.Identity {
-	if (c.Username == "demo" || c.Email == "user@demo.com") && validatePassword(c.Password) {
-		return &models.User{Id: 100, Username: "demo", Email: "user@demo.com"}
-	}
-	return nil
-}
-
-func validatePassword(password string) bool {
-	// "pass" hash
-	hashedPassword := []byte("$2a$10$YOGE3lBg7SXbhEa8kr8B3OBFimlWLrytjad8VquOFWBYIVY1UP.xa")
-	err := bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
-	if err != nil {
-		return false
-	}
-	return true
 }
 
 func JWTHandler(c *routing.Context, j *jwt.Token) error {
-	userID := j.Claims.(jwt.MapClaims)["id"].(string)
-	app.GetRequestScope(c).SetUserID(userID)
+	app.GetRequestScope(c).SetUserID(123)
 	return nil
+	//if userID, ok := j.Claims.(jwt.MapClaims)["id"].(string); ok {
+	//	userID, err := strconv.Atoi(userID)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	app.GetRequestScope(c).SetUserID(userID)
+	//	return nil
+	//}
+	//return golang_errors.New("JWTHandler: bad user id")
 }
