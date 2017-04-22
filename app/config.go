@@ -54,8 +54,8 @@ func (config appConfig) GetDSN() string {
 	//		os.Getenv("POSTGRESQL_ENV_POSTGRES_PASSWORD"), os.Getenv("POSTGRESQL_PORT_5432_TCP_ADDR"),
 	//		os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
 	//}
-	return config.DSN
-	//return config.DSN_DOCKER_COMPOSE_V3
+	//return config.DSN
+	return config.DSN_DOCKER_COMPOSE_V3
 }
 
 // LoadConfig loads configuration from the given list of paths and populates it into the Config variable.
