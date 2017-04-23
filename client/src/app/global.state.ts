@@ -47,4 +47,5 @@ export class GlobalState {
             data: null
         });
     }
+
 }

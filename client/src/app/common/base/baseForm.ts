@@ -2,7 +2,7 @@ import { CommonForm } from '../form';
 import {tryParseJSON} from "../utils";
 
 import {AfterViewInit} from "@angular/core";
-import {User} from "../../pages/user/user";
+import {User} from "../../modules/user/user";
 
 export abstract class BaseForm extends CommonForm implements AfterViewInit
 {
@@ -112,12 +112,14 @@ export abstract class BaseForm extends CommonForm implements AfterViewInit
             this.service.update(this.model, this.model.id)
                 .subscribe(
                     data => this.response(data),
-                    error => this.errorMessage = <any>error);
+                    error => this.errorMessage = <any>error,
+                    () => this.responseDone());
         } else {
             this.service.create(this.model)
                 .subscribe(
                     data => this.response(data),
-                    error => this.errorMessage = <any>error);
+                    error => this.errorMessage = <any>error,
+                    () => this.responseDone());
         }
     }
 
@@ -167,13 +169,17 @@ export abstract class BaseForm extends CommonForm implements AfterViewInit
                 this.serverError = this.errors.length == 0 ? data.message : null;
             }
         } else if (data.success) {
-            this.redirectList();
+            this.onAfterSave();
         } else {
-            this.redirectList();
+            this.onAfterSave();
             if (this.development) {
                 console.log('response', data);
             }
         }
+    }
+
+    responseDone(): void {
+        this.blocked = false;
     }
 
     /**
@@ -195,8 +201,8 @@ export abstract class BaseForm extends CommonForm implements AfterViewInit
 
     reInitPlugins(): void {}
 
-    getUser(): any {
-        return JSON.parse(localStorage.getItem('currentUser')) as User;
+    getCurrentUser(): any {
+        return JSON.parse(this.localStorageService.get('currentUser')) as User;
     }
 
 }

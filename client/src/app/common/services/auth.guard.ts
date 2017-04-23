@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {tokenNotExpired, JwtHelper} from "angular2-jwt";
 import {Environment} from "../environment";
 import {RefreshToken} from "../entities/refreshToken";
+import { LocalStorageService } from 'angular-2-local-storage';
 
 /**
  * https://angular.io/docs/ts/latest/api/router/index/CanActivate-interface.html
@@ -12,7 +13,7 @@ import {RefreshToken} from "../entities/refreshToken";
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
 
-    constructor(private router: Router, private http: Http) {}
+    constructor(private router: Router, private http: Http, protected localStorageService: LocalStorageService) {}
 
     canActivate(): Observable<boolean> | Promise<boolean> | boolean {
         return this.checkAccess();
@@ -26,16 +27,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if (needCheck === false) {
             return true;
         }
-        if (localStorage.getItem('id_token')) {
+        if (this.localStorageService.get('id_token')) {
             let date = new Date;
             let jwtHelper = new JwtHelper;
-            if (jwtHelper.getTokenExpirationDate(localStorage.getItem('id_token')).getTime() < date.getTime() + 600000) {
+            if (jwtHelper.getTokenExpirationDate(this.localStorageService.get('id_token')).getTime() < date.getTime() + 600000) {
                 this.refreshToken();
             } else {
-                return tokenNotExpired(null, localStorage.getItem('id_token'));
+                return tokenNotExpired(null, this.localStorageService.get('id_token'));
             }
         } else {
-            localStorage.setItem('referrer', window.location.pathname);
+            this.localStorageService.set('referrer', window.location.pathname);
             this.router.navigate(['/login']);
             return false;
         }
@@ -47,7 +48,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 data => {
                     let res = data as RefreshToken;
                     if (res.message == 'token_refreshed') {
-                        localStorage.setItem('id_token', res.data.token);
+                        this.localStorageService.set('id_token', res.data.token);
                         this.checkAccess(false);
                     }
                 },
@@ -68,7 +69,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     refreshTokenQuery() : Observable<RefreshToken> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('id_token'));
+        headers.append('Authorization', 'Bearer ' + this.localStorageService.get('id_token'));
         let options = new RequestOptions({ headers: headers });
 
         return this.http
@@ -78,8 +79,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     private logout(): void {
-        localStorage.clear();
-        localStorage.setItem('referrer', window.location.pathname);
+        this.localStorageService.clear();
+        this.localStorageService.set('referrer', window.location.pathname);
         this.router.navigate(['/login']);
     }
 

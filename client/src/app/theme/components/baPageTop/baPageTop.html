@@ -17,7 +17,7 @@
             </a>
             <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
                 <li class="dropdown-item"><i class="dropdown-arr"></i></li>
-                <!--<li class="dropdown-item"><a href><i class="fa fa-user"></i>Profile</a></li>-->
+                <li class="dropdown-item"><a routerLink="/users/{{ user?.id }}"><i class="fa fa-user"></i>Profile</a></li>
                 <!--<li class="dropdown-item"><a href><i class="fa fa-cog"></i>Settings</a></li>-->
                 <li class="dropdown-item">
                     <a class="signout" (click)="signOut()" style="cursor: pointer;">

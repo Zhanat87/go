@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# build client
+npm run prebuild:prod && npm run build:prod
 git add . && git commit -m 'deploy' && git push origin master
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)

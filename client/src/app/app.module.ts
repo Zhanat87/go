@@ -10,6 +10,7 @@ import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass
  */
 import {ENV_PROVIDERS} from './environment';
 import {routing} from './app.routing';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 // App is our top level component
 import {App} from './app.component';
@@ -52,6 +53,10 @@ export type StoreType = {
         NgaModule.forRoot(),
         PagesModule,
         AuthModule,
+        LocalStorageModule.withConfig({
+            prefix: 'my-app',
+            storageType: 'localStorage'
+        }),
         routing,
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection

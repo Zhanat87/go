@@ -11,33 +11,33 @@ export abstract class BaseListPagination extends CommonListPagination {
     ngOnDestroy() {
         super.ngOnDestroy();
 
-        localStorage.removeItem('deleteRowId');
-        localStorage.removeItem('unPublishOfferId');
-        localStorage.removeItem('publishOfferId');
+        this.localStorageService.remove('deleteRowId');
+        this.localStorageService.remove('unPublishOfferId');
+        this.localStorageService.remove('publishOfferId');
     }
 
     showDeleteModal(id: number): void {
-        localStorage.setItem('deleteRowId', id.toString());
+        this.localStorageService.set('deleteRowId', id);
         this.deleteModal.show();
     }
 
     hideDeleteModal(): void {
-        localStorage.removeItem('deleteRowId');
+        this.localStorageService.remove('deleteRowId');
         this.deleteModal.hide();
     }
 
     showUnPublishModal(id: number): void {
-        localStorage.setItem('unPublishOfferId', id.toString());
+        this.localStorageService.set('unPublishOfferId', id);
         this.unPublishModal.show();
     }
 
     hideUnPublishModal(): void {
-        localStorage.removeItem('unPublishOfferId');
+        this.localStorageService.remove('unPublishOfferId');
         this.unPublishModal.hide();
     }
 
     unPublish(): void {
-        this.service.unPublish(parseInt(localStorage.getItem('unPublishOfferId')))
+        this.service.unPublish(this.localStorageService.get('unPublishOfferId'))
             .subscribe(
                 data => {
                     if (data.success == true) {
@@ -52,17 +52,17 @@ export abstract class BaseListPagination extends CommonListPagination {
     }
 
     showPublishModal(id: number): void {
-        localStorage.setItem('publishOfferId', id.toString());
+        this.localStorageService.set('publishOfferId', id);
         this.publishModal.show();
     }
 
     hidePublishModal(): void {
-        localStorage.removeItem('publishOfferId');
+        this.localStorageService.remove('publishOfferId');
         this.publishModal.hide();
     }
 
     publish(): void {
-        this.service.publish(parseInt(localStorage.getItem('publishOfferId')))
+        this.service.publish(this.localStorageService.get('publishOfferId'))
             .subscribe(
                 data => {
                     if (data.success == true) {
@@ -77,7 +77,7 @@ export abstract class BaseListPagination extends CommonListPagination {
     }
 
     delete(): void {
-        this.service.delete(parseInt(localStorage.getItem('deleteRowId')))
+        this.service.delete(this.localStorageService.get('deleteRowId'))
             .subscribe(
                 data => {
                     if (data.success == true) {
@@ -96,7 +96,7 @@ export abstract class BaseListPagination extends CommonListPagination {
     }
 
     changePerPage(perPage: number): void {
-        this.getPage(parseInt(localStorage.getItem('currentPage')), localStorage.getItem('searchText'), perPage);
+        this.getPage(this.localStorageService.get('currentPage'), this.localStorageService.get('searchText'), perPage);
     }
 
     editModel(id: number): void {

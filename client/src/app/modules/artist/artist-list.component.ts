@@ -5,6 +5,7 @@ import {ArtistService} from "./artist.service";
 import {BaseListPagination} from "../../common/base/baseListPagination";
 import {Artist} from "./artist";
 import {GlobalState} from "../../global.state";
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
     moduleId: 'artist',
@@ -23,6 +24,7 @@ export class ArtistList extends BaseListPagination {
         public router: Router,
         public route: ActivatedRoute,
         protected _state: GlobalState,
+        protected localStorageService: LocalStorageService,
         public service: ArtistService) {
         super();
     }

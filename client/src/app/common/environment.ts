@@ -4,7 +4,6 @@
  https://github.com/AngularClass/angular2-webpack-starter/wiki/How-to-pass-environment-variables%3F
  */
 export class Environment {
-    public static API_ENDPOINT = process.env.ENV == 'production' ?
-        'http://zhanat.site:8080/' : 'http://localhost:8080/';
-    // public static API_ENDPOINT = 'http://localhost:8080/';
+    public static API_ENDPOINT = window.location.href.substr(0, 16) == 'http://localhost' ?
+        'http://localhost:8080/' : 'http://zhanat.site:8080/';
 }

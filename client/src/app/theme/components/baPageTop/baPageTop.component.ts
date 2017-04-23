@@ -3,11 +3,12 @@ import {Component} from '@angular/core';
 import {GlobalState} from '../../../global.state';
 
 import 'style-loader!./baPageTop.scss';
-import {User} from "../../../pages/user/user";
+import {User} from "../../../modules/user/user";
 import {LogoutService} from '../../../pages/login/logout.service';
 import {LogoutResponse} from "../../../pages/login/logout.response";
 import {Router} from "@angular/router";
 import {tokenNotExpired} from "angular2-jwt";
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
     selector: 'ba-page-top',
@@ -21,12 +22,15 @@ export class BaPageTop {
 
     constructor(private _state: GlobalState,
                 private router: Router,
-                private logoutService: LogoutService) {
+                private logoutService: LogoutService,
+                private localStorageService: LocalStorageService) {
         this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
             this.isMenuCollapsed = isCollapsed;
         });
-
-        this.user = JSON.parse(localStorage.getItem('currentUser')) as User;
+        this._state.subscribe('currentUserUpdated', () => {
+            this.user = JSON.parse(this.localStorageService.get('currentUser')) as User;
+        });
+        this.user = JSON.parse(this.localStorageService.get('currentUser')) as User;
     }
 
     public toggleMenu() {
@@ -40,7 +44,7 @@ export class BaPageTop {
     }
 
     public signOut(): void {
-        if (!tokenNotExpired(null, localStorage.getItem('id_token'))) {
+        if (!tokenNotExpired(null, this.localStorageService.get('id_token'))) {
             console.log('token expired');
             this.cleanAndQuit();
         } else {
@@ -56,7 +60,7 @@ export class BaPageTop {
                         }
                     },
                     error => {
-                        console.log(error);
+                        console.log('token invalidate error', error);
                     },
                 );
         }
@@ -68,7 +72,7 @@ export class BaPageTop {
 
     cleanAndQuit(): void {
         this.user = null;
-        localStorage.clear();
+        this.localStorageService.clearAll();
         this.redirectToLogin();
     }
 

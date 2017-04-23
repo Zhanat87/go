@@ -8,6 +8,7 @@ import { Album }        from './album';
 import { AlbumService } from './album.service';
 
 import {GlobalState} from "../../global.state";
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
     moduleId: 'album',
@@ -29,6 +30,7 @@ export class AlbumFormComponent extends BaseForm {
         public router: Router,
         public route: ActivatedRoute,
         protected _state: GlobalState,
+        protected localStorageService: LocalStorageService,
         public service: AlbumService) {
         super();
     }

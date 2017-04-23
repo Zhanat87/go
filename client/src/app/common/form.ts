@@ -3,8 +3,10 @@ import { OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {GlobalState} from "../global.state";
 import {BreadCrumb} from "./entities/breadCrumb";
+import {OnAfterSave} from "./interfaces/form_lifecycle_hooks";
+import { LocalStorageService } from 'angular-2-local-storage';
 
-export abstract class CommonForm implements OnInit, OnDestroy {
+export abstract class CommonForm implements OnInit, OnDestroy, OnAfterSave {
     public listUrl: string;
 
     public service;
@@ -25,41 +27,43 @@ export abstract class CommonForm implements OnInit, OnDestroy {
 
     protected _state: GlobalState;
 
+    protected localStorageService: LocalStorageService;
+
     public title: string;
 
-    public activations = {
-        active : 'main.active',
-        suspended : 'main.suspended',
-        deleted : 'main.deleted',
+    public statuses = {
+        1 : 'active',
+        2 : 'suspended',
+        3 : 'deleted',
     };
 
     public weekDays = [
-        'contract.monday',
-        'contract.tuesday',
-        'contract.wednesday',
-        'contract.thursday',
-        'contract.friday',
-        'contract.saturday',
-        'contract.sunday'
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+        'sunday',
     ];
 
     public months = [
-        'contract.january',
-        'contract.february',
-        'contract.march',
-        'contract.april',
-        'contract.may',
-        'contract.june',
-        'contract.july',
-        'contract.august',
-        'contract.september',
-        'contract.october',
-        'contract.november',
-        'contract.december'
+        'january',
+        'february',
+        'march',
+        'april',
+        'may',
+        'june',
+        'july',
+        'august',
+        'september',
+        'october',
+        'november',
+        'december',
     ];
 
     ngOnDestroy(): void {
-        localStorage.removeItem('breadCrumbs');
+        this.localStorageService.remove('breadCrumbs');
     }
 
     ngOnInit() {
@@ -131,10 +135,14 @@ export abstract class CommonForm implements OnInit, OnDestroy {
         let breadCrumbs = [];
         breadCrumbs.push(new BreadCrumb(this.title, this.listUrl));
         breadCrumbs.push(new BreadCrumb(this.getBreadCrumbTitle()));
-        localStorage.setItem('breadCrumbs', JSON.stringify(breadCrumbs));
+        this.localStorageService.set('breadCrumbs', JSON.stringify(breadCrumbs));
         this._state.notifyChanged('breadCrumbs');
     }
 
     abstract getBreadCrumbTitle(): string;
+
+    onAfterSave(): void {
+        this.redirectList();
+    }
 
 }

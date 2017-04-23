@@ -50,13 +50,13 @@ export class CommonPaginationFooterComponent {
      * Get the current page number.
      */
     getCurrent(): number {
-        return parseInt(localStorage.getItem('currentPage'));
+        return this.localStorageService.get('currentPage');
     }
     /**
      * Returns the last page number
      */
     getLastPage(): number {
-        return parseInt(localStorage.getItem('lastPage'));
+        return this.localStorageService.get('lastPage');
     }
 
     ngOnInit() {
@@ -83,7 +83,7 @@ export class CommonPaginationFooterComponent {
      * input values changes.
      */
     updatePageLinks() {
-        this.pages = this.createPageArray(this.getCurrent(), parseInt(localStorage.getItem('perPage')), parseInt(localStorage.getItem('totalPage')), this.maxSize);
+        this.pages = this.createPageArray(this.getCurrent(), this.localStorageService.get('perPage'), this.localStorageService.get('totalPage'), this.maxSize);
     }
 
     /**

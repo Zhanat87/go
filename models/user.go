@@ -8,18 +8,19 @@ import (
 
 /*
 @link https://marcesher.com/2014/10/13/go-working-effectively-with-database-nulls/
+@link http://stackoverflow.com/questions/21151765/json-cannot-unmarshal-string-into-go-value-of-type-int64
  */
 type User struct {
 	Id         int    `json:"id" db:"id"`
 	Username   string `json:"username" db:"username"`
 	Email      string `json:"email" db:"email"`
-	Password   string `json:"password" db:"password"`
-	Avatar     string `json:"avatar" db:"avatar"`
+	Password   string `json:"password,omitempty" db:"password"`
+	Avatar     string `json:"avatar,omitempty" db:"avatar"`
 	Full_name  string `json:"full_name" db:"full_name"`
-	Phones     string `json:"phones" db:"phones"`
-	Status     int8   `json:"status" db:"status"`
-	Created_at string `json:"created_at" db:"created_at"`
-	Updated_at string `json:"updated_at" db:"updated_at"`
+	Phones     string `json:"phones,omitempty" db:"phones"`
+	Status     int8   `json:"status,string" db:"status"`
+	Created_at string `json:"created_at,omitempty" db:"created_at"`
+	Updated_at string `json:"updated_at,omitempty" db:"updated_at"`
 }
 
 func (m User) Validate() error {

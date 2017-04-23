@@ -1,0 +1,120 @@
+<pagination-header (perPageChange)="changePerPage($event)" (searchChange)="changeSearch($event)" [canCreate]="true"></pagination-header>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover table-considered">
+        <thead>
+            <tr>
+                <th><span style="margin: auto 20px;">actions</span></th>
+                <th>ID</th>
+                <th>username</th>
+                <th>email</th>
+                <th>status</th>
+                <th><span style="margin: auto 34px;">created at</span></th>
+                <th><span style="margin: auto 34px;">updated at</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of data | paginate: { id: 'server', itemsPerPage: perPage, currentPage: currentPage, totalItems: total }">
+                <td>
+                    <div class="col-xs-2" (click)="editModel(row.id)"><i class="ion-edit" title="edit"></i></div>
+                    <!--<div class="col-xs-2" *ngIf="!row.isDeleted" (click)="showDeleteModal(row.id)"><i class="ion-trash-b" title="delete"></i></div>-->
+                    <!--<div class="col-xs-2" *ngIf="!row.banned" (click)="showBannedModal(row.id)"><i class="fa fa fa-ban" title="banned"></i></div>-->
+                    <!--<div class="col-xs-2" *ngIf="row.banned" (click)="showCancelBanModal(row.id)"><i class="ion-refresh" title="cancel banned status"></i></div>-->
+                </td>
+                <td>
+                    {{ row.id }}
+                </td>
+                <td>
+                    {{ row.username }}
+                </td>
+                <td>
+                    {{ row.email }}
+                </td>
+                <td>
+                    {{ row.status }}
+                </td>
+                <td>
+                    {{ row.created_at }}
+                </td>
+                <td>
+                    {{ row.updated_at }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<pagination-footer (pageChange)="getPage($event)" id="server"></pagination-footer>
+
+<!--&lt;!&ndash;deleteModal&ndash;&gt;-->
+<!--<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-sm">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h4 class="modal-title pull-left">Delete user</h4>-->
+                <!--<button type="button" class="close pull-right" aria-label="Close" (click)="hideDeleteModal()">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--Are you sure that you want delete this user?-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-danger" (click)="hideDeleteModal()">-->
+                    <!--No-->
+                <!--</button>-->
+                <!--<button class="btn btn-primary confirm-btn" (click)="delete()">-->
+                    <!--Yes-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;bannedModal&ndash;&gt;-->
+<!--<div bsModal #bannedModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-sm">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h4 class="modal-title pull-left">Banned this user</h4>-->
+                <!--<button type="button" class="close pull-right" aria-label="Close" (click)="hideBannedModal()">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--Are you sure that you want banned this user?-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-danger" (click)="hideBannedModal()">-->
+                    <!--No-->
+                <!--</button>-->
+                <!--<button class="btn btn-primary confirm-btn" (click)="ban()">-->
+                    <!--Yes-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;cancelBanModal&ndash;&gt;-->
+<!--<div bsModal #cancelBanModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-sm">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h4 class="modal-title pull-left">Cancel ban this user</h4>-->
+                <!--<button type="button" class="close pull-right" aria-label="Close" (click)="hideCancelBanModal()">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--Are you sure that you want cancel ban this user?-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-danger" (click)="hideCancelBanModal()">-->
+                    <!--No-->
+                <!--</button>-->
+                <!--<button class="btn btn-primary confirm-btn" (click)="cancelBan()">-->
+                    <!--Yes-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

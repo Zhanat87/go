@@ -5,6 +5,7 @@ import 'style-loader!./login.scss';
 import {Router} from "@angular/router";
 import {LoginService} from "./login.service";
 import {LoginResponse} from "./login.response";
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
     selector: 'login',
@@ -25,7 +26,8 @@ export class Login {
 
     constructor(fb: FormBuilder,
                 private router: Router,
-                private service: LoginService) {
+                private service: LoginService,
+                private localStorageService: LocalStorageService) {
         this.form = fb.group({
             'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
             'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
@@ -48,8 +50,8 @@ export class Login {
                         this.response = data as LoginResponse;
 
                         if (this.response.data) {
-                            localStorage.setItem('id_token', this.response.data.token);
-                            localStorage.setItem('currentUser', JSON.stringify(this.response.data.user));
+                            this.localStorageService.set('id_token', this.response.data.token);
+                            this.localStorageService.set('currentUser', JSON.stringify(this.response.data.user));
                             this.redirectToReferrer();
                         } else  {
                             this.error = true;
@@ -71,7 +73,7 @@ export class Login {
     }
 
     redirectToReferrer(): void {
-        this.router.navigate([localStorage.getItem('referrer') ? localStorage.getItem('referrer') : '/']);
+        this.router.navigate([this.localStorageService.get('referrer') ? this.localStorageService.get('referrer') : '/']);
     }
 
 }

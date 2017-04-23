@@ -4,44 +4,49 @@ import { Observable } from 'rxjs/Rx';
 
 import { BaseForm } from '../../common/base/baseForm';
 
-import { Artist }        from './artist';
-import { ArtistService } from './artist.service';
+import { User }        from './user';
+import { UserService } from './user.service';
 
 import {GlobalState} from "../../global.state";
 import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
-    moduleId: 'artist',
-    selector: 'artist-form',
+    moduleId: 'user',
+    selector: 'user-form',
     templateUrl: './form.html',
     styleUrls: ['./../../common/styles/form.scss'],
 })
 
-export class ArtistFormComponent extends BaseForm {
+export class UserFormComponent extends BaseForm {
 
-    public listUrl = '/pages/artists';
-    public title = 'Artists';
+    public listUrl = '/users';
+    public title = 'Users';
 
-    public model = new Artist();
+    public model = new User();
 
-    public dialCode: number;
+    private currentUser: User;
 
     constructor(
         public router: Router,
         public route: ActivatedRoute,
         protected _state: GlobalState,
         protected localStorageService: LocalStorageService,
-        public service: ArtistService) {
+        public service: UserService) {
         super();
     }
 
     initCreateForm() {
+
         this.active = true;
+
         this.setBreadCrumbs();
+
     }
 
     initEditForm(id) {
         this.editMode = true;
+
+        this.currentUser = this.getCurrentUser();
 
         Observable.forkJoin(
             this.service.find(id)
@@ -49,19 +54,23 @@ export class ArtistFormComponent extends BaseForm {
             data => {
                 this.active = true;
 
-                this.model = data[0] as Artist;
+                this.model = data[0] as User;
 
                 this.setBreadCrumbs();
             },
             error => this.errorMessage = <any>error);
     }
 
-    onChangeCountry(event: any) {
-
+    getBreadCrumbTitle(): string {
+        return this.editMode ? (this.currentUser.id == this.model.id ? 'Profile' : 'User: ' + this.model.username) : 'Create new user';
     }
 
-    getBreadCrumbTitle(): string {
-        return this.editMode ? 'Artist: ' + this.model.name : 'Create new artist';
+    onAfterSave(): void {
+        if (this.editMode && this.currentUser.id == this.model.id) {
+            this.localStorageService.set('currentUser', JSON.stringify({id: this.model.id, username: this.model.username, email: this.model.email}));
+            this._state.notifyChanged('currentUserUpdated');
+        }
+        super.onAfterSave();
     }
 
 }

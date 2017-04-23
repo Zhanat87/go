@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GlobalState} from "../../global.state";
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
     selector: 'home',
@@ -8,11 +9,11 @@ import {GlobalState} from "../../global.state";
 })
 export class Home implements OnInit {
 
-    constructor(private _state: GlobalState) {
+    constructor(private _state: GlobalState, private localStorageService: LocalStorageService) {
     }
 
     ngOnInit(): void {
-        localStorage.removeItem('breadCrumbs');
+        this.localStorageService.remove('breadCrumbs');
         this._state.notifyChanged('breadCrumbs');
     }
 

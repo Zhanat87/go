@@ -5,6 +5,7 @@ import {AlbumService} from "./album.service";
 import {BaseListPagination} from "../../common/base/baseListPagination";
 import {Album} from "./album";
 import {GlobalState} from "../../global.state";
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
     moduleId: 'album',
@@ -23,6 +24,7 @@ export class AlbumList extends BaseListPagination {
         public router: Router,
         public route: ActivatedRoute,
         protected _state: GlobalState,
+        protected localStorageService: LocalStorageService,
         public service: AlbumService) {
         super();
     }

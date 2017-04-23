@@ -47,30 +47,30 @@ export abstract class CommonListPagination implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        localStorage.removeItem('perPage');
-        localStorage.removeItem('searchText');
-        localStorage.removeItem('currentPage');
-        localStorage.removeItem('lastPage');
-        localStorage.removeItem('totalPage');
+        this.localStorageService.remove('perPage');
+        this.localStorageService.remove('searchText');
+        this.localStorageService.remove('currentPage');
+        this.localStorageService.remove('lastPage');
+        this.localStorageService.remove('totalPage');
 
-        localStorage.removeItem('breadCrumbs');
+        this.localStorageService.remove('breadCrumbs');
     }
 
     getPage(page?: number, search?: string, perPage?: number) {
         this.active = false;
 
-        page = page ? page : (localStorage.getItem('currentPage') ? parseInt(localStorage.getItem('currentPage')) : 1);
-        perPage = perPage ? perPage : (localStorage.getItem('perPage') ? parseInt(localStorage.getItem('perPage')) : 15);
-        search = search ? (search != ' ' ? search : '') : (localStorage.getItem('searchText') ? localStorage.getItem('searchText') : '');
+        page = page ? page : (this.localStorageService.get('currentPage') ? this.localStorageService.get('currentPage') : 1);
+        perPage = perPage ? perPage : (this.localStorageService.get('perPage') ? this.localStorageService.get('perPage') : 15);
+        search = search ? (search != ' ' ? search : '') : (this.localStorageService.get('searchText') ? this.localStorageService.get('searchText') : '');
 
         let params = {
             'page': page,
             'search': search,
             'perPage': perPage,
         };
-        localStorage.setItem('currentPage', page.toString());
-        localStorage.setItem('searchText', search);
-        localStorage.setItem('perPage', perPage.toString());
+        this.localStorageService.set('currentPage', page);
+        this.localStorageService.set('searchText', search);
+        this.localStorageService.set('perPage', perPage);
 
         let observableBatch = [
             this.service.paginate(params)
@@ -81,8 +81,8 @@ export abstract class CommonListPagination implements OnInit, OnDestroy {
                     this.currentPage = page; // data.page
                     this.lastPage = data.page_count;
 
-                    localStorage.setItem('lastPage', data.page_count.toString());
-                    localStorage.setItem('totalPage', data.total_count.toString());
+                    this.localStorageService.set('lastPage', data.page_count);
+                    this.localStorageService.set('totalPage', data.total_count);
 
                     this.vc.updatePageLinks();
                 })
@@ -109,13 +109,13 @@ export abstract class CommonListPagination implements OnInit, OnDestroy {
     protected setBreadCrumbs(): void {
         let breadCrumbs = [];
         breadCrumbs.push(new BreadCrumb(this.title));
-        localStorage.setItem('breadCrumbs', JSON.stringify(breadCrumbs));
+        this.localStorageService.set('breadCrumbs', JSON.stringify(breadCrumbs));
         this._state.notifyChanged('breadCrumbs');
     }
 
     private logout(): void {
-        localStorage.clear();
-        localStorage.setItem('referrer', window.location.pathname);
+        this.localStorageService.clearAll();
+        this.localStorageService.set('referrer', window.location.pathname);
         this.router.navigate(['/login']);
     }
 
