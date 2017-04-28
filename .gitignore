@@ -9,6 +9,7 @@
 /node_modules
 /avatars
 /client/node_modules
+/client/compiled
 #/docker
 .env
 /docker/.env
@@ -48,8 +49,3 @@ server
 
 # vendor
 /vendor
-<<<<<<< HEAD
-############### end from api ozzo
-=======
-############### end from api ozzo
->>>>>>> a28bbf50ec494f03d226057193a7cee1181bd791
