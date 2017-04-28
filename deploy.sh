@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-cd ../
 # build client with aot, it's equivalent to: npm run build:aot:prod
-npm run prebuild:prod && npm run build:prod
+cd client && npm run prebuild:prod && npm run build:aot
+cd ../
+#npm run prebuild:prod && npm run build:prod
 git add . && git commit -m 'deploy' && git push origin master
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)

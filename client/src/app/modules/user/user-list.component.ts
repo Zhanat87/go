@@ -31,6 +31,7 @@ export class UserList extends BaseListPagination {
         protected localStorageService: LocalStorageService,
         public service: UserService) {
         super();
+        console.log('aot compilation');
     }
 
     // ngOnDestroy() {

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-cd ../
 rm -rf src/google.golang.org/appengine/
 git add .
 git commit -m 'install'

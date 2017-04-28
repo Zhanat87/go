@@ -76,7 +76,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		} else {
 			variables += "success connected\r\n"
 		}
-		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\n")
+		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\naot compilation\r\n")
 	})
 
 	router.Use(
