@@ -30,10 +30,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if (this.localStorageService.get('id_token')) {
             let date = new Date;
             let jwtHelper = new JwtHelper;
-            if (jwtHelper.getTokenExpirationDate(this.localStorageService.get('id_token')).getTime() < date.getTime() + 600000) {
+            if (jwtHelper.getTokenExpirationDate(this.localStorageService.get<string>('id_token')).getTime() < date.getTime() + 600000) {
                 this.refreshToken();
             } else {
-                return tokenNotExpired(null, this.localStorageService.get('id_token'));
+                return tokenNotExpired(null, this.localStorageService.get<string>('id_token'));
             }
         } else {
             this.localStorageService.set('referrer', window.location.pathname);
@@ -79,7 +79,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     private logout(): void {
-        this.localStorageService.clear();
+        this.localStorageService.clearAll();
         this.localStorageService.set('referrer', window.location.pathname);
         this.router.navigate(['/login']);
     }

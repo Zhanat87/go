@@ -7,7 +7,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
     styleUrls: ['./home.scss'],
     templateUrl: './home.html'
 })
-export class Home implements OnInit {
+export class HomeComponent implements OnInit {
 
     constructor(private _state: GlobalState, private localStorageService: LocalStorageService) {
     }

@@ -28,9 +28,9 @@ export class BaPageTop {
             this.isMenuCollapsed = isCollapsed;
         });
         this._state.subscribe('currentUserUpdated', () => {
-            this.user = JSON.parse(this.localStorageService.get('currentUser')) as User;
+            this.user = JSON.parse(this.localStorageService.get<string>('currentUser')) as User;
         });
-        this.user = JSON.parse(this.localStorageService.get('currentUser')) as User;
+        this.user = JSON.parse(this.localStorageService.get<string>('currentUser')) as User;
     }
 
     public toggleMenu() {
@@ -44,25 +44,26 @@ export class BaPageTop {
     }
 
     public signOut(): void {
-        if (!tokenNotExpired(null, this.localStorageService.get('id_token'))) {
+        if (!tokenNotExpired(null, this.localStorageService.get<string>('id_token'))) {
             console.log('token expired');
             this.cleanAndQuit();
         } else {
-            this.logoutService.signOut()
-                .subscribe(
-                    data => {
-                        let response = data as LogoutResponse;
-
-                        if (response.message == 'token_invalidated') {
-                            this.cleanAndQuit();
-                        } else  {
-                            console.log('error');
-                        }
-                    },
-                    error => {
-                        console.log('token invalidate error', error);
-                    },
-                );
+            this.cleanAndQuit();
+            // this.logoutService.signOut()
+            //     .subscribe(
+            //         data => {
+            //             let response = data as LogoutResponse;
+            //
+            //             if (response.message == 'token_invalidated') {
+            //                 this.cleanAndQuit();
+            //             } else  {
+            //                 console.log('error');
+            //             }
+            //         },
+            //         error => {
+            //             console.log('token invalidate error', error);
+            //         },
+            //     );
         }
     }
 

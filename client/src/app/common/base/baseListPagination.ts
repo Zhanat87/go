@@ -96,7 +96,7 @@ export abstract class BaseListPagination extends CommonListPagination {
     }
 
     changePerPage(perPage: number): void {
-        this.getPage(this.localStorageService.get('currentPage'), this.localStorageService.get('searchText'), perPage);
+        this.getPage(this.localStorageService.get<number>('currentPage'), this.localStorageService.get<string>('searchText'), perPage);
     }
 
     editModel(id: number): void {

@@ -5,29 +5,26 @@ import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
 import {removeNgStyles, createNewHosts, createInputTransfer} from '@angularclass/hmr';
 
-/*
- * Platform and Environment providers/directives/pipes
- */
-import {ENV_PROVIDERS} from './environment';
-import {routing} from './app.routing';
-import { LocalStorageModule } from 'angular-2-local-storage';
+// Routing
+import { AppRoutingModule } from './app-routing.module';
 
 // App is our top level component
 import {App} from './app.component';
 import {AppState, InternalStateType} from './app.service';
-import {GlobalState} from './global.state';
 import {NgaModule} from './theme/nga.module';
-import {PagesModule} from './pages/pages.module';
-import {Login} from "./pages/login/login.component";
-import {LoginService} from "./pages/login/login.service";
-import { AuthModule } from './pages/auth/auth.module';
 
-// Application wide providers
-const APP_PROVIDERS = [
-    AppState,
-    GlobalState,
-    LoginService,
-];
+// Importing modules
+import { AlbumModule } from "./modules/album/album.module";
+import { UserModule } from "./modules/user/user.module";
+import { ArtistModule } from "./modules/artist/artist.module";
+import { AuthModule } from './modules/auth/auth.module';
+
+// component's without module
+import { PageComponents } from "./pages/pages.components";
+import { MainLayoutComponent } from "./common/components/layouts/main/main.component";
+import { BlankLayoutComponent } from "./common/components/layouts/blank/blank.component";
+
+import {CoreModule} from "./common/modules/core.module";
 
 export type StoreType = {
     state: InternalStateType,
@@ -42,7 +39,9 @@ export type StoreType = {
     bootstrap: [App],
     declarations: [
         App,
-        Login,
+        ...PageComponents,
+        MainLayoutComponent,
+        BlankLayoutComponent,
     ],
     imports: [ // import Angular's modules
         BrowserModule,
@@ -51,18 +50,18 @@ export type StoreType = {
         FormsModule,
         ReactiveFormsModule,
         NgaModule.forRoot(),
-        PagesModule,
+
+        CoreModule,
+
+        // note: must be at head of all modules with routing modules
+        AppRoutingModule,
+
+        // app modules
         AuthModule,
-        LocalStorageModule.withConfig({
-            prefix: 'my-app',
-            storageType: 'localStorage'
-        }),
-        routing,
+        AlbumModule,
+        UserModule,
+        ArtistModule,
     ],
-    providers: [ // expose our Services and Providers into Angular's dependency injection
-        ENV_PROVIDERS,
-        APP_PROVIDERS,
-    ]
 })
 
 export class AppModule {

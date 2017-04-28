@@ -3,13 +3,13 @@ import {SharedModule} from "../../common/modules/shared.module";
 
 import {ArtistList} from './artist-list.component';
 import {ArtistFormComponent} from './artist-form.component';
-import {routing}       from './artist.routing';
+import {ArtistRoutingModule}       from './artist-routing.module';
 import {ArtistService} from "./artist.service";
 
 @NgModule({
     imports: [
         SharedModule,
-        routing,
+        ArtistRoutingModule,
     ],
     declarations: [
         ArtistList,

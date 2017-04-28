@@ -156,6 +156,9 @@ export abstract class BaseForm extends CommonForm implements AfterViewInit
         );
     }
 
+    // {"error_code":"INVALID_DATA","message":"There is some problem with the data you submitted.
+    // See \"details\" for more information.","details":[{"field":"password",
+    // "error":"the length must be between 4 and 100"}]}
     response(data) {
         this.blocked = false;
 
@@ -202,7 +205,8 @@ export abstract class BaseForm extends CommonForm implements AfterViewInit
     reInitPlugins(): void {}
 
     getCurrentUser(): any {
-        return JSON.parse(this.localStorageService.get('currentUser')) as User;
+        // @link https://www.typescriptlang.org/docs/handbook/generics.html
+        return JSON.parse(this.localStorageService.get<string>('currentUser')) as User;
     }
 
 }

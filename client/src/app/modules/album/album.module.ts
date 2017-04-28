@@ -3,13 +3,13 @@ import {SharedModule} from "../../common/modules/shared.module";
 
 import {AlbumList} from './album-list.component';
 import {AlbumFormComponent} from './album-form.component';
-import {routing}       from './album.routing';
+import {AlbumRoutingModule}       from './album-routing.module';
 import {AlbumService} from "./album.service";
 
 @NgModule({
     imports: [
         SharedModule,
-        routing,
+        AlbumRoutingModule,
     ],
     declarations: [
         AlbumList,

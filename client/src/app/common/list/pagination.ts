@@ -59,9 +59,9 @@ export abstract class CommonListPagination implements OnInit, OnDestroy {
     getPage(page?: number, search?: string, perPage?: number) {
         this.active = false;
 
-        page = page ? page : (this.localStorageService.get('currentPage') ? this.localStorageService.get('currentPage') : 1);
-        perPage = perPage ? perPage : (this.localStorageService.get('perPage') ? this.localStorageService.get('perPage') : 15);
-        search = search ? (search != ' ' ? search : '') : (this.localStorageService.get('searchText') ? this.localStorageService.get('searchText') : '');
+        page = page ? page : (this.localStorageService.get<number>('currentPage') ? this.localStorageService.get<number>('currentPage') : 1);
+        perPage = perPage ? perPage : (this.localStorageService.get<number>('perPage') ? this.localStorageService.get<number>('perPage') : 15);
+        search = search ? (search != ' ' ? search : '') : (this.localStorageService.get<string>('searchText') ? this.localStorageService.get<string>('searchText') : '');
 
         let params = {
             'page': page,

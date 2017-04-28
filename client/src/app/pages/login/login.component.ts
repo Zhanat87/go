@@ -11,7 +11,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
     selector: 'login',
     templateUrl: './login.html',
 })
-export class Login {
+export class LoginComponent {
 
     public form: FormGroup;
     public email: AbstractControl;
@@ -52,6 +52,7 @@ export class Login {
                         if (this.response.data) {
                             this.localStorageService.set('id_token', this.response.data.token);
                             this.localStorageService.set('currentUser', JSON.stringify(this.response.data.user));
+                            console.log(this.localStorageService, this.localStorageService.get('id_token'), this.localStorageService.get<string>('id_token'));
                             this.redirectToReferrer();
                         } else  {
                             this.error = true;

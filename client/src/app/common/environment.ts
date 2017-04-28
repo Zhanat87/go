@@ -6,4 +6,6 @@
 export class Environment {
     public static API_ENDPOINT = window.location.href.substr(0, 16) == 'http://localhost' ?
         'http://localhost:8080/' : 'http://zhanat.site:8080/';
+
+    public static IS_LOCAL = window.location.href.substr(0, 16) == 'http://localhost';
 }

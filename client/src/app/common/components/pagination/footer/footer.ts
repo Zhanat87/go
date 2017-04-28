@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {LocalStorageService} from "angular-2-local-storage";
 
 export interface Page {
     label: string;
@@ -19,6 +20,10 @@ export class CommonPaginationFooterComponent {
     @Input() maxSize: number = 7;
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     pages: Page[] = [];
+
+    constructor(protected localStorageService: LocalStorageService) {
+
+    }
 
     /**
      * Go to the previous page
@@ -50,13 +55,13 @@ export class CommonPaginationFooterComponent {
      * Get the current page number.
      */
     getCurrent(): number {
-        return this.localStorageService.get('currentPage');
+        return this.localStorageService.get<number>('currentPage');
     }
     /**
      * Returns the last page number
      */
     getLastPage(): number {
-        return this.localStorageService.get('lastPage');
+        return this.localStorageService.get<number>('lastPage');
     }
 
     ngOnInit() {
@@ -83,7 +88,7 @@ export class CommonPaginationFooterComponent {
      * input values changes.
      */
     updatePageLinks() {
-        this.pages = this.createPageArray(this.getCurrent(), this.localStorageService.get('perPage'), this.localStorageService.get('totalPage'), this.maxSize);
+        this.pages = this.createPageArray(this.getCurrent(), this.localStorageService.get<number>('perPage'), this.localStorageService.get<number>('totalPage'), this.maxSize);
     }
 
     /**

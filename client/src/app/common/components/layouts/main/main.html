@@ -1,0 +1,16 @@
+<ba-sidebar></ba-sidebar>
+<ba-page-top></ba-page-top>
+<div class="al-main">
+    <div class="al-content">
+        <ba-content-top></ba-content-top>
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<footer class="al-footer clearfix" [class.hidden]="!isLocal">
+    <div class="al-footer-right">
+        <a href="http://akveo.com/ng2-admin/#/pages/dashboard" target="_blank">akveo demo</a>
+        <a href="https://github.com/akveo/ng2-admin" target="_blank">akveo github</a>
+        <a href="https://github.com/krisanalfa/lumen-jwt" target="_blank">lumen-jwt</a>
+    </div>
+</footer>
+<ba-back-top position="200"></ba-back-top>

@@ -1,4 +1,4 @@
-import {User} from "../user/user";
+import {User} from "../../modules/user/user";
 
 export class LoginResponse {
     status: string;

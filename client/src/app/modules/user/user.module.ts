@@ -3,13 +3,13 @@ import {SharedModule} from "../../common/modules/shared.module";
 
 import {UserList} from './user-list.component';
 import {UserFormComponent} from './user-form.component';
-import {routing}       from './user.routing';
+import {UserRoutingModule}       from './user-routing.module';
 import {UserService} from "./user.service";
 
 @NgModule({
     imports: [
         SharedModule,
-        routing,
+        UserRoutingModule,
     ],
     declarations: [
         UserList,
