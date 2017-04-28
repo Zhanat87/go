@@ -52,7 +52,6 @@ export class LoginComponent {
                         if (this.response.data) {
                             this.localStorageService.set('id_token', this.response.data.token);
                             this.localStorageService.set('currentUser', JSON.stringify(this.response.data.user));
-                            console.log(this.localStorageService, this.localStorageService.get('id_token'), this.localStorageService.get<string>('id_token'));
                             this.redirectToReferrer();
                         } else  {
                             this.error = true;
