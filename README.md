@@ -10,4 +10,4 @@ Used technologies
 * continuous integration and continuous delivery - run only deploy.sh script
 * digital ocean
 * [backend](http://zhanat.site:8080/ping)
-* [frontend](http://zhanat.site:8081/login) - test@test.com/pass
+* [frontend](http://zhanat.site:8081/login) - demo username/password: test@test.com/pass
