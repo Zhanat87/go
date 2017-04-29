@@ -7,6 +7,8 @@
 version: '3'
 #version: '2'
 
+# jenkins on 8082 port - not need, .git web hooks need
+
 services:
 
   # docker exec -it stack-postgres /bin/bash
