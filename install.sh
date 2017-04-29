@@ -7,9 +7,9 @@ git pull origin master
 cd docker && docker-compose stop
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
+#docker rm $(docker ps -a -q)
 # remove container
-#docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
+docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
 ## remove image and pull new
 docker rmi $(docker images --filter=reference='zhanat87/golang') -f
 # delete all images
