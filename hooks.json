@@ -1,7 +1,7 @@
 [
   {
     "id": "install-webhook",
-    "execute-command": "/var/scripts/install.sh",
+    "execute-command": "/root/zhanat.site/install.sh",
     "command-working-directory": "/root/zhanat.site"
   }
 ]
