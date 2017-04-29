@@ -31,11 +31,18 @@ export abstract class CommonForm implements OnInit, OnDestroy, OnAfterSave {
 
     public title: string;
 
-    public statuses = {
-        1 : 'active',
-        2 : 'suspended',
-        3 : 'deleted',
-    };
+    /**
+     *
+     * @type {[{key: number; value: string},{key: number; value: string},{key: number; value: string}]}
+     *
+     * @link https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html
+     * @link http://plnkr.co/edit/KVuXxDp0qinGDyo307QW?p=preview
+     */
+    public statuses = [
+        {key: 1, value: 'active'},
+        {key: 2, value: 'suspended'},
+        {key: 3, value: 'deleted'},
+    ];
 
     public weekDays = [
         'monday',

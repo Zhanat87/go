@@ -17,7 +17,7 @@ export class AlbumList extends BaseListPagination {
 
     public data: Album[];
 
-    public listUrl = '/pages/albums';
+    public listUrl = '/albums';
     public title = 'Albums';
 
     constructor (
@@ -27,6 +27,7 @@ export class AlbumList extends BaseListPagination {
         protected localStorageService: LocalStorageService,
         public service: AlbumService) {
         super();
+        console.log('test');
     }
 
 }

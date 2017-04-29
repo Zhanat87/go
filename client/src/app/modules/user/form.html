@@ -51,7 +51,7 @@
                     Status
                 </label>
                 <select id="status" class="form-control" required [(ngModel)]="model.status" name="status">
-                    <option *ngFor="let status of statuses | iterable" [value]="status.key">
+                    <option *ngFor="let status of statuses" [value]="status.key">
                         {{ status.value }}
                     </option>
                 </select>

@@ -17,7 +17,7 @@ export class ArtistList extends BaseListPagination {
 
     public data: Artist[];
 
-    public listUrl = '/pages/artists';
+    public listUrl = '/artists';
     public title = 'Artists';
 
     constructor (
@@ -27,6 +27,7 @@ export class ArtistList extends BaseListPagination {
         protected localStorageService: LocalStorageService,
         public service: ArtistService) {
         super();
+        console.log('test');
     }
 
 }

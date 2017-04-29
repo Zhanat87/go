@@ -10,7 +10,7 @@ import {Pipe, PipeTransform} from '@angular/core';
  *  <div *ngFor="let keyValuePair of someObject | iterable">
  *    key {{keyValuePair.key}} and value {{keyValuePair.value}}
  *  </div>
- *
+ * note: not work in aot compilation
  */
 @Pipe({name: 'iterable'})
 export class IterablePipe implements PipeTransform {

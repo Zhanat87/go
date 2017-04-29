@@ -24,22 +24,22 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="exampleInputCountry">Country</label>
-                <select (change)="onChangeCountry($event)" class="form-control" id="exampleInputCountry" required [(ngModel)]="model.country_id" name="country_id">
-                    <template ngFor let-row [ngForOf]="countries | iterable">
-                        <option [value]="row.key.id">
-                            {{row.key.translation?.en.name}}
-                        </option>
-                    </template>
-                </select>
-                <br><br><br>
-                <div *ngIf="errors['country_id']" class="alert alert-danger">
-                    <div *ngFor="let error of errors['country_id']" class="error">
-                        {{error}}
-                    </div>
-                </div>
-            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="exampleInputCountry">Country</label>-->
+                <!--<select (change)="onChangeCountry($event)" class="form-control" id="exampleInputCountry" required [(ngModel)]="model.country_id" name="country_id">-->
+                    <!--<template ngFor let-row [ngForOf]="countries | iterable">-->
+                        <!--<option [value]="row.key.id">-->
+                            <!--{{row.key.translation?.en.name}}-->
+                        <!--</option>-->
+                    <!--</template>-->
+                <!--</select>-->
+                <!--<br><br><br>-->
+                <!--<div *ngIf="errors['country_id']" class="alert alert-danger">-->
+                    <!--<div *ngFor="let error of errors['country_id']" class="error">-->
+                        <!--{{error}}-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             
             <div class="form-group">
                 <label for="exampleInputEmail">Email address</label>
