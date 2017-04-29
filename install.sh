@@ -4,6 +4,7 @@ rm -rf src/google.golang.org/appengine/
 git add .
 git commit -m 'install'
 git pull origin master
+#git reset --hard HEAD && git clean -f -d && git pull origin master
 cd docker && docker-compose stop
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)
