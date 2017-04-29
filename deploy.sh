@@ -29,6 +29,8 @@ docker pull zhanat87/golang
 # list of all docker images on host machine
 docker images
 
+curl http://zhanat.site:9000/hooks/install-webhook
+
 echo "deploy success"
 
 # simple docker golang with drone.io deploy
