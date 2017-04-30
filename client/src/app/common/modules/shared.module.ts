@@ -11,8 +11,6 @@ import {RouterModule} from "@angular/router";
 import {CommonPaginationFooterComponent} from "../components/pagination/footer/footer";
 import {CommonPaginationHeaderComponent} from "../components/pagination/header/header";
 
-// import { IterablePipe } from "../pipes/iterable";
-
 @NgModule({
     imports: [
         CommonModule,
@@ -25,7 +23,6 @@ import {CommonPaginationHeaderComponent} from "../components/pagination/header/h
     declarations: [
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
-        // IterablePipe,
     ],
     exports: [
         CommonModule,
@@ -37,7 +34,6 @@ import {CommonPaginationHeaderComponent} from "../components/pagination/header/h
 
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
-        // IterablePipe,
     ],
 })
 export class SharedModule {}

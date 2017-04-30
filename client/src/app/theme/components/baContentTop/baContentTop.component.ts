@@ -4,6 +4,7 @@ import {GlobalState} from '../../../global.state';
 import {BreadCrumb} from "../../../common/entities/breadCrumb";
 import {Router, NavigationEnd} from "@angular/router";
 import {Subscription} from "rxjs";
+import {LocalStorageService} from "angular-2-local-storage";
 
 @Component({
     selector: 'ba-content-top',
@@ -18,7 +19,9 @@ export class BaContentTop implements OnInit, OnDestroy {
 
     private _onRouteChange: Subscription;
 
-    constructor(private _state: GlobalState, private router: Router) {
+    constructor(private _state: GlobalState,
+                private router: Router,
+                private localStorageService: LocalStorageService) {
         this._state.subscribe('menu.activeLink', (activeLink) => {
             if (activeLink) {
                 this.activePageTitle = activeLink.title;
@@ -50,11 +53,12 @@ export class BaContentTop implements OnInit, OnDestroy {
 
     private setBreadCrumbs(): void {
         this.breadCrumbs = [];
-        if (this.router.url == '/pages/home') {
+        if (this.router.url == '/index') {
             this.activePageTitle = 'Balu admin';
         } else {
-            this.breadCrumbs.push(new BreadCrumb('Home', '/pages/home'));
-            let breadCrumbs = localStorage["breadCrumbs"] ? JSON.parse(localStorage["breadCrumbs"]) : null;
+            this.breadCrumbs.push(new BreadCrumb('Home', '/index'));
+            let breadCrumbs = this.localStorageService.get('breadCrumbs') ?
+                JSON.parse(this.localStorageService.get<string>('breadCrumbs')) : null;
             if (breadCrumbs) {
                 this.breadCrumbs = this.breadCrumbs.concat(breadCrumbs);
             } else {

@@ -1,6 +1,6 @@
-# Go RESTful backend and Angular2+ SPA as frontend
+# Go RESTful backend and Angular2+ SPA frontend
 
-Used technologies
+Used technologies:
 
 * golang 1.8+
 * js, angular2+ (aot compilation), typescript, node, npm
