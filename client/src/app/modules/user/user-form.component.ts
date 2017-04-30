@@ -1,10 +1,10 @@
-import { Component }    from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { BaseForm } from '../../common/base/baseForm';
 
-import { User }        from './user';
+import { User } from './user';
 import { UserService } from './user.service';
 
 import {GlobalState} from "../../global.state";

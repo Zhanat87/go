@@ -27,7 +27,6 @@ export class ArtistList extends BaseListPagination {
         protected localStorageService: LocalStorageService,
         public service: ArtistService) {
         super();
-        console.log('test');
     }
 
 }

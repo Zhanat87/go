@@ -1,10 +1,10 @@
-import { Component }    from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { BaseForm } from '../../common/base/baseForm';
 
-import { Artist }        from './artist';
+import { Artist } from './artist';
 import { ArtistService } from './artist.service';
 
 import {GlobalState} from "../../global.state";
@@ -19,7 +19,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 
 export class ArtistFormComponent extends BaseForm {
 
-    public listUrl = '/pages/artists';
+    public listUrl = '/artists';
     public title = 'Artists';
 
     public model = new Artist();
@@ -54,10 +54,6 @@ export class ArtistFormComponent extends BaseForm {
                 this.setBreadCrumbs();
             },
             error => this.errorMessage = <any>error);
-    }
-
-    onChangeCountry(event: any) {
-
     }
 
     getBreadCrumbTitle(): string {

@@ -1,5 +1,5 @@
-import {NgModule}      from '@angular/core';
-import {CommonModule}  from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {NgaModule} from '../../theme/nga.module';
 import {Ng2PaginationModule} from 'ng2-pagination';
 import { ModalModule } from 'ngx-bootstrap';
@@ -11,7 +11,7 @@ import {RouterModule} from "@angular/router";
 import {CommonPaginationFooterComponent} from "../components/pagination/footer/footer";
 import {CommonPaginationHeaderComponent} from "../components/pagination/header/header";
 
-import { IterablePipe } from "../pipes/iterable";
+// import { IterablePipe } from "../pipes/iterable";
 
 @NgModule({
     imports: [
@@ -25,7 +25,7 @@ import { IterablePipe } from "../pipes/iterable";
     declarations: [
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
-        IterablePipe,
+        // IterablePipe,
     ],
     exports: [
         CommonModule,
@@ -37,7 +37,7 @@ import { IterablePipe } from "../pipes/iterable";
 
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
-        IterablePipe,
+        // IterablePipe,
     ],
 })
 export class SharedModule {}

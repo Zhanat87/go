@@ -16,18 +16,26 @@ export abstract class CommonListService extends CommonCrudService {
         );
     }
 
+    public allWithoutLimit() {
+        return this.mapAll(
+            this.http.get(this.getUrl() + '?limit=false')
+                .map(this.extractItems)
+                .catch(this.handleError)
+        );
+    }
+
     public create(attributes: any) {
         return this.map(
             this.http.post(this.getUrl(), attributes)
                 .map(this.extractAllData)
-                .catch(this.handleError)
+                .catch(this.handleServerErrors)
         );
     }
 
     public find(id: number) {
         return this.map(
             this.http.get(this.getUrl() + '/' + id)
-                .map(this.extractData)
+                .map(this.extractAllData)
                 .catch(this.handleError)
         );
     }
@@ -36,7 +44,7 @@ export abstract class CommonListService extends CommonCrudService {
         return this.map(
             this.http.put(this.getUrl() + '/' + id, attributes)
                 .map(this.extractAllData)
-                .catch(this.handleError)
+                .catch(this.handleServerErrors)
         );
     }
 

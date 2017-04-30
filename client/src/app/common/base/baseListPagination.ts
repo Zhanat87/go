@@ -80,7 +80,7 @@ export abstract class BaseListPagination extends CommonListPagination {
         this.service.delete(this.localStorageService.get('deleteRowId'))
             .subscribe(
                 data => {
-                    if (data.success == true) {
+                    if (data.id) {
                         this.getPage();
                         this.hideDeleteModal();
                     } else {

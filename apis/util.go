@@ -9,17 +9,22 @@ import (
 
 const (
 	DEFAULT_PAGE_SIZE int = 10
-	MAX_PAGE_SIZE     int = 100
+	MAX_PAGE_SIZE int = 100
+	WITHOUT_LIMIT_PAGE_SIZE int = 100000000
 )
 
 func getPaginatedListFromRequest(c *routing.Context, count int) *util.PaginatedList {
 	page := parseInt(c.Query("page"), 1)
 	perPage := parseInt(c.Query("per_page"), DEFAULT_PAGE_SIZE)
-	if perPage <= 0 {
-		perPage = DEFAULT_PAGE_SIZE
-	}
-	if perPage > MAX_PAGE_SIZE {
-		perPage = MAX_PAGE_SIZE
+	if (c.Query("limit") == "false") {
+		perPage = WITHOUT_LIMIT_PAGE_SIZE
+	} else {
+		if perPage <= 0 {
+			perPage = DEFAULT_PAGE_SIZE
+		}
+		if perPage > MAX_PAGE_SIZE {
+			perPage = MAX_PAGE_SIZE
+		}
 	}
 	return util.NewPaginatedList(page, perPage, count)
 }

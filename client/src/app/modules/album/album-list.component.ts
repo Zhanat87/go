@@ -27,7 +27,6 @@ export class AlbumList extends BaseListPagination {
         protected localStorageService: LocalStorageService,
         public service: AlbumService) {
         super();
-        console.log('test');
     }
 
 }

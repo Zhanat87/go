@@ -1,0 +1,1 @@
+ALTER TABLE "public"."artist" ADD COLUMN deleted_at timestamp;
