@@ -52,7 +52,6 @@ export class AlbumFormComponent extends BaseForm {
                 this.active = true;
 
                 this.artists = data[0] as Artist[];
-                console.log(this.artists);
 
                 this.setBreadCrumbs();
             },

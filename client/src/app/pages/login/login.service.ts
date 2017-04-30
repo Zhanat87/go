@@ -21,7 +21,7 @@ export class LoginService extends CommonService {
         return this.map(
             this.http.post(this.getUrl(), attributes)
                 .map(this.extractAllData)
-                .catch(this.handleError)
+                .catch(this.handleUnauthorizedError)
         );
     }
 }

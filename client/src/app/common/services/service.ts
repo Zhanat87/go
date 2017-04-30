@@ -44,7 +44,7 @@ export abstract class CommonService {
         return body.items || { };
     }
 
-    public handleError (error: any) {
+    public handleError(error: any) {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
 
@@ -71,7 +71,20 @@ export abstract class CommonService {
 
             return Observable.throw(errors);
         }
-        return this.handleError(error);
+
+        console.error(error);
+        return Observable.throw(error);
+    }
+
+    public handleUnauthorizedError(error: any) {
+        if (error.status == 401 && error.statusText == 'Unauthorized') {
+            let body = JSON.parse(error._body);
+
+            return Observable.throw(body.developer_message);
+        }
+
+        console.error(error);
+        return Observable.throw(error);
     }
 
     public http_build_query(params) {

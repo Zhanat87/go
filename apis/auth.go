@@ -9,15 +9,13 @@ import (
 	"github.com/Zhanat87/go/app"
 	"github.com/Zhanat87/go/errors"
 	"github.com/Zhanat87/go/responses"
-	//golang_errors "errors"
-	//"strconv"
 	"github.com/Zhanat87/go/daos"
 	"github.com/Zhanat87/go/models"
+	"strings"
 )
 
 type Credential struct {
 	Email    string `json:"email"`
-	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
@@ -31,13 +29,13 @@ func Auth(signingKey string) routing.Handler {
 
 		rs := app.GetRequestScope(c)
 		var user *models.User
-		if len(credential.Email) > 0 {
+		if strings.Contains(credential.Email, "@") {
 			user, err = daos.NewUserDAO().FindByEmail(rs, credential.Email)
 			if err != nil {
 				return errors.Unauthorized("user with this email not found")
 			}
 		} else {
-			user, err = daos.NewUserDAO().FindByUsername(rs, credential.Username)
+			user, err = daos.NewUserDAO().FindByUsername(rs, credential.Email)
 			if err != nil {
 				return errors.Unauthorized("user with this username not found")
 			}
@@ -61,15 +59,8 @@ func Auth(signingKey string) routing.Handler {
 }
 
 func JWTHandler(c *routing.Context, j *jwt.Token) error {
-	app.GetRequestScope(c).SetUserID(123)
+	// @link http://stackoverflow.com/questions/18041334/convert-interface-to-int-in-golang
+	userID := int(j.Claims.(jwt.MapClaims)["id"].(float64))
+	app.GetRequestScope(c).SetUserID(userID)
 	return nil
-	//if userID, ok := j.Claims.(jwt.MapClaims)["id"].(string); ok {
-	//	userID, err := strconv.Atoi(userID)
-	//	if err != nil {
-	//		return err
-	//	}
-	//	app.GetRequestScope(c).SetUserID(userID)
-	//	return nil
-	//}
-	//return golang_errors.New("JWTHandler: bad user id")
 }

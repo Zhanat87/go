@@ -7,6 +7,7 @@
                 <th>ID</th>
                 <th>username</th>
                 <th>email</th>
+                <th>full name</th>
                 <th>status</th>
                 <th><span style="margin: auto 34px;">created at</span></th>
                 <th><span style="margin: auto 34px;">updated at</span></th>
@@ -16,7 +17,7 @@
             <tr *ngFor="let row of data | paginate: { id: 'server', itemsPerPage: perPage, currentPage: currentPage, totalItems: total }">
                 <td>
                     <div class="col-xs-2" (click)="editModel(row.id)"><i class="ion-edit" title="edit"></i></div>
-                    <!--<div class="col-xs-2" *ngIf="!row.isDeleted" (click)="showDeleteModal(row.id)"><i class="ion-trash-b" title="delete"></i></div>-->
+                    <div class="col-xs-2" *ngIf="!row.isDeleted" (click)="showDeleteModal(row.id)"><i class="ion-trash-b" title="delete"></i></div>
                     <!--<div class="col-xs-2" *ngIf="!row.banned" (click)="showBannedModal(row.id)"><i class="fa fa fa-ban" title="banned"></i></div>-->
                     <!--<div class="col-xs-2" *ngIf="row.banned" (click)="showCancelBanModal(row.id)"><i class="ion-refresh" title="cancel banned status"></i></div>-->
                 </td>
@@ -28,6 +29,9 @@
                 </td>
                 <td>
                     {{ row.email }}
+                </td>
+                <td>
+                    {{ row.full_name }}
                 </td>
                 <td>
                     {{ row.status }}
@@ -44,30 +48,30 @@
 </div>
 <pagination-footer (pageChange)="getPage($event)" id="server"></pagination-footer>
 
-<!--&lt;!&ndash;deleteModal&ndash;&gt;-->
-<!--<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
-    <!--<div class="modal-dialog modal-sm">-->
-        <!--<div class="modal-content">-->
-            <!--<div class="modal-header">-->
-                <!--<h4 class="modal-title pull-left">Delete user</h4>-->
-                <!--<button type="button" class="close pull-right" aria-label="Close" (click)="hideDeleteModal()">-->
-                    <!--<span aria-hidden="true">&times;</span>-->
-                <!--</button>-->
-            <!--</div>-->
-            <!--<div class="modal-body">-->
-                <!--Are you sure that you want delete this user?-->
-            <!--</div>-->
-            <!--<div class="modal-footer">-->
-                <!--<button type="button" class="btn btn-danger" (click)="hideDeleteModal()">-->
-                    <!--No-->
-                <!--</button>-->
-                <!--<button class="btn btn-primary confirm-btn" (click)="delete()">-->
-                    <!--Yes-->
-                <!--</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+<!--deleteModal-->
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Delete user</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="hideDeleteModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure that you want delete this user?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="hideDeleteModal()">
+                    No
+                </button>
+                <button class="btn btn-primary confirm-btn" (click)="delete()">
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--&lt;!&ndash;bannedModal&ndash;&gt;-->
 <!--<div bsModal #bannedModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->

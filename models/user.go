@@ -54,6 +54,11 @@ func (m *User) BeforeInsert() {
 
 func (m *User) BeforeUpdate() {
 	m.Updated_at = time.Now().Format("2006-01-02 15:04:05")
+
+	if len(m.Password) > 0 {
+		hash, _ := m.Hash(m.Password)
+		m.Password = hash
+	}
 }
 
 func (m *User) ValidatePassword(password string) bool {

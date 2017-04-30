@@ -22,6 +22,9 @@ export class LoginComponent {
     public errorMessage: string;
     public active: boolean = true;
 
+    public emailError: boolean = false;
+    public passwordError: boolean = false;
+
     public response: LoginResponse;
 
     constructor(fb: FormBuilder,
@@ -49,26 +52,43 @@ export class LoginComponent {
                     data => {
                         this.response = data as LoginResponse;
 
-                        if (this.response.data) {
-                            this.localStorageService.set('id_token', this.response.data.token);
-                            this.localStorageService.set('currentUser', JSON.stringify(this.response.data.user));
-                            this.redirectToReferrer();
-                        } else  {
-                            this.error = true;
-                            this.errorMessage = this.response.message;
-                            this.email.valid = false;
-                            this.password.valid = false;
-                            this.email.touched = true;
-                            this.password.touched = true;
-                        }
+                        this.localStorageService.set('id_token', this.response.data.token);
+                        this.localStorageService.set('currentUser', JSON.stringify(this.response.data.user));
+                        this.redirectToReferrer();
                     },
                     error => {
-                        this.errorMessage = <any>error
+                        this.serverErrors(error);
                     },
                     () => {
                         this.active = true;
                     },
                 );
+        }
+    }
+
+    serverErrors(error: any): void {
+        this.error = true;
+        this.errorMessage = error;
+
+        if (error == 'Authentication failed: user with this username not found' ||
+            error == 'Authentication failed: user with this email not found') {
+            this.email.valid = false;
+            this.email.touched = true;
+
+            this.password.valid = true;
+            this.password.touched = false;
+
+            this.emailError = true;
+            this.passwordError = false;
+        } else if (error == 'Authentication failed: password not valid') {
+            this.password.valid = false;
+            this.password.touched = true;
+
+            this.email.valid = true;
+            this.email.touched = false;
+
+            this.passwordError = true;
+            this.emailError = false;
         }
     }
 
