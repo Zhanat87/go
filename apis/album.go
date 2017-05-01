@@ -12,7 +12,7 @@ type (
 	// albumService specifies the interface for the album service needed by albumResource.
 	albumService interface {
 		Get(rs app.RequestScope, id int) (*models.Album, error)
-		Query(rs app.RequestScope, offset, limit int) ([]models.Album, error)
+		Query(rs app.RequestScope, offset, limit int) ([]models.AlbumForClient, error)
 		Count(rs app.RequestScope) (int, error)
 		Create(rs app.RequestScope, model *models.Album) (*models.Album, error)
 		Update(rs app.RequestScope, id int, model *models.Album) (*models.Album, error)

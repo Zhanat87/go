@@ -15,14 +15,14 @@ func NewAlbumDAO() *AlbumDAO {
 }
 
 // Get reads the album with the specified ID from the database.
-func (dao *AlbumDAO) Get2(rs app.RequestScope, id int) (*models.Album, error) {
+func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (*models.Album, error) {
 	var album models.Album
 	err := rs.Tx().Select().Model(id, &album)
 	return &album, err
 }
 
 // Get reads the album with the specified ID from the database.
-func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (album *models.Album, err error) {
+func (dao *AlbumDAO) GetForClient(rs app.RequestScope, id int) (album *models.AlbumForClient, err error) {
 	q := rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name").
 		From("album").Where(dbx.HashExp{"album.id": id}).
 		LeftJoin("artist", dbx.NewExp("\"artist\".\"id\" = \"album\".\"artist_id\""))
@@ -73,7 +73,7 @@ func (dao *AlbumDAO) Query2(rs app.RequestScope, offset, limit int) ([]models.Al
 }
 
 // Query retrieves the album records with the specified offset and limit from the database.
-func (dao *AlbumDAO) Query(rs app.RequestScope, offset, limit int) (albums []models.Album, err error) {
+func (dao *AlbumDAO) Query(rs app.RequestScope, offset, limit int) (albums []models.AlbumForClient, err error) {
 	err = rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name").
 		From("album").
 		LeftJoin("artist", dbx.NewExp("\"artist\".\"id\" = \"album\".\"artist_id\"")).

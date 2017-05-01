@@ -12,7 +12,7 @@ type albumDAO interface {
 	// Count returns the number of albums.
 	Count(rs app.RequestScope) (int, error)
 	// Query returns the list of the albums with the given offset and limit.
-	Query(rs app.RequestScope, offset, limit int) ([]models.Album, error)
+	Query(rs app.RequestScope, offset, limit int) ([]models.AlbumForClient, error)
 	// Create saves a new album in the storage.
 	Create(rs app.RequestScope, album *models.Album) error
 	// Update updates the album with the given ID in the storage.
@@ -74,6 +74,6 @@ func (s *AlbumService) Count(rs app.RequestScope) (int, error) {
 }
 
 // Query returns the albums with the specified offset and limit.
-func (s *AlbumService) Query(rs app.RequestScope, offset, limit int) ([]models.Album, error) {
+func (s *AlbumService) Query(rs app.RequestScope, offset, limit int) ([]models.AlbumForClient, error) {
 	return s.dao.Query(rs, offset, limit)
 }

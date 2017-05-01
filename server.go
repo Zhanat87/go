@@ -101,6 +101,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		TokenHandler:  apis.JWTHandler,
 	}))
 	rg.Delete("/auth/sign-out", apis.SignOut())
+	rg.Patch("/auth/refresh-jwt-token", apis.RefreshJWTToken(app.Config.JWTSigningKey))
 
 	rg.Get("/restricted", func(c *routing.Context) error {
 		claims := c.Get("JWT").(*jwt.Token).Claims.(jwt.MapClaims)

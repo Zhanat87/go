@@ -14,6 +14,10 @@ type Album struct {
 	Id         int    `json:"id" db:"id"`
 	Title      string `json:"title" db:"title"`
 	ArtistId   uint   `json:"artistId,string" db:"artist_id"`
+}
+
+type AlbumForClient struct {
+	Album
 	ArtistName string `json:"artistName" db:"artist_name"`
 }
 

@@ -15,6 +15,7 @@ import (
 	"github.com/Zhanat87/go/db"
 	"github.com/Zhanat87/go/helpers"
 	golang_errors "errors"
+	"github.com/go-redis/redis"
 )
 
 type Credential struct {
@@ -51,12 +52,7 @@ func SignIn(signingKey string) routing.Handler {
 			return errors.Unauthorized("password not valid")
 		}
 
-		token, err := auth.NewJWT(jwt.MapClaims{
-			"id":       user.GetId(),
-			"username": user.GetUsername(),
-			"email":    user.GetEmail(),
-			"exp":      time.Now().Add(time.Hour * 72).Unix(),
-		}, signingKey)
+		token, err := createToken(user, signingKey)
 		if err != nil {
 			return errors.Unauthorized(err.Error())
 		}
@@ -84,12 +80,50 @@ func SignOut() routing.Handler {
 		t := time.Now().Unix()
 		delta := unixTime - t
 
-		redis := db.NewRedis()
-		err := redis.Set(helpers.GetJWTToken(c), true, time.Second * time.Duration(delta)).Err()
+		err := db.NewRedis().Set(helpers.GetJWTToken(c), true, time.Second * time.Duration(delta)).Err()
 		if err != nil {
-			panic(err)
+			errors.InternalServerError(err)
 		}
 
 		return c.Write(responses.APISuccess{Status: 200, Message: "token_invalidated"})
 	}
+}
+
+func RefreshJWTToken(signingKey string) routing.Handler {
+	return func(c *routing.Context) error {
+		client := db.NewRedis()
+		token := helpers.GetJWTToken(c)
+		_, err := client.Get(token + "_refresh").Result()
+		if err == redis.Nil {
+			userDAO := daos.NewUserDAO()
+			user, err := userDAO.Get(app.GetRequestScope(c), app.GetRequestScope(c).UserID())
+			if err != nil {
+				return errors.NotFound("user")
+			}
+			token, err := createToken(user, signingKey)
+			if err != nil {
+				return errors.Unauthorized(err.Error())
+			}
+
+			client.Set(token + "_refresh", true, time.Hour * 24).Err()
+			if err != nil {
+				errors.InternalServerError(err)
+			}
+
+			return c.Write(responses.APISuccess{Status: 200, Message: token})
+		} else if err != nil {
+			return errors.InternalServerError(err)
+		} else {
+			return errors.Unauthorized("token can refreshed only one time")
+		}
+	}
+}
+
+func createToken(user *models.User, signingKey string) (string, error) {
+	return auth.NewJWT(jwt.MapClaims{
+		"id":       user.GetId(),
+		"username": user.GetUsername(),
+		"email":    user.GetEmail(),
+		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+	}, signingKey)
 }

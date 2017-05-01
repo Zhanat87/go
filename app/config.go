@@ -27,6 +27,9 @@ type appConfig struct {
 	JWTSigningKey         string `mapstructure:"jwt_signing_key"`
 	// JWT verification key. required.
 	JWTVerificationKey    string `mapstructure:"jwt_verification_key"`
+	// redis
+	REDIS_DSN             string `mapstructure:"redis_dsn"`
+	REDIS_DSN_DOCKER      string `mapstructure:"redis_dsn_docker"`
 }
 
 func (config appConfig) Validate() error {
@@ -84,4 +87,12 @@ func LoadConfig(configPaths ...string) error {
 		return err
 	}
 	return Config.Validate()
+}
+
+func (config appConfig) GetRedisDSN() string {
+	if os.Getenv("HOME") == "/root" {
+		return config.REDIS_DSN_DOCKER
+	} else {
+		return config.REDIS_DSN
+	}
 }

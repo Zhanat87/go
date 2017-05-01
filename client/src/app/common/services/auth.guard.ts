@@ -4,9 +4,9 @@ import {Response, Http, Headers, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs";
 import {tokenNotExpired, JwtHelper} from "angular2-jwt";
 import {Environment} from "../environment";
-import {RefreshToken} from "../entities/refreshToken";
 import { LocalStorageService } from 'angular-2-local-storage';
 import {trim} from "../utils";
+import {SuccessResponse} from "../entities/successResponse";
 
 /**
  * https://angular.io/docs/ts/latest/api/router/index/CanActivate-interface.html
@@ -48,16 +48,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         this.refreshTokenQuery()
             .subscribe(
                 data => {
-                    let res = data as RefreshToken;
-                    if (res.message == 'token_refreshed') {
-                        this.localStorageService.set('id_token', res.data.token);
+                    console.log('refresh token data', data);
+                    let res = data as SuccessResponse;
+                    if (res.status == 200) {
+                        this.localStorageService.set('id_token', res.message);
                         this.checkAccess(false);
                     }
                 },
                 error => {
                     /*
-                     {"message":"Token has expired and can no longer be refreshed","status_code":500}
-                     {"message":"Token has expired","status_code":401}
+                     user not found
+                     server error
+                     token was expired
+                     token can refreshed only one time
                      */
                     console.log('refresh token error', error);
                     this.logout();
@@ -68,14 +71,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             );
     }
 
-    refreshTokenQuery() : Observable<RefreshToken> {
+    refreshTokenQuery() : Observable<SuccessResponse> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', 'Bearer ' + this.localStorageService.get('id_token'));
         let options = new RequestOptions({ headers: headers });
 
         return this.http
-            .patch(Environment.API_ENDPOINT + 'auth/refresh', null, options)
+            .patch(Environment.API_ENDPOINT + 'v1/auth/refresh-jwt-token', null, options)
             .map((res:Response) => res.json())
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
