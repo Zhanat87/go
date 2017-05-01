@@ -2,12 +2,10 @@
 
 # build client with aot, it's equivalent to: npm run build:aot:prod
 # aot compiled into client/compiled, need rewrite code for aot compilation
-cd client
-#cd client && npm run build:aot
+cd client && npm run build:aot
 #cd client && npm run prebuild:prod && npm run build:prod
-cd ../
 #npm run prebuild:prod && npm run build:prod
-git add . && git commit -m 'deploy' && git push origin master
+cd ~/go && git add . && git commit -m 'deploy' && git push origin master
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)
 # not need remove, because db data was deleted in postgres

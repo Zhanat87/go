@@ -9,5 +9,6 @@ Used technologies:
 * postgres, golang migrations
 * continuous integration and continuous delivery - run only deploy.sh script
 * digital ocean
+* redis
 * [backend](http://zhanat.site:8080/ping)
 * [frontend](http://zhanat.site:8081/login) - demo username/password: test@test.com/pass
