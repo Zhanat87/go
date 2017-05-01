@@ -1,5 +1,10 @@
 # Go RESTful backend and Angular2+ SPA frontend
 
+Links:
+
+* [backend](http://zhanat.site:8080/ping)
+* [frontend](http://zhanat.site:8081/login) - demo username/password: test@test.com/pass
+
 Used technologies:
 
 * golang 1.8+
@@ -10,5 +15,3 @@ Used technologies:
 * continuous integration and continuous delivery - run only deploy.sh script
 * digital ocean
 * redis
-* [backend](http://zhanat.site:8080/ping)
-* [frontend](http://zhanat.site:8081/login) - demo username/password: test@test.com/pass
