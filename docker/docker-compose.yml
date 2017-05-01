@@ -45,6 +45,12 @@ services:
   #    - ./postgres/.env
   #  dns: 8.8.8.8
 
+  redis:
+    image: phpdockerio/redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
   ###############################################################################
   # golang
   ###############################################################################
@@ -69,8 +75,10 @@ services:
 #      - ./bin/go:/go/src/github.com/Zhanat87/go
     links:
       - postgresql
+      - redis
     depends_on:
       - postgresql
+      - redis
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
 #    command: ["./wait-for-it.sh", "postgresql:5433", "--", "php", "test.php"]
@@ -174,10 +182,6 @@ services:
   #stack-memcached:
   #  image: phpdockerio/memcached:latest
   #  container_name: stack-memcached
-
-  #stack-redis:
-  #  image: phpdockerio/redis:latest
-  #  container_name: stack-redis
 
   #stack-mongodb:
   #  image: mongo

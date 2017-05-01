@@ -18,6 +18,8 @@ import (
 	"github.com/Zhanat87/go/services"
 	"os"
 	"database/sql"
+	"github.com/dgrijalva/jwt-go"
+	"time"
 )
 
 func main() {
@@ -92,11 +94,23 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 
 	rg := router.Group("/v1")
 
-	rg.Post("/auth", apis.Auth(app.Config.JWTSigningKey))
+	rg.Post("/auth/sign-in", apis.SignIn(app.Config.JWTSigningKey))
+	// @link https://github.com/go-ozzo/ozzo-routing#handlers
 	rg.Use(auth.JWT(app.Config.JWTVerificationKey, auth.JWTOptions{
 		SigningMethod: app.Config.JWTSigningMethod,
 		TokenHandler:  apis.JWTHandler,
 	}))
+	rg.Delete("/auth/sign-out", apis.SignOut())
+
+	rg.Get("/restricted", func(c *routing.Context) error {
+		claims := c.Get("JWT").(*jwt.Token).Claims.(jwt.MapClaims)
+
+		unixTime := int64(claims["exp"].(float64))
+		t := time.Now().Unix()
+		delta := unixTime - t
+	        return c.Write(fmt.Sprintf("id: %d, username: %s, email: %s, exp: %v, exp date: %v, delta: %v, ct: %v",
+			claims["id"], claims["username"], claims["email"], claims["exp"], unixTime, delta, t))
+	})
 
 	artistDAO := daos.NewArtistDAO()
 	apis.ServeArtistResource(rg, services.NewArtistService(artistDAO))

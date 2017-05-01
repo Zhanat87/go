@@ -7,7 +7,7 @@ import { LoginResponse } from './login.response';
 
 @Injectable()
 export class LoginService extends CommonService {
-    public url = 'v1/auth';
+    public url = 'v1/auth/sign-in';
     
     constructor (public http: Http) {
         super();

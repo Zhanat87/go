@@ -6,6 +6,7 @@ import {tokenNotExpired, JwtHelper} from "angular2-jwt";
 import {Environment} from "../environment";
 import {RefreshToken} from "../entities/refreshToken";
 import { LocalStorageService } from 'angular-2-local-storage';
+import {trim} from "../utils";
 
 /**
  * https://angular.io/docs/ts/latest/api/router/index/CanActivate-interface.html
@@ -23,6 +24,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return this.checkAccess();
     }
 
+    // if set invalidate token app redirect to login page as expected
     checkAccess(needCheck?: boolean): Observable<boolean> | Promise<boolean> | boolean {
         if (needCheck === false) {
             return true;
@@ -30,10 +32,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if (this.localStorageService.get('id_token')) {
             let date = new Date;
             let jwtHelper = new JwtHelper;
-            if (jwtHelper.getTokenExpirationDate(this.localStorageService.get<string>('id_token')).getTime() < date.getTime() + 600000) {
+            if (jwtHelper.getTokenExpirationDate(trim(this.localStorageService.get<string>('id_token'), '"')).getTime() < date.getTime() + 600000) {
                 this.refreshToken();
             } else {
-                return tokenNotExpired(null, this.localStorageService.get<string>('id_token'));
+                return tokenNotExpired(null, trim(this.localStorageService.get<string>('id_token'), '"'));
             }
         } else {
             this.localStorageService.set('referrer', window.location.pathname);

@@ -5,10 +5,11 @@ import {GlobalState} from '../../../global.state';
 import 'style-loader!./baPageTop.scss';
 import {User} from "../../../modules/user/user";
 import {LogoutService} from '../../../pages/login/logout.service';
-import {LogoutResponse} from "../../../pages/login/logout.response";
 import {Router} from "@angular/router";
 import {tokenNotExpired} from "angular2-jwt";
 import { LocalStorageService } from 'angular-2-local-storage';
+import {SuccessResponse} from "../../../common/entities/successResponse";
+import {trim} from "../../../common/utils";
 
 @Component({
     selector: 'ba-page-top',
@@ -44,26 +45,25 @@ export class BaPageTop {
     }
 
     public signOut(): void {
-        if (!tokenNotExpired(null, this.localStorageService.get<string>('id_token'))) {
+        if (!tokenNotExpired(null, trim(this.localStorageService.get<string>('id_token'), '"'))) {
             console.log('token expired');
             this.cleanAndQuit();
         } else {
-            this.cleanAndQuit();
-            // this.logoutService.signOut()
-            //     .subscribe(
-            //         data => {
-            //             let response = data as LogoutResponse;
-            //
-            //             if (response.message == 'token_invalidated') {
-            //                 this.cleanAndQuit();
-            //             } else  {
-            //                 console.log('error');
-            //             }
-            //         },
-            //         error => {
-            //             console.log('token invalidate error', error);
-            //         },
-            //     );
+            this.logoutService.signOut()
+                .subscribe(
+                    data => {
+                        let response = data as SuccessResponse;
+
+                        if (response.message == 'token_invalidated') {
+                            this.cleanAndQuit();
+                        } else  {
+                            console.log('error');
+                        }
+                    },
+                    error => {
+                        console.log('token invalidate error', error);
+                    },
+                );
         }
     }
 
