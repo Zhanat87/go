@@ -74,7 +74,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     refreshTokenQuery() : Observable<SuccessResponse> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'Bearer ' + this.localStorageService.get('id_token'));
+        headers.append('Authorization', 'Bearer ' + trim(this.localStorageService.get<string>('id_token'), '"'));
         let options = new RequestOptions({ headers: headers });
 
         return this.http

@@ -44,31 +44,6 @@ export abstract class CommonForm implements OnInit, OnDestroy, OnAfterSave {
         {key: 3, value: 'deleted'},
     ];
 
-    public weekDays = [
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-        'sunday',
-    ];
-
-    public months = [
-        'january',
-        'february',
-        'march',
-        'april',
-        'may',
-        'june',
-        'july',
-        'august',
-        'september',
-        'october',
-        'november',
-        'december',
-    ];
-
     ngOnDestroy(): void {
         this.localStorageService.remove('breadCrumbs');
     }

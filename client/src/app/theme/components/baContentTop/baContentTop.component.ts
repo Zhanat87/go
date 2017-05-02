@@ -54,7 +54,7 @@ export class BaContentTop implements OnInit, OnDestroy {
     private setBreadCrumbs(): void {
         this.breadCrumbs = [];
         if (this.router.url == '/index') {
-            this.activePageTitle = 'Balu admin';
+            this.activePageTitle = 'Home page';
         } else {
             this.breadCrumbs.push(new BreadCrumb('Home', '/index'));
             let breadCrumbs = this.localStorageService.get('breadCrumbs') ?
