@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NgaModule} from '../../theme/nga.module';
-import {Ng2PaginationModule} from 'ng2-pagination';
+import {NgxPaginationModule} from 'ngx-pagination';
 import { ModalModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 import {RouterModule} from "@angular/router";
@@ -11,11 +11,13 @@ import {RouterModule} from "@angular/router";
 import {CommonPaginationFooterComponent} from "../components/pagination/footer/footer";
 import {CommonPaginationHeaderComponent} from "../components/pagination/header/header";
 
+import { CKEditorComponent } from '../components/ckeditor/ckeditor.component';
+
 @NgModule({
     imports: [
         CommonModule,
         NgaModule,
-        Ng2PaginationModule,
+        NgxPaginationModule,
         ModalModule.forRoot(),
         FormsModule,
         RouterModule,
@@ -23,17 +25,19 @@ import {CommonPaginationHeaderComponent} from "../components/pagination/header/h
     declarations: [
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
+        CKEditorComponent,
     ],
     exports: [
         CommonModule,
         NgaModule,
-        Ng2PaginationModule,
+        NgxPaginationModule,
         ModalModule,
         FormsModule,
         RouterModule,
 
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
+        CKEditorComponent,
     ],
 })
 export class SharedModule {}
