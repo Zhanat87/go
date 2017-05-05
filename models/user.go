@@ -15,7 +15,7 @@ type User struct {
 	Username   string `json:"username" db:"username"`
 	Email      string `json:"email" db:"email"`
 	Password   string `json:"password,omitempty" db:"password"`
-	Avatar     string `json:"avatar,omitempty" db:"avatar"`
+	Avatar     string `json:"avatar" db:"avatar"`
 	Full_name  string `json:"full_name" db:"full_name"`
 	Phones     string `json:"phones,omitempty" db:"phones"`
 	Status     int8   `json:"status,string" db:"status"`
@@ -42,6 +42,10 @@ func (m User) GetUsername() string {
 
 func (m User) GetEmail() string {
 	return m.Email
+}
+
+func (m User) GetAvatar() string {
+	return m.Avatar
 }
 
 func (m *User) BeforeInsert() {

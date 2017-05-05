@@ -58,6 +58,21 @@
             </div>
 
             <div class="form-group">
+                <label>Avatar</label>
+                <div *ngIf="model.avatar">
+                    <img [src]="model.avatar" />
+                    <br><br>
+                    <button class="btn btn-danger" (click)="deleteAvatar($event)">
+                        <i class="ion-trash-b" title="delete avatar"></i>
+                        Delete avatar
+                    </button>
+                </div>
+
+                <img-cropper [image]="cropperData" [settings]="cropperSettings"></img-cropper><br>
+                <img [src]="cropperData.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+            </div>
+
+            <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-2" [class.hidden]="editMode">
                     <a class="btn btn-info" [routerLink]="[listUrl]">cancel</a>
                     <button class="btn btn-success" type="submit" [disabled]="blocked || !UserForm.form.valid">create</button>

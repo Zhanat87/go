@@ -10,13 +10,14 @@ import { UserService } from './user.service';
 import {GlobalState} from "../../global.state";
 import { LocalStorageService } from 'angular-2-local-storage';
 
+import {CropperSettings} from 'ng2-img-cropper';
+
 @Component({
     moduleId: 'user',
     selector: 'user-form',
     templateUrl: './form.html',
     styleUrls: ['./../../common/styles/form.scss'],
 })
-
 export class UserFormComponent extends BaseForm {
 
     public listUrl = '/users';
@@ -26,6 +27,9 @@ export class UserFormComponent extends BaseForm {
 
     private currentUser: User;
 
+    cropperData: any;
+    cropperSettings: CropperSettings;
+
     constructor(
         public router: Router,
         public route: ActivatedRoute,
@@ -33,14 +37,13 @@ export class UserFormComponent extends BaseForm {
         protected localStorageService: LocalStorageService,
         public service: UserService) {
         super();
+
+        this.initCropper();
     }
 
     initCreateForm() {
-
         this.active = true;
-
         this.setBreadCrumbs();
-
     }
 
     initEditForm(id) {
@@ -66,11 +69,50 @@ export class UserFormComponent extends BaseForm {
     }
 
     onAfterSave(): void {
+        this.updateIfNeedCurrentAdmin();
+        super.onAfterSave();
+    }
+
+    updateIfNeedCurrentAdmin(): void {
         if (this.editMode && this.currentUser.id == this.model.id) {
-            this.localStorageService.set('currentUser', JSON.stringify({id: this.model.id, username: this.model.username, email: this.model.email}));
+            this.localStorageService.set('currentUser', JSON.stringify(this.model));
             this._state.notifyChanged('currentUserUpdated');
         }
-        super.onAfterSave();
+    }
+
+    initCropper(): void {
+        this.cropperSettings = new CropperSettings();
+        this.cropperSettings.width = 100;
+        this.cropperSettings.height = 100;
+        this.cropperSettings.croppedWidth =100;
+        this.cropperSettings.croppedHeight = 100;
+        this.cropperSettings.canvasWidth = 400;
+        this.cropperSettings.canvasHeight = 300;
+
+        this.cropperData = {};
+    }
+
+    fillModel(): void {
+        if (this.cropperData.image) {
+            this.model.avatar = this.cropperData.image;
+        }
+    }
+
+    deleteAvatar(event): void {
+        this.model.avatar = '';
+        this.service.update(this.model, this.model.id)
+            .subscribe(
+                data => {
+                    if (data.id) {
+                        this.updateIfNeedCurrentAdmin();
+
+                        let target = event.currentTarget || event.target || event.srcElement;
+                        jQuery(target).parent().remove();
+                    } else {
+                        console.log('error delete avatar', data);
+                    }
+                },
+                error => this.errorMessage = <any>error);
     }
 
 }

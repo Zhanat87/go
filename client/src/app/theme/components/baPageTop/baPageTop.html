@@ -9,11 +9,12 @@
     <!--</div>-->
 
     <div class="user-profile clearfix">
-        <div class="dropdown al-user-profile">
-            <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown"
-               aria-expanded="false">
-                <!--<img src="{{ ( 'Nasta' | baProfilePicture ) }}">-->
-                {{ user?.email }}
+        <div class="dropdown al-user-profile" [ngStyle]="{'top.px': user?.avatar ? 0 : 14}">
+            <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+                <img [src]="user?.avatar" *ngIf="user?.avatar" />
+                <span *ngIf="!user?.avatar">
+                    {{ user?.email }}
+                </span>
             </a>
             <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
                 <li class="dropdown-item"><i class="dropdown-arr"></i></li>
