@@ -6,17 +6,17 @@ import {UserFormComponent} from './user-form.component';
 import {UserRoutingModule} from './user-routing.module';
 import {UserService} from "./user.service";
 
-import {ImageCropperComponent} from 'ng2-img-cropper';
+import {ImageCropperModule} from 'ng2-img-cropper';
 
 @NgModule({
     imports: [
         SharedModule,
         UserRoutingModule,
+        ImageCropperModule,
     ],
     declarations: [
         UserList,
         UserFormComponent,
-        ImageCropperComponent,
     ],
     providers: [
         UserService,
