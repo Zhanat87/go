@@ -10,6 +10,7 @@ import { BlankLayoutComponent } from "./common/components/layouts/blank/blank.co
 import {HomeComponent} from "./pages/home/home.component";
 import {LoginComponent} from "./pages/login/login.component";
 import { PageNotFoundComponent } from "./pages/404/page-not-found.component";
+import {ChatComponent} from "./pages/chat/chat.component";
 
 export const routes: Routes = [
 
@@ -21,6 +22,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'index', pathMatch: 'full' },
       { path: 'index', component: HomeComponent },
+      { path: 'chat', component: ChatComponent },
       { path: 'users', loadChildren: 'app/modules/user/user.module#UserModule' },
       { path: 'albums', loadChildren: 'app/modules/album/album.module#AlbumModule' },
       { path: 'artists', loadChildren: 'app/modules/artist/artist.module#ArtistModule' },

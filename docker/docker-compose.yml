@@ -53,6 +53,16 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - ./redis-data:/data
+  # https://hub.docker.com/_/mongo/
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+  #  environment:
+  #    - MONGO_URL=mongodb://mongodb:27019
+    command:
+      - mongod --smallfiles --quiet --logpath=/dev/null
 
   ###############################################################################
   # golang
@@ -79,9 +89,11 @@ services:
     links:
       - postgresql
       - redis
+      - mongo
     depends_on:
       - postgresql
       - redis
+      - mongo
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
 #    command: ["./wait-for-it.sh", "postgresql:5433", "--", "php", "test.php"]
@@ -97,6 +109,12 @@ services:
 #      - echo from golang
 #      - exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
   # docker exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+
+  golang-chat-server:
+    image: zhanat87/golang-chat-server:latest
+    container_name: golang-chat-server
+    ports:
+      - "8080:8080"
 
   ###############################################################################
   # client-nginx
@@ -185,16 +203,6 @@ services:
   #stack-memcached:
   #  image: phpdockerio/memcached:latest
   #  container_name: stack-memcached
-
-  #stack-mongodb:
-  #  image: mongo
-  #  container_name: stack-mongodb
-  #  ports:
-  #    - "27019:27017"
-  ##  environment:
-  ##    - MONGO_URL=mongodb://mongodb:27019
-  #  command:
-  #    mongod --smallfiles --quiet --logpath=/dev/null
 
   #stack-elasticsearch:
   #  build: .

@@ -1,0 +1,1 @@
+ALTER TABLE "public"."user" ADD COLUMN avatar_string character varying(100) DEFAULT '';

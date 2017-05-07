@@ -10,6 +10,7 @@ import (
 	"github.com/go-ozzo/ozzo-routing/auth"
 	"github.com/go-ozzo/ozzo-routing/content"
 	"github.com/go-ozzo/ozzo-routing/cors"
+	"github.com/go-ozzo/ozzo-routing/file"
 	_ "github.com/lib/pq"
 	"github.com/Zhanat87/go/apis"
 	"github.com/Zhanat87/go/app"
@@ -20,6 +21,8 @@ import (
 	"database/sql"
 	"github.com/dgrijalva/jwt-go"
 	"time"
+	"github.com/go-bongo/bongo"
+	"gopkg.in/mgo.v2/bson"
 )
 
 func main() {
@@ -82,6 +85,11 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 			"avatar crop upload\r\n")
 	})
 
+	// serve static files
+	router.Get("/static/*", file.Server(file.PathMap{
+		"/": "/",
+	}))
+
 	router.Use(
 		app.Init(logger),
 		content.TypeNegotiator(content.JSON),
@@ -112,6 +120,12 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		delta := unixTime - t
 	        return c.Write(fmt.Sprintf("id: %d, username: %s, email: %s, exp: %v, exp date: %v, delta: %v, ct: %v",
 			claims["id"], claims["username"], claims["email"], claims["exp"], unixTime, delta, t))
+	})
+
+	rg.Get("/user-id", func(c *routing.Context) error {
+		userId := app.GetRequestScope(c).UserID()
+
+		return c.Write(fmt.Sprintf("user id: %d", userId))
 	})
 
 	artistDAO := daos.NewArtistDAO()

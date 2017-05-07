@@ -4,6 +4,9 @@ import (
 	"github.com/go-ozzo/ozzo-validation"
 	"time"
 	"golang.org/x/crypto/bcrypt"
+	"github.com/satori/go.uuid"
+	"github.com/Zhanat87/go/helpers"
+	"os"
 )
 
 /*
@@ -11,16 +14,17 @@ import (
 @link http://stackoverflow.com/questions/21151765/json-cannot-unmarshal-string-into-go-value-of-type-int64
  */
 type User struct {
-	Id         int    `json:"id" db:"id"`
-	Username   string `json:"username" db:"username"`
-	Email      string `json:"email" db:"email"`
-	Password   string `json:"password,omitempty" db:"password"`
-	Avatar     string `json:"avatar" db:"avatar"`
-	Full_name  string `json:"full_name" db:"full_name"`
-	Phones     string `json:"phones,omitempty" db:"phones"`
-	Status     int8   `json:"status,string" db:"status"`
-	Created_at string `json:"created_at,omitempty" db:"created_at"`
-	Updated_at string `json:"updated_at,omitempty" db:"updated_at"`
+	Id           int    `json:"id" db:"id"`
+	Username     string `json:"username" db:"username"`
+	Email        string `json:"email" db:"email"`
+	Password     string `json:"password,omitempty" db:"password"`
+	Avatar       string `json:"avatar" db:"avatar"`
+	AvatarString string `json:"avatar_string,omitempty" db:"avatar_string"`
+	Full_name    string `json:"full_name" db:"full_name"`
+	Phones       string `json:"phones,omitempty" db:"phones"`
+	Status       int8   `json:"status,string" db:"status"`
+	Created_at   string `json:"created_at,omitempty" db:"created_at"`
+	Updated_at   string `json:"updated_at,omitempty" db:"updated_at"`
 }
 
 func (m User) Validate() error {
@@ -48,12 +52,18 @@ func (m User) GetAvatar() string {
 	return m.Avatar
 }
 
+func (m User) GetAvatarString() string {
+	return m.AvatarString
+}
+
 func (m *User) BeforeInsert() {
 	m.Created_at = time.Now().Format("2006-01-02 15:04:05")
 	m.Updated_at = m.Created_at
 
 	hash, _ := m.Hash(m.Password)
 	m.Password = hash
+
+	m.SaveAvatar()
 }
 
 func (m *User) BeforeUpdate() {
@@ -63,6 +73,8 @@ func (m *User) BeforeUpdate() {
 		hash, _ := m.Hash(m.Password)
 		m.Password = hash
 	}
+
+	m.SaveAvatar()
 }
 
 func (m *User) ValidatePassword(password string) bool {
@@ -79,4 +91,24 @@ func (m *User) Hash(password string) (string, error) {
 		return "", err
 	}
 	return string(hash), nil
+}
+
+func (m *User) SaveAvatar() {
+	avatarString := m.AvatarString
+	if len(m.Avatar) > 0 {
+		avatarUUID := uuid.NewV4()
+		img, err := helpers.SaveImageToDisk("static/users/avatars/", avatarUUID.String(), m.Avatar)
+		if err != nil {
+			panic(err)
+		}
+		m.AvatarString = img
+	} else {
+		m.AvatarString = ""
+	}
+	if len(avatarString) > 0 {
+		err := os.Remove("static/users/avatars/" + avatarString)
+		if err != nil {
+			panic(err)
+		}
+	}
 }

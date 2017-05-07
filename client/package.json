@@ -18,6 +18,7 @@
     "@angularclass/conventions-loader": "1.0.13",
     "@angularclass/hmr": "1.2.2",
     "@angularclass/hmr-loader": "3.0.2",
+    "@types/socket.io-client": "^1.4.29",
     "amcharts3": "github:amcharts/amcharts3",
     "ammap3": "github:amcharts/ammap3",
     "angular-2-local-storage": "^1.0.1",
@@ -52,6 +53,7 @@
     "normalize.css": "4.2.0",
     "reflect-metadata": "0.1.9",
     "rxjs": "5.1.1",
+    "socket.io-client": "^1.7.3",
     "tether": "1.4.0",
     "zone.js": "0.7.7"
   },
