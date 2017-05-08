@@ -7,6 +7,7 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/Zhanat87/go/helpers"
 	"os"
+	"github.com/go-ozzo/ozzo-validation/is"
 )
 
 /*
@@ -18,7 +19,8 @@ type User struct {
 	Id           int    `json:"id" db:"id"`
 	Username     string `json:"username" db:"username"`
 	Email        string `json:"email" db:"email"`
-	Password     string `json:"password,omitempty" db:"password"`
+	Password     string `json:"password,omitempty"`
+	PasswordHash string `json:"-" db:"password"`
 	Avatar       string `json:"avatar" db:"avatar"`
 	AvatarString string `json:"avatar_string,omitempty" db:"avatar_string"`
 	Full_name    string `json:"full_name" db:"full_name"`
@@ -31,8 +33,16 @@ type User struct {
 func (m User) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Username, validation.Required, validation.Length(0, 100)),
-		validation.Field(&m.Email, validation.Required, validation.Length(0, 100)),
+		validation.Field(&m.Email, validation.Required, validation.Length(0, 100), is.Email),
 		validation.Field(&m.Password, validation.Required, validation.Length(4, 100)),
+		validation.Field(&m.Status, validation.Required),
+	)
+}
+
+func (m User) ValidateUpdate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.Username, validation.Required, validation.Length(0, 100)),
+		validation.Field(&m.Email, validation.Required, validation.Length(0, 100), is.Email),
 		validation.Field(&m.Status, validation.Required),
 	)
 }
@@ -62,7 +72,7 @@ func (m *User) BeforeInsert() {
 	m.Updated_at = m.Created_at
 
 	hash, _ := m.Hash(m.Password)
-	m.Password = hash
+	m.PasswordHash = hash
 
 	m.SaveAvatar()
 }
@@ -72,14 +82,14 @@ func (m *User) BeforeUpdate() {
 
 	if len(m.Password) > 0 {
 		hash, _ := m.Hash(m.Password)
-		m.Password = hash
+		m.PasswordHash = hash
 	}
 
 	m.SaveAvatar()
 }
 
 func (m *User) ValidatePassword(password string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(m.Password), []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(m.PasswordHash), []byte(password))
 	if err != nil {
 		return false
 	}

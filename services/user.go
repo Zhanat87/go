@@ -49,7 +49,7 @@ func (s *UserService) Create(rs app.RequestScope, model *models.User) (*models.U
 
 // Update updates the user with the specified ID.
 func (s *UserService) Update(rs app.RequestScope, id int, model *models.User) (*models.User, error) {
-	if err := model.Validate(); err != nil {
+	if err := model.ValidateUpdate(); err != nil {
 		return nil, err
 	}
 	if err := s.dao.Update(rs, id, model); err != nil {

@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {NgaModule} from '../../theme/nga.module';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { ModalModule } from 'ngx-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {RouterModule} from "@angular/router";
 
 // note: http or authHttp module include here
@@ -20,6 +20,7 @@ import { CKEditorComponent } from '../components/ckeditor/ckeditor.component';
         NgxPaginationModule,
         ModalModule.forRoot(),
         FormsModule,
+        ReactiveFormsModule,
         RouterModule,
     ],
     declarations: [
@@ -33,6 +34,7 @@ import { CKEditorComponent } from '../components/ckeditor/ckeditor.component';
         NgxPaginationModule,
         ModalModule,
         FormsModule,
+        ReactiveFormsModule,
         RouterModule,
 
         CommonPaginationFooterComponent,

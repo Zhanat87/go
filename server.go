@@ -101,6 +101,10 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 
 	rg := router.Group("/v1")
 
+	userDAO := daos.NewUserDAO()
+	userService := services.NewUserService(userDAO)
+	rg.Post("/auth/sign-up", apis.SignUp(userService))
+
 	rg.Post("/auth/sign-in", apis.SignIn(app.Config.JWTSigningKey))
 	// @link https://github.com/go-ozzo/ozzo-routing#handlers
 	rg.Use(auth.JWT(app.Config.JWTVerificationKey, auth.JWTOptions{
@@ -132,8 +136,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	albumDAO := daos.NewAlbumDAO()
 	apis.ServeAlbumResource(rg, services.NewAlbumService(albumDAO))
 
-	userDAO := daos.NewUserDAO()
-	apis.ServeUserResource(rg, services.NewUserService(userDAO))
+	apis.ServeUserResource(rg, userService)
 
 	return router
 }

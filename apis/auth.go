@@ -89,6 +89,23 @@ func SignOut() routing.Handler {
 	}
 }
 
+func SignUp(service userService) routing.Handler {
+	return func(c *routing.Context) error {
+		var model models.User
+		if err := c.Read(&model); err != nil {
+			return err
+		}
+		model.Username = model.Email
+		model.Status = 1
+		_, err := service.Create(app.GetRequestScope(c), &model)
+		if err != nil {
+			return err
+		}
+
+		return c.Write(responses.APISuccess{Status: 200, Message: "user success registered!"})
+	}
+}
+
 func RefreshJWTToken(signingKey string) routing.Handler {
 	return func(c *routing.Context) error {
 		client := db.NewRedis()

@@ -70,6 +70,8 @@ export abstract class CommonService {
             }
 
             return Observable.throw(errors);
+        } else if (error.status == 500 && body.error_code == "INTERNAL_SERVER_ERROR") {
+            return Observable.throw(body.developer_message);
         }
 
         console.error(error);

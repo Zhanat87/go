@@ -1,7 +1,7 @@
 <div class="auth-main">
     <div class="auth-block">
         <h1>Sign in to golang admin app</h1>
-        <!--<a routerLink="/register" class="auth-link">New to balu admin? Sign up!</a>-->
+        <a routerLink="/register" class="auth-link">New to golang admin app? Sign up!</a>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
             <div class="form-group row" [ngClass]="{'has-error': (!email.valid && email.touched || emailError),
