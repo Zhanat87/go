@@ -33,6 +33,22 @@ export class UserList extends BaseListPagination {
         super();
     }
 
+    getUserPhone(user: User): string {
+        if (user.phones) {
+            let phones = JSON.parse(user.phones);
+            return phones.phone;
+        }
+        return '';
+    }
+
+    getUserMobilePhone(user: User): string {
+        if (user.phones) {
+            let phones = JSON.parse(user.phones);
+            return phones.mobile_phone;
+        }
+        return '';
+    }
+
     // ngOnDestroy() {
     //     super.ngOnDestroy();
     //     this.localStorageService.remove('bannedUserId');

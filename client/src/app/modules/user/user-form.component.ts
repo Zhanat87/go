@@ -59,6 +59,7 @@ export class UserFormComponent extends BaseForm {
 
                 this.model = data[0] as User;
 
+                this.setModelData();
                 this.setBreadCrumbs();
             },
             error => this.errorMessage = <any>error);
@@ -66,6 +67,14 @@ export class UserFormComponent extends BaseForm {
 
     getBreadCrumbTitle(): string {
         return this.editMode ? (this.currentUser.id == this.model.id ? 'Profile' : 'User: ' + this.model.username) : 'Create new user';
+    }
+
+    setModelData(): void {
+        if (this.model.phones) {
+            let phones = JSON.parse(this.model.phones);
+            this.model.phone = phones.phone;
+            this.model.mobile_phone = phones.mobile_phone;
+        }
     }
 
     onAfterSave(): void {
@@ -96,6 +105,9 @@ export class UserFormComponent extends BaseForm {
         if (this.cropperData.image) {
             this.model.avatar = this.cropperData.image;
         }
+        this.model.phones = JSON.stringify({"phone": this.model.phone, "mobile_phone": this.model.mobile_phone});
+        delete this.model.phone;
+        delete this.model.mobile_phone;
     }
 
     deleteAvatar(event): void {

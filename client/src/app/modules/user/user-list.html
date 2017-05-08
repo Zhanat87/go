@@ -10,6 +10,8 @@
                 <th>email</th>
                 <th>full name</th>
                 <th>status</th>
+                <th>phone</th>
+                <th>mobile</th>
                 <th><span style="margin: auto 34px;">created at</span></th>
                 <th><span style="margin: auto 34px;">updated at</span></th>
             </tr>
@@ -39,6 +41,12 @@
                 </td>
                 <td>
                     {{ row.status }}
+                </td>
+                <td>
+                    {{ getUserPhone(row) }}
+                </td>
+                <td>
+                    {{ getUserMobilePhone(row) }}
                 </td>
                 <td>
                     {{ row.created_at }}

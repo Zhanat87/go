@@ -73,6 +73,13 @@
             </div>
 
             <div class="form-group">
+                <label>Phones</label>
+                <input type="text" class="form-control" placeholder="Phone" [(ngModel)]="model.phone" name="phone">
+                <br>
+                <input type="text" class="form-control" placeholder="Mobile phone" [(ngModel)]="model.mobile_phone" name="mobile_phone">
+            </div>
+
+            <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-2" [class.hidden]="editMode">
                     <a class="btn btn-info" [routerLink]="[listUrl]">cancel</a>
                     <button class="btn btn-success" type="submit" [disabled]="blocked || !UserForm.form.valid">create</button>

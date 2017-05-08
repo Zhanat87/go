@@ -12,6 +12,7 @@ import (
 /*
 @link https://marcesher.com/2014/10/13/go-working-effectively-with-database-nulls/
 @link http://stackoverflow.com/questions/21151765/json-cannot-unmarshal-string-into-go-value-of-type-int64
+@link https://github.com/go-ozzo/ozzo-dbx#null-handling
  */
 type User struct {
 	Id           int    `json:"id" db:"id"`
@@ -21,7 +22,7 @@ type User struct {
 	Avatar       string `json:"avatar" db:"avatar"`
 	AvatarString string `json:"avatar_string,omitempty" db:"avatar_string"`
 	Full_name    string `json:"full_name" db:"full_name"`
-	Phones       string `json:"phones,omitempty" db:"phones"`
+	Phones       *string `json:"phones,omitempty" db:"phones"`
 	Status       int8   `json:"status,string" db:"status"`
 	Created_at   string `json:"created_at,omitempty" db:"created_at"`
 	Updated_at   string `json:"updated_at,omitempty" db:"updated_at"`

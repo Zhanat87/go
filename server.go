@@ -21,8 +21,6 @@ import (
 	"database/sql"
 	"github.com/dgrijalva/jwt-go"
 	"time"
-	"github.com/go-bongo/bongo"
-	"gopkg.in/mgo.v2/bson"
 )
 
 func main() {

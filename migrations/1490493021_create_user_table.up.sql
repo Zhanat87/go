@@ -7,7 +7,6 @@ CREATE TABLE "public"."user" (
     "password" character varying(72),
     "avatar" character varying(100) NOT NULL,
     "full_name" character varying(100),
---     jsonb
     "phones" character varying(100) NOT NULL,
     "status" smallint,
     "created_at" timestamp,
