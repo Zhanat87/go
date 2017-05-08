@@ -110,11 +110,11 @@ services:
 #      - exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
   # docker exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
 
-  golang-chat-server:
-    image: zhanat87/golang-chat-server:latest
-    container_name: golang-chat-server
-    ports:
-      - "8080:8080"
+#  golang-chat-server:
+#    image: zhanat87/golang-chat-server:latest
+#    container_name: golang-chat-server
+#    ports:
+#      - "8080:8080"
 
   ###############################################################################
   # client-nginx
