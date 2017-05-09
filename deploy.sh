@@ -2,7 +2,7 @@
 
 # build client with aot, it's equivalent to: npm run build:aot:prod
 # aot compiled into client/compiled, need rewrite code for aot compilation
-#cd client && npm run build:aot
+cd client && npm run build:aot
 #cd client && npm run prebuild:prod && npm run build:prod
 #npm run prebuild:prod && npm run build:prod
 cd ~/go && git add . && git commit -m 'deploy' && git push origin master
