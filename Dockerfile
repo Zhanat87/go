@@ -29,6 +29,11 @@ ADD /bin/go /go/go_restful
 ADD /bin/migrate /go/migrate
 ADD config /go/config
 ADD migrations /go/migrations
+RUN mkdir /go/logs
+# http://stackoverflow.com/questions/30741995/cannot-execute-run-mkdir-in-a-dockerfile
+RUN mkdir -p /go/static/users/avatars
+#RUN mkdir /go/static && mkdir /go/static/users && mkdir /go/static/users/avatars
+ADD .env_docker /go/.env
 ENTRYPOINT /go/go_restful
 
 # Service listens on port 8080.

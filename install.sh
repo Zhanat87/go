@@ -9,6 +9,11 @@ cd docker && docker-compose stop
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)
 #docker rm $(docker ps -a -q)
+
+# docker ERROR: for  no such image:
+# http://stackoverflow.com/questions/37454548/docker-compose-no-such-image
+#docker rm
+
 # remove container
 docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
 ## remove image and pull new
@@ -24,6 +29,8 @@ docker pull zhanat87/golang
 # start docker-compose
 # sudo service postgresql stop
 docker-compose up -d
+# wait for postgresql connection will worked
+php sleep.php
 docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
 # list of all docker images on host machine
 # build client

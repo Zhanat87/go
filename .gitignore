@@ -12,6 +12,7 @@
 /client/compiled
 #/docker
 .env
+.env_docker
 /docker/.env
 /docker/client-nginx/logs
 /golang-chat-server
