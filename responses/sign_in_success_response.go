@@ -9,7 +9,7 @@ type SignInSuccessResponse struct {
 
 type SignInData struct  {
 	Token string      `json:"token"`
-	User  models.User `json:"user"`
+	User  models.UserIdentity `json:"user"`
 }
 
 func MakeSignInSuccessResponse(token string, identity models.Identity) SignInSuccessResponse {
@@ -17,7 +17,7 @@ func MakeSignInSuccessResponse(token string, identity models.Identity) SignInSuc
 		APISuccess: APISuccess{Status: 200, Message: "ok"},
 		Data: SignInData{
 			Token: token,
-			User:  models.User{Id: identity.GetId(), Username: identity.GetUsername(), Email: identity.GetEmail(), Avatar: identity.GetAvatar(), AvatarString: identity.GetAvatarString()},
+			User:  models.UserIdentity{Id: identity.GetId(), Username: identity.GetUsername(), Email: identity.GetEmail(), Avatar: identity.GetAvatar(), AvatarString: identity.GetAvatarString()},
 		},
 	}
 }

@@ -111,8 +111,7 @@ export class UserFormComponent extends BaseForm {
     }
 
     deleteAvatar(event): void {
-        this.model.avatar = '';
-        this.model.avatar_string = '';
+        this.model.avatar = null;
         this.service.update(this.model, this.model.id)
             .subscribe(
                 data => {

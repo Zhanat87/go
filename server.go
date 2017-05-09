@@ -23,6 +23,7 @@ import (
 	"time"
 	"github.com/joho/godotenv"
 	"github.com/Zhanat87/go/helpers"
+	golang_errors "errors"
 )
 
 func main() {
@@ -78,8 +79,10 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	router.To("GET,HEAD", "/test", func(c *routing.Context) error {
 		c.Abort()  // skip all other middlewares/handlers
 		var variables string
-		for _, e := range os.Environ() {
-			variables += e + "\r\n"
+		if helpers.IsDocker() == false {
+			for _, e := range os.Environ() {
+				variables += e + "\r\n"
+			}
 		}
 		_, err := sql.Open("postgres", dsn)
 		if err != nil {
@@ -90,6 +93,13 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\naot compilation works now\r\nwebhook\r\n" +
 			"avatar crop upload\r\n")
 	})
+
+	if helpers.IsDocker() == false {
+		router.To("GET", "/telegram/<msg>", func(c *routing.Context) error {
+			helpers.LogError(golang_errors.New(c.Param("msg")))
+			return c.Write(fmt.Sprintf("send message to telegram success: %s", c.Param("msg")))
+		})
+	}
 
 	// serve static files
 	router.Get("/static/*", file.Server(file.PathMap{

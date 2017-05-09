@@ -8,6 +8,7 @@ import (
 	"github.com/Zhanat87/go/helpers"
 	"os"
 	"github.com/go-ozzo/ozzo-validation/is"
+	"database/sql"
 )
 
 /*
@@ -19,16 +20,24 @@ type User struct {
 	Id                 int    `json:"id" db:"id"`
 	Username           string `json:"username" db:"username"`
 	Email              string `json:"email" db:"email"`
-	Password           string `json:"password,omitempty"`
+	Password           string `json:"password,omitempty" db:"-"`
 	PasswordHash       string `json:"-" db:"password_hash"`
 	PasswordResetToken *string `json:"-" db:"password_reset_token"`
-	Avatar             string `json:"avatar" db:"avatar"`
-	AvatarString       string `json:"avatar_string,omitempty" db:"avatar_string"`
+	Avatar             JsonNullString `json:"avatar" db:"avatar"`
+	AvatarString       JsonNullString `json:"avatar_string,omitempty" db:"avatar_string"`
 	Full_name          string `json:"full_name" db:"full_name"`
 	Phones             *string `json:"phones,omitempty" db:"phones"`
 	Status             int8   `json:"status,string" db:"status"`
 	Created_at         string `json:"created_at,omitempty" db:"created_at"`
 	Updated_at         string `json:"updated_at,omitempty" db:"updated_at"`
+}
+
+type UserIdentity struct {
+	Id                 int    `json:"id"`
+	Username           string `json:"username"`
+	Email              string `json:"email"`
+	Avatar             string `json:"avatar,omitempty"`
+	AvatarString       string `json:"avatar_string,omitempty"`
 }
 
 func (m User) Validate() error {
@@ -61,11 +70,11 @@ func (m User) GetEmail() string {
 }
 
 func (m User) GetAvatar() string {
-	return m.Avatar
+	return m.Avatar.String
 }
 
 func (m User) GetAvatarString() string {
-	return m.AvatarString
+	return m.AvatarString.String
 }
 
 func (m *User) BeforeInsert() {
@@ -106,21 +115,22 @@ func (m *User) Hash(password string) (string, error) {
 }
 
 func (m *User) SaveAvatar() {
-	avatarString := m.AvatarString
-	if len(m.Avatar) > 0 {
+	avatarNotEmpty := m.AvatarString.Valid
+	avatarString := m.AvatarString.String
+	if m.Avatar.Valid {
 		avatarUUID := uuid.NewV4()
-		img, err := helpers.SaveImageToDisk("static/users/avatars/", avatarUUID.String(), m.Avatar)
+		img, err := helpers.SaveImageToDisk("static/users/avatars/", avatarUUID.String(), m.Avatar.String)
 		if err != nil {
 			panic(err)
 		}
-		m.AvatarString = img
+		m.AvatarString = JsonNullString{sql.NullString{String:img, Valid:true}}
 	} else {
-		m.AvatarString = ""
-	}
-	if len(avatarString) > 0 {
-		err := os.Remove("static/users/avatars/" + avatarString)
-		if err != nil {
-			panic(err)
+		m.AvatarString = JsonNullString{sql.NullString{String:"", Valid:false}}
+		if avatarNotEmpty {
+			err := os.Remove("static/users/avatars/" + avatarString)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 }
