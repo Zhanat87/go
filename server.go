@@ -30,7 +30,6 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		helpers.FailOnError(err, "Error loading .env file", true)
-		//panic(fmt.Errorf("Error loading .env file: %s", err))
 	}
 
 	// load application configurations

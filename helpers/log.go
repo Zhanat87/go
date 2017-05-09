@@ -24,7 +24,7 @@ func LogInfo(msg string, sendErrorEmail bool) {
 }
 
 func saveToFile(msg string, filename string, sendErrorEmail bool) {
-	f, err := os.OpenFile("logs/" + filename + ".log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	f, err := os.OpenFile(os.Getenv("APP_DIR") + "/logs/" + filename + ".log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		if sendErrorEmail {
 			SendErrorEmail(os.Getenv("GO_LANG_ERROR_SUBJECT"), fmt.Sprintf("error opening file: %v", err))
