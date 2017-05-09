@@ -3,6 +3,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ChatComponent } from './chat/chat.component';
 import { RegisterComponent } from './register/register.component';
+import { PasswordResetRequestComponent } from './passwordResetRequest/password-reset-request.component';
+import { PasswordResetComponent } from './passwordReset/password-reset.component';
 
 export const PageComponents = [
     PageNotFoundComponent,
@@ -10,4 +12,6 @@ export const PageComponents = [
     LoginComponent,
     ChatComponent,
     RegisterComponent,
+    PasswordResetRequestComponent,
+    PasswordResetComponent,
 ];

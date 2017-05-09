@@ -21,9 +21,17 @@ import (
 	"database/sql"
 	"github.com/dgrijalva/jwt-go"
 	"time"
+	"github.com/joho/godotenv"
+	"github.com/Zhanat87/go/helpers"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		helpers.FailOnError(err, "Error loading .env file", true)
+		//panic(fmt.Errorf("Error loading .env file: %s", err))
+	}
+
 	// load application configurations
 	if err := app.LoadConfig("./config"); err != nil {
 		panic(fmt.Errorf("Invalid application configuration: %s", err))
@@ -104,6 +112,8 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	userDAO := daos.NewUserDAO()
 	userService := services.NewUserService(userDAO)
 	rg.Post("/auth/sign-up", apis.SignUp(userService))
+	rg.Post("/auth/password-reset-request", apis.PasswordResetRequest(userDAO))
+	rg.Post("/auth/password-reset/<token>", apis.PasswordReset(userDAO))
 
 	rg.Post("/auth/sign-in", apis.SignIn(app.Config.JWTSigningKey))
 	// @link https://github.com/go-ozzo/ozzo-routing#handlers

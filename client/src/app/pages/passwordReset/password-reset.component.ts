@@ -1,23 +1,22 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
-import {RegisterService} from "./register.service";
+import {PasswordResetService} from "./password-reset.service";
 import {SuccessResponse} from "../../common/entities/successResponse";
-import {Router} from "@angular/router";
+import {Subscription} from "rxjs/Subscription";
+import {ActivatedRoute, Router} from "@angular/router";
+import {EqualPasswordsValidator} from "../../theme/validators/equalPasswords.validator";
 
 @Component({
-    selector: 'register',
-    templateUrl: './register.html',
-    styleUrls: ['./register.scss'],
+    selector: 'password-reset',
+    templateUrl: './password-reset.html',
+    styleUrls: ['./password-reset.scss'],
     providers: [
-        RegisterService,
+        PasswordResetService,
     ],
 })
-export class RegisterComponent {
+export class PasswordResetComponent implements OnInit, OnDestroy {
 
     public form: FormGroup;
-    public name: AbstractControl;
-    public email: AbstractControl;
     public password: AbstractControl;
     public repeatPassword: AbstractControl;
     public passwords: FormGroup;
@@ -27,24 +26,37 @@ export class RegisterComponent {
     public errorMessage: string;
     private response: SuccessResponse;
 
+    private sub: Subscription;
+    private token: string;
+
     constructor(fb: FormBuilder,
+                private route: ActivatedRoute,
                 private router: Router,
-                private service: RegisterService) {
+                private service: PasswordResetService) {
 
         this.form = fb.group({
-            'name': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-            'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
             'passwords': fb.group({
                 'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
                 'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
             }, {validator: EqualPasswordsValidator.validate('password', 'repeatPassword')})
         });
 
-        this.name = this.form.controls['name'];
-        this.email = this.form.controls['email'];
         this.passwords = <FormGroup> this.form.controls['passwords'];
         this.password = this.passwords.controls['password'];
         this.repeatPassword = this.passwords.controls['repeatPassword'];
+    }
+
+    /**
+     * @link https://angular-2-training-book.rangle.io/handout/routing/routeparams.html
+     */
+    ngOnInit(): void {
+        this.sub = this.route.params.subscribe(params => {
+            this.token = params['token'];
+        });
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 
     public onSubmit(values: any): void {
@@ -52,7 +64,7 @@ export class RegisterComponent {
         if (this.form.valid) {
             values.password = values.passwords.password;
             delete values.passwords;
-            this.service.signUp(values)
+            this.service.passwordReset(this.token, values)
                 .subscribe(
                     data => {
                         this.response = data as SuccessResponse;
@@ -73,9 +85,9 @@ export class RegisterComponent {
 
     handleErrors(error: string): void {
         switch (error) {
-            case 'Internal server error: pq: duplicate key value violates unique constraint "constraint_unique_email"':
-                this.errorMessage = 'user with this email exist';
-                this.email.valid = false;
+            case 'the requested resource was not found.':
+                this.errorMessage = 'token not exist';
+                this.password.valid = false;
                 break;
         }
     }

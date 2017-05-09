@@ -16,6 +16,10 @@ import (
 	"github.com/Zhanat87/go/helpers"
 	golang_errors "errors"
 	"github.com/go-redis/redis"
+	"github.com/satori/go.uuid"
+	"fmt"
+	"os"
+	"github.com/go-ozzo/ozzo-dbx"
 )
 
 type Credential struct {
@@ -143,4 +147,71 @@ func createToken(user *models.User, signingKey string) (string, error) {
 		"email":    user.GetEmail(),
 		"exp":      time.Now().Add(time.Hour * 24).Unix(),
 	}, signingKey)
+}
+
+func PasswordResetRequest(userDAO *daos.UserDAO) routing.Handler {
+	return func(c *routing.Context) error {
+		// @link https://github.com/go-ozzo/ozzo-routing#reading-request-data
+		data := &struct{
+			Email string
+		}{}
+		if err := c.Read(&data); err != nil {
+			return err
+		}
+
+		rs := app.GetRequestScope(c)
+		user, err := userDAO.FindByEmail(rs, data.Email)
+		if err != nil {
+			return err
+		}
+
+		token := uuid.NewV4().String()
+		// @link https://groups.google.com/forum/#!topic/golang-nuts/2MzMl_sff4E
+		user.PasswordResetToken = &token
+		msg := fmt.Sprintf("<a href='%spassword-reset/%s' target='_blank'>reset password</a>",
+			os.Getenv("CLIENT_BASE_URL"), token)
+		_, err = helpers.SendEmail(user.Email, "Golang app: request password reset", msg)
+		if err != nil {
+			return err
+		}
+		dbBuilder := rs.Tx()
+		_, err = dbBuilder.Update("user", dbx.Params{"password_reset_token": token},
+			dbx.HashExp{"id": user.Id}).Execute()
+		if err != nil {
+			return err
+		}
+
+		return c.Write(responses.APISuccess{Status: 200, Message: "Check your email for further instructions!"})
+	}
+}
+
+func PasswordReset(userDAO *daos.UserDAO) routing.Handler {
+	return func(c *routing.Context) error {
+		// @link https://github.com/go-ozzo/ozzo-routing#reading-request-data
+		data := &struct{
+			Password string
+		}{}
+		if err := c.Read(&data); err != nil {
+			return err
+		}
+
+		rs := app.GetRequestScope(c)
+		user, err := userDAO.FindByField(rs, "password_reset_token", c.Param("token"))
+		if err != nil {
+			return err
+		}
+		hash, err := user.Hash(data.Password)
+		if err != nil {
+			return err
+		}
+
+		dbBuilder := rs.Tx()
+		_, err = dbBuilder.Update("user", dbx.Params{"password_reset_token": nil, "password_hash": hash},
+			dbx.HashExp{"id": user.Id}).Execute()
+		if err != nil {
+			return err
+		}
+
+		return c.Write(responses.APISuccess{Status: 200, Message: "Password success changed!"})
+	}
 }

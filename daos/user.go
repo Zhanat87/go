@@ -77,3 +77,17 @@ func (dao *UserDAO) FindByUsername(rs app.RequestScope, username string) (*model
 	err := rs.Tx().Select().From("user").Where(dbx.HashExp{"username": username}).One(&user)
 	return &user, err
 }
+
+// Get reads the user with the specified column and it's value from the database.
+func (dao *UserDAO) FindByField(rs app.RequestScope, column, value string) (*models.User, error) {
+	var user models.User
+	// if not found, return error
+	err := rs.Tx().Select().From("user").Where(dbx.HashExp{column: value}).One(&user)
+	return &user, err
+}
+
+// Update saves the changes to an user in the database.
+func (dao *UserDAO) Save(rs app.RequestScope, user *models.User) error {
+	user.BeforeUpdate()
+	return rs.Tx().Model(user).Exclude("Id").Update()
+}

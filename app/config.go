@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/go-ozzo/ozzo-validation"
+	//"github.com/Zhanat87/go/helpers"
 	"os"
 )
 
@@ -59,6 +60,7 @@ func (config appConfig) GetDSN() string {
 	//		os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
 	//}
 	if os.Getenv("HOME") == "/root" {
+	//if helpers.IsDocker() {
 		return config.DSN_DOCKER_COMPOSE_V3
 	} else {
 		return config.DSN
@@ -91,6 +93,7 @@ func LoadConfig(configPaths ...string) error {
 
 func (config appConfig) GetRedisDSN() string {
 	if os.Getenv("HOME") == "/root" {
+	//if helpers.IsDocker() {
 		return config.REDIS_DSN_DOCKER
 	} else {
 		return config.REDIS_DSN

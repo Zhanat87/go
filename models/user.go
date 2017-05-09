@@ -16,18 +16,19 @@ import (
 @link https://github.com/go-ozzo/ozzo-dbx#null-handling
  */
 type User struct {
-	Id           int    `json:"id" db:"id"`
-	Username     string `json:"username" db:"username"`
-	Email        string `json:"email" db:"email"`
-	Password     string `json:"password,omitempty"`
-	PasswordHash string `json:"-" db:"password"`
-	Avatar       string `json:"avatar" db:"avatar"`
-	AvatarString string `json:"avatar_string,omitempty" db:"avatar_string"`
-	Full_name    string `json:"full_name" db:"full_name"`
-	Phones       *string `json:"phones,omitempty" db:"phones"`
-	Status       int8   `json:"status,string" db:"status"`
-	Created_at   string `json:"created_at,omitempty" db:"created_at"`
-	Updated_at   string `json:"updated_at,omitempty" db:"updated_at"`
+	Id                 int    `json:"id" db:"id"`
+	Username           string `json:"username" db:"username"`
+	Email              string `json:"email" db:"email"`
+	Password           string `json:"password,omitempty"`
+	PasswordHash       string `json:"-" db:"password_hash"`
+	PasswordResetToken *string `json:"-" db:"password_reset_token"`
+	Avatar             string `json:"avatar" db:"avatar"`
+	AvatarString       string `json:"avatar_string,omitempty" db:"avatar_string"`
+	Full_name          string `json:"full_name" db:"full_name"`
+	Phones             *string `json:"phones,omitempty" db:"phones"`
+	Status             int8   `json:"status,string" db:"status"`
+	Created_at         string `json:"created_at,omitempty" db:"created_at"`
+	Updated_at         string `json:"updated_at,omitempty" db:"updated_at"`
 }
 
 func (m User) Validate() error {

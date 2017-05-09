@@ -72,6 +72,8 @@ export abstract class CommonService {
             return Observable.throw(errors);
         } else if (error.status == 500 && body.error_code == "INTERNAL_SERVER_ERROR") {
             return Observable.throw(body.developer_message);
+        } else if (error.status == 404 && body.error_code == "NOT_FOUND") {
+            return Observable.throw(body.message);
         }
 
         console.error(error);
