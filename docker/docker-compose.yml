@@ -54,15 +54,15 @@ services:
     volumes:
       - ./redis-data:/data
   # https://hub.docker.com/_/mongo/
-  mongo:
-    image: mongo
-    container_name: mongo
-    ports:
-      - "27017:27017"
-  #  environment:
-  #    - MONGO_URL=mongodb://mongodb:27019
-    command:
-      - mongod --smallfiles --quiet --logpath=/dev/null
+#  mongo:
+#    image: mongo
+#    container_name: mongo
+#    ports:
+#      - "27017:27017"
+#  #  environment:
+#  #    - MONGO_URL=mongodb://mongodb:27019
+#    command:
+#      - mongod --smallfiles --quiet --logpath=/dev/null
 
   ###############################################################################
   # golang
@@ -89,11 +89,11 @@ services:
     links:
       - postgresql
       - redis
-      - mongo
+#      - mongo
     depends_on:
       - postgresql
       - redis
-      - mongo
+#      - mongo
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
 #    command: ["./wait-for-it.sh", "postgresql:5433", "--", "php", "test.php"]
