@@ -89,6 +89,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		} else {
 			variables += "success connected\r\n"
 		}
+
 		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\naot compilation works now\r\nwebhook\r\n" +
 			"avatar crop upload\r\n")
 	})
@@ -115,10 +116,12 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		}),
 		app.Transactional(db),
 	)
+	// note: from here start access to db
+	userDAO := daos.NewUserDAO()
+	router.Get("/auth/*", apis.SocialAuth(userDAO))
 
 	rg := router.Group("/v1")
 
-	userDAO := daos.NewUserDAO()
 	userService := services.NewUserService(userDAO)
 	rg.Post("/auth/sign-up", apis.SignUp(userService))
 	rg.Post("/auth/password-reset-request", apis.PasswordResetRequest(userDAO))

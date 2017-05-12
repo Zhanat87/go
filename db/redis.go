@@ -8,6 +8,8 @@ import (
 
 /*
 @link https://github.com/go-redis/redis
+@link https://redis.io/commands/get
+redis-cli
  */
 func NewRedis() *redis.Client {
 	var dsn string

@@ -59,8 +59,8 @@
 
             <div class="form-group">
                 <label>Avatar</label>
-                <div *ngIf="model.avatar">
-                    <img [src]="model.avatar" />
+                <div *ngIf="avatar">
+                    <img [src]="avatar" />
                     <br><br>
                     <button class="btn btn-danger" (click)="deleteAvatar($event)">
                         <i class="ion-trash-b" title="delete avatar"></i>

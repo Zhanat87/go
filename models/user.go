@@ -22,14 +22,16 @@ type User struct {
 	Email              string `json:"email" db:"email"`
 	Password           string `json:"password,omitempty" db:"-"`
 	PasswordHash       string `json:"-" db:"password_hash"`
-	PasswordResetToken *string `json:"-" db:"password_reset_token"`
+	PasswordResetToken JsonNullString `json:"-" db:"password_reset_token"`
 	Avatar             JsonNullString `json:"avatar" db:"avatar"`
 	AvatarString       JsonNullString `json:"avatar_string,omitempty" db:"avatar_string"`
-	Full_name          string `json:"full_name" db:"full_name"`
-	Phones             *string `json:"phones,omitempty" db:"phones"`
-	Status             int8   `json:"status,string" db:"status"`
+	FullName           string `json:"full_name" db:"full_name"`
+	Phones             JsonNullString `json:"phones,omitempty" db:"phones"`
+	Status             int    `json:"status,string" db:"status"`
 	Created_at         string `json:"created_at,omitempty" db:"created_at"`
 	Updated_at         string `json:"updated_at,omitempty" db:"updated_at"`
+	Provider       	   JsonNullString `json:"provider,omitempty" db:"provider"`
+	ProviderId         JsonNullString `json:"provider_id,omitempty" db:"provider_id"`
 }
 
 type UserIdentity struct {
@@ -125,8 +127,10 @@ func (m *User) SaveAvatar() {
 		}
 		m.AvatarString = JsonNullString{sql.NullString{String:img, Valid:true}}
 	} else {
-		m.AvatarString = JsonNullString{sql.NullString{String:"", Valid:false}}
-		if avatarNotEmpty {
+		if avatarNotEmpty == false {
+			m.AvatarString = JsonNullString{sql.NullString{String:"", Valid:false}}
+		}
+		if avatarNotEmpty && (len(avatarString) > 0 && avatarString[0:4] != "http") {
 			err := os.Remove("static/users/avatars/" + avatarString)
 			if err != nil {
 				panic(err)

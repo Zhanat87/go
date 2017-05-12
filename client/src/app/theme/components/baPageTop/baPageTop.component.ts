@@ -10,6 +10,7 @@ import {tokenNotExpired} from "angular2-jwt";
 import { LocalStorageService } from 'angular-2-local-storage';
 import {SuccessResponse} from "../../../common/entities/successResponse";
 import {trim} from "../../../common/utils";
+import {Environment} from "../../../common/environment";
 
 @Component({
     selector: 'ba-page-top',
@@ -75,6 +76,11 @@ export class BaPageTop {
         this.user = null;
         this.localStorageService.clearAll();
         this.redirectToLogin();
+    }
+
+    get avatar(): string {
+        return this.user.avatar_string ? (this.user.avatar_string.substr(0, 4) == 'http' ? this.user.avatar_string :
+            Environment.API_ENDPOINT + 'static/users/avatars/' + this.user.avatar_string) : '';
     }
 
 }

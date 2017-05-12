@@ -27,6 +27,7 @@ FROM golang:latest
 
 ADD /bin/go /go/go_restful
 ADD /bin/migrate /go/migrate
+ADD /bin/socketio-server /go/socketio-server
 ADD config /go/config
 ADD migrations /go/migrations
 RUN mkdir /go/logs
@@ -37,7 +38,7 @@ ADD .env_docker /go/.env
 ENTRYPOINT /go/go_restful
 
 # Service listens on port 8080.
-EXPOSE 8080
+EXPOSE 8080 5000
 
 # docker build -t zhanat87/golang .
 # docker run -d -p 8080:8080 zhanat87/golang

@@ -1,11 +1,16 @@
 import {Component} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
+import * as io from "socket.io-client";
 
 import 'style-loader!./login.scss';
 import {Router} from "@angular/router";
 import {LoginService} from "./login.service";
 import {LoginResponse} from "./login.response";
 import { LocalStorageService } from 'angular-2-local-storage';
+import {Environment} from "../../common/environment";
+import {guid} from "../../common/utils";
+import BrowserWindowProxy = Electron.BrowserWindowProxy;
+import {User} from "../../modules/user/user";
 
 @Component({
     selector: 'login',
@@ -52,9 +57,7 @@ export class LoginComponent {
                     data => {
                         this.response = data as LoginResponse;
 
-                        this.localStorageService.set('id_token', this.response.data.token);
-                        this.localStorageService.set('currentUser', JSON.stringify(this.response.data.user));
-                        this.redirectToReferrer();
+                        this.signIn(this.response.data.token, this.response.data.user);
                     },
                     error => {
                         this.serverErrors(error);
@@ -64,6 +67,12 @@ export class LoginComponent {
                     },
                 );
         }
+    }
+
+    signIn(token: string, user: User): void {
+        this.localStorageService.set('id_token', token);
+        this.localStorageService.set('currentUser', JSON.stringify(user));
+        this.redirectToReferrer();
     }
 
     serverErrors(error: any): void {
@@ -94,6 +103,29 @@ export class LoginComponent {
 
     redirectToReferrer(): void {
         this.router.navigate([this.localStorageService.get('referrer') ? this.localStorageService.get('referrer') : '/']);
+    }
+
+    socialAuth(provider: string): void {
+        let strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+        let uuid = guid();
+        // let URL = Environment.API_ENDPOINT + `auth/login/${provider}?uuid=${uuid}`;
+        let URL = Environment.API_ENDPOINT + `auth/login/${provider}/${uuid}`;
+        let win = window.open(URL, "_blank", strWindowFeatures);
+        this.initSocket(uuid, win);
+    }
+
+    initSocket(uuid: string, win: any): void {
+        let socket = io(Environment.SOCKET_URL, {transports: ['websocket']});
+        let self = this;
+        socket.on('socialAuth' + uuid, function(message) {
+            console.log('socialAuth uuid client', message);
+            win.close();
+            if (message.error) {
+                self.errorMessage = message.error;
+            } else {
+                self.signIn(message.token, message.user);
+            }
+        });
     }
 
 }

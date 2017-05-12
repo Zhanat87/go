@@ -1,1 +1,1 @@
-ALTER TABLE "public"."user" ALTER COLUMN avatar character varying(100);
+ALTER TABLE "public"."user" ALTER COLUMN avatar TYPE character varying(100);

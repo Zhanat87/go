@@ -73,7 +73,7 @@ export class RegisterComponent {
 
     handleErrors(error: string): void {
         switch (error) {
-            case 'Internal server error: pq: duplicate key value violates unique constraint "constraint_unique_email"':
+            case 'Internal server error: pq: duplicate key value violates unique constraint "constraint_unique_email_by_provider"':
                 this.errorMessage = 'user with this email exist';
                 this.email.valid = false;
                 break;

@@ -1,1 +1,1 @@
-ALTER TABLE "public"."user" ALTER COLUMN phones character varying(100);
+ALTER TABLE "public"."user" ALTER COLUMN phones TYPE character varying(100);

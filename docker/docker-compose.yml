@@ -103,6 +103,7 @@ services:
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "python", "app.py"]
     ports:
       - "8080:8080"
+      - "5000:5000"
   # https://github.com/docker/compose/issues/1809
   #  command: exec -it golang /bin/bash echo from golang
 #    command:

@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 	"github.com/go-ozzo/ozzo-dbx"
+	"database/sql"
 )
 
 type Credential struct {
@@ -167,7 +168,8 @@ func PasswordResetRequest(userDAO *daos.UserDAO) routing.Handler {
 
 		token := uuid.NewV4().String()
 		// @link https://groups.google.com/forum/#!topic/golang-nuts/2MzMl_sff4E
-		user.PasswordResetToken = &token
+		//user.PasswordResetToken = &token
+		user.PasswordResetToken = models.JsonNullString{sql.NullString{String: token, Valid:true}}
 		msg := fmt.Sprintf("<a href='%spassword-reset/%s' target='_blank'>reset password</a>",
 			os.Getenv("CLIENT_BASE_URL"), token)
 		_, err = helpers.SendEmail(user.Email, "Golang app: request password reset", msg)

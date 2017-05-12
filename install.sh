@@ -32,6 +32,13 @@ docker-compose up -d
 # wait for postgresql connection will worked
 php sleep.php
 docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
+
+# stop procecc in port if not stopped
+# lsof -i :5000
+# lsof -t -i:5000 - get procecc id
+kill -9 $(lsof -t -i:5000)
+docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/socketio-server &
+
 # list of all docker images on host machine
 # build client
 #cd ../client && npm run prebuild:prod && npm run build:prod

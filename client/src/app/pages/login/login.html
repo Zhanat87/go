@@ -41,14 +41,23 @@
             </div>
         </form>
 
-        <!--<div class="auth-sep"><span><span>or Sign in with one click</span></span></div>-->
+        <div class="auth-sep"><span><span>or Sign in with one click</span></span></div>
 
-        <!--<div class="al-share-auth">-->
-            <!--<ul class="al-share clearfix">-->
-                <!--<li><i class="socicon socicon-facebook" title="Share on Facebook"></i></li>-->
-                <!--<li><i class="socicon socicon-twitter" title="Share on Twitter"></i></li>-->
-                <!--<li><i class="socicon socicon-google" title="Share on Google Plus"></i></li>-->
-            <!--</ul>-->
-        <!--</div>-->
+        <div class="al-share-auth">
+            <ul class="al-share clearfix">
+                <li (click)="socialAuth('facebook')">
+                    <i class="socicon socicon-facebook" title="Share on Facebook"></i>
+                </li>
+                <!--<li (click)="socialAuth('twitter')">-->
+                    <!--<i class="socicon socicon-twitter" title="Share on Twitter"></i>-->
+                <!--</li>-->
+                <li (click)="socialAuth('google')">
+                    <i class="socicon socicon-google" title="Share on Google Plus"></i>
+                </li>
+                <li (click)="socialAuth('github')">
+                    <i class="socicon socicon-github" title="Share on Github"></i>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

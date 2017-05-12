@@ -11,6 +11,7 @@ import {GlobalState} from "../../global.state";
 import { LocalStorageService } from 'angular-2-local-storage';
 
 import {CropperSettings} from 'ng2-img-cropper';
+import {Environment} from "../../common/environment";
 
 @Component({
     moduleId: 'user',
@@ -112,6 +113,7 @@ export class UserFormComponent extends BaseForm {
 
     deleteAvatar(event): void {
         this.model.avatar = null;
+        this.model.avatar_string = null;
         this.service.update(this.model, this.model.id)
             .subscribe(
                 data => {
@@ -125,6 +127,11 @@ export class UserFormComponent extends BaseForm {
                     }
                 },
                 error => this.errorMessage = <any>error);
+    }
+
+    get avatar(): string {
+        return this.model.avatar_string ? (this.model.avatar_string.substr(0, 4) == 'http' ? this.model.avatar_string :
+            Environment.API_ENDPOINT + 'static/users/avatars/' + this.model.avatar_string) : '';
     }
 
 }
