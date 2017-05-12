@@ -12,14 +12,15 @@ docker stop $(docker ps -a -q)
 
 # docker ERROR: for  no such image:
 # http://stackoverflow.com/questions/37454548/docker-compose-no-such-image
-#docker rm
+# docker rm
+docker-compose rm --all
 
 # remove container
 docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f
 ## remove image and pull new
 docker rmi $(docker images --filter=reference='zhanat87/golang') -f
 # delete all images
-#docker rmi $(docker images -q)
+#docker rmi $(docker images -q) -f
 # pull docker containers
 docker pull zhanat87/golang
 #docker pull postgres

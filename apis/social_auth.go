@@ -32,9 +32,12 @@ func SocialAuth(userDAO *daos.UserDAO) routing.Handler {
 		// setup gomniauth
 		gomniauth.SetSecurityKey(os.Getenv("GOMNIAUTH_SECURITY_KEY"))
 		gomniauth.WithProviders(
-			github.New(os.Getenv("GITHUB_CLIENT_ID"), os.Getenv("GITHUB_CLIENT_SECRET"), "http://localhost:8080/auth/callback/github/" + uuid),
-			google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_CLIENT_SECRET"), "http://localhost:8080/auth/callback/google/" + uuid),
-			facebook.New(os.Getenv("FACEBOOK_APP_ID"), os.Getenv("FACEBOOK_SECRET_KEY"), "http://localhost:8080/auth/callback/facebook/" + uuid),
+			github.New(os.Getenv("GITHUB_CLIENT_ID"), os.Getenv("GITHUB_CLIENT_SECRET"),
+				os.Getenv("API_BASE_URL") + "auth/callback/github/" + uuid),
+			google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_CLIENT_SECRET"),
+				os.Getenv("API_BASE_URL") + "auth/callback/google/" + uuid),
+			facebook.New(os.Getenv("FACEBOOK_APP_ID"), os.Getenv("FACEBOOK_SECRET_KEY"),
+				os.Getenv("API_BASE_URL") + "auth/callback/facebook/" + uuid),
 		)
 
 		var response error
