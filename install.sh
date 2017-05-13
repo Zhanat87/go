@@ -37,8 +37,8 @@ docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate
 # stop procecc in port if not stopped
 # lsof -i :5000
 # lsof -t -i:5000 - get procecc id
-kill -9 $(lsof -t -i:5000)
-docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/socketio-server &
+#kill -9 $(lsof -t -i:5000)
+#docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/socketio-server &
 
 # list of all docker images on host machine
 # build client
@@ -47,5 +47,7 @@ docker images
 # after docker containers start
 #docker exec -it restful /bin/bash
 #./migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+
+# docker-compose logs golang
 
 echo "install success"

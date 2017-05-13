@@ -3,5 +3,10 @@
     "id": "install-webhook",
     "execute-command": "/root/zhanat.site/install.sh",
     "command-working-directory": "/root/zhanat.site"
+  },
+  {
+    "id": "golang-socketio-server",
+    "execute-command": "/root/zhanat.site/golang-socketio-server/install.sh",
+    "command-working-directory": "/root/zhanat.site/golang-socketio-server"
   }
 ]

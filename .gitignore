@@ -17,6 +17,7 @@
 /docker/client-nginx/logs
 /golang-chat-server
 /logs
+/golang-socketio-server
 
 ############### start from api ozzo
 # Compiled Object files, Static and Dynamic libs (Shared Objects)

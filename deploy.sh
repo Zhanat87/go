@@ -6,7 +6,7 @@ cd client && npm run build:aot
 #cd client && npm run prebuild:prod && npm run build:prod
 #npm run prebuild:prod && npm run build:prod
 # build socket server
-cd ../socketio-server/ && go install
+#cd ~/go/socketio-server && go build -ldflags "-X main.Env=docker" -o ~/go/bin/socketio-server
 cd ~/go && git add . && git commit -m 'deploy' && git push origin master
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)
