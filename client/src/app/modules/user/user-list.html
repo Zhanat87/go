@@ -25,7 +25,7 @@
                     <!--<div class="col-xs-2" *ngIf="row.banned" (click)="showCancelBanModal(row.id)"><i class="ion-refresh" title="cancel banned status"></i></div>-->
                 </td>
                 <td>
-                    <img [src]="row.avatar" *ngIf="row.avatar" [ngStyle]="{'width.px': 50}" />
+                    <img [src]="getAvatar(row)" *ngIf="getAvatar(row)" [ngStyle]="{'width.px': 50}" />
                 </td>
                 <td>
                     {{ row.id }}

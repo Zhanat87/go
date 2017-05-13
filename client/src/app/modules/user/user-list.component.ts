@@ -7,6 +7,7 @@ import {User} from "./user";
 // import {ModalDirective} from 'ngx-bootstrap';
 import {GlobalState} from "../../global.state";
 import { LocalStorageService } from 'angular-2-local-storage';
+import {Environment} from "../../common/environment";
 
 @Component({
     moduleId: 'user',
@@ -47,6 +48,11 @@ export class UserList extends BaseListPagination {
             return phones.mobile_phone;
         }
         return '';
+    }
+
+    getAvatar(user: User): string {
+        return user.avatar_string ? (user.avatar_string.substr(0, 4) == 'http' ? user.avatar_string :
+            Environment.API_ENDPOINT + 'static/users/avatars/' + user.avatar_string) : '';
     }
 
     // ngOnDestroy() {
