@@ -67,7 +67,8 @@ export class UserFormComponent extends BaseForm {
     }
 
     getBreadCrumbTitle(): string {
-        return this.editMode ? (this.currentUser.id == this.model.id ? 'Profile' : 'User: ' + this.model.username) : 'Create new user';
+        return this.editMode ? (this.currentUser.id == this.model.id ?
+            'Profile' : 'User: ' + this.model.username) : 'Create new user';
     }
 
     setModelData(): void {

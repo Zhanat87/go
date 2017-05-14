@@ -30,6 +30,9 @@ docker pull zhanat87/golang
 # list of all docker images on host machine
 docker images
 
+# remove clients compiled files
+rm -rf client/compiled && rm -rf client/dist
+
 curl http://zhanat.site:9000/hooks/install-webhook
 
 echo "deploy success"

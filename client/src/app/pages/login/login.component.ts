@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import * as io from "socket.io-client";
 
@@ -16,7 +16,7 @@ import {User} from "../../modules/user/user";
     selector: 'login',
     templateUrl: './login.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
 
     public form: FormGroup;
     public email: AbstractControl;
@@ -32,6 +32,8 @@ export class LoginComponent {
 
     public response: LoginResponse;
 
+    private socket: any;
+
     constructor(fb: FormBuilder,
                 private router: Router,
                 private service: LoginService,
@@ -43,6 +45,13 @@ export class LoginComponent {
 
         this.email = this.form.controls['email'];
         this.password = this.form.controls['password'];
+    }
+
+    ngOnDestroy(): void {
+        if (this.socket) {
+            this.socket.emit('forceDisconnect');
+            this.socket.disconnect();
+        }
     }
 
     public onSubmit(values: Object): void {
@@ -115,10 +124,9 @@ export class LoginComponent {
     }
 
     initSocket(uuid: string, win: any): void {
-        let socket = io(Environment.SOCKET_URL, {transports: ['websocket']});
+        this.socket = io(Environment.SOCKET_URL, {transports: ['websocket']});
         let self = this;
-        socket.on('socialAuth' + uuid, function(message) {
-            console.log('socialAuth uuid client', message);
+        this.socket.on('socialAuth' + uuid, function(message) {
             win.close();
             if (message.error) {
                 self.errorMessage = message.error;

@@ -1,9 +1,18 @@
 export class ChatMessage {
 
-    from: number;
-    to: number;
+    userId: number;
+    username: string;
     message: string;
-    created_at: number;
-    is_read: boolean;
+    avatar: string;
+    time: string;
+
+    constructor(userId: number, username: string, message: string, avatar: string) {
+        this.userId = userId;
+        this.username = username;
+        this.message = message;
+        this.avatar = avatar;
+        let date = new Date();
+        this.time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    }
 
 }
