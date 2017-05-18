@@ -33,12 +33,13 @@ ADD migrations /go/migrations
 RUN mkdir /go/logs
 # http://stackoverflow.com/questions/30741995/cannot-execute-run-mkdir-in-a-dockerfile
 RUN mkdir -p /go/static/users/avatars
+RUN mkdir -p /go/static/artists/images
 #RUN mkdir /go/static && mkdir /go/static/users && mkdir /go/static/users/avatars
 ADD .env_docker /go/.env
 ENTRYPOINT /go/go_restful
 
 # Service listens on port 8080.
-EXPOSE 8080 5000
+EXPOSE 8080
 
 # docker build -t zhanat87/golang .
 # docker run -d -p 8080:8080 zhanat87/golang

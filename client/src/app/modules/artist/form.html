@@ -14,6 +14,30 @@
             </div>
 
             <div class="form-group">
+                <div *ngIf="model.image">
+                    <img [src]="image" width="100" />
+                    <br><br>
+                    <a class="btn btn-danger" (click)="deleteImage($event)">
+                        <i class="ion-trash-b" title="delete image"></i>
+                        Delete image
+                    </a>
+                </div>
+                <label for="file">Image</label>
+                <input type="file" class="form-control" id="file" name="file" (change)="onChangeImage($event)" />
+                <div class="hidden" id="image"></div>
+                <br><br><br>
+                <div *ngIf="errors['image']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['image']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{errorMessage}}
+            </div>
+
+            <div class="form-group">
                 <div class="col-sm-4 col-sm-offset-2" [class.hidden]="editMode">
                     <a class="btn btn-info" [routerLink]="[listUrl]">cancel</a>
                     <button class="btn btn-success" type="submit" [disabled]="blocked || !ArtistForm.form.valid">create</button>

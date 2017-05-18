@@ -4,6 +4,7 @@
         <thead>
             <tr>
                 <th><span style="margin: auto 20px;">actions</span></th>
+                <th>image</th>
                 <th>ID</th>
                 <th>name</th>
             </tr>
@@ -13,6 +14,9 @@
                 <td>
                     <div class="col-xs-2" (click)="editModel(row.id)"><i class="ion-edit" title="edit"></i></div>
                     <div class="col-xs-2" (click)="showDeleteModal(row.id)"><i class="ion-trash-b" title="delete"></i></div>
+                </td>
+                <td>
+                    <img [src]="getImage(row)" *ngIf="getImage(row)" [ngStyle]="{'width.px': 50}" />
                 </td>
                 <td>
                     {{ row.id }}

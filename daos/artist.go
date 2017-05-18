@@ -24,6 +24,7 @@ func (dao *ArtistDAO) Get(rs app.RequestScope, id int) (*models.Artist, error) {
 // The Artist.Id field will be populated with an automatically generated ID upon successful saving.
 func (dao *ArtistDAO) Create(rs app.RequestScope, artist *models.Artist) error {
 	artist.Id = 0
+	artist.BeforeInsert()
 	return rs.Tx().Model(artist).Insert()
 }
 
@@ -33,6 +34,7 @@ func (dao *ArtistDAO) Update(rs app.RequestScope, id int, artist *models.Artist)
 		return err
 	}
 	artist.Id = id
+	artist.BeforeUpdate()
 	return rs.Tx().Model(artist).Exclude("Id").Update()
 }
 
@@ -42,6 +44,7 @@ func (dao *ArtistDAO) Delete(rs app.RequestScope, id int) error {
 	if err != nil {
 		return err
 	}
+	artist.BeforeDelete()
 	return rs.Tx().Model(artist).Delete()
 }
 

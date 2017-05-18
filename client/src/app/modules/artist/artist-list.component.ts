@@ -6,6 +6,7 @@ import {BaseListPagination} from "../../common/base/baseListPagination";
 import {Artist} from "./artist";
 import {GlobalState} from "../../global.state";
 import { LocalStorageService } from 'angular-2-local-storage';
+import {Environment} from "../../common/environment";
 
 @Component({
     moduleId: 'artist',
@@ -27,6 +28,10 @@ export class ArtistList extends BaseListPagination {
         protected localStorageService: LocalStorageService,
         public service: ArtistService) {
         super();
+    }
+
+    getImage(artist: Artist): string {
+        return artist.image ? Environment.API_ENDPOINT + 'static/artists/images/' + artist.image : '';
     }
 
 }

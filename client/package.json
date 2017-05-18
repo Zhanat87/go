@@ -44,6 +44,7 @@
     "lodash": "4.17.4",
     "ng2-ckeditor": "1.1.5",
     "ng2-completer": "1.1.0",
+    "ng2-file-upload": "^1.2.1",
     "ng2-img-cropper": "^0.8.8",
     "ng2-smart-table": "0.6.0-1",
     "ng2-tree": "2.0.0-alpha.3",

@@ -6,18 +6,17 @@
 /src/bitbucket.org
 /src/gopkg.in
 /src/golang.org
-/node_modules
-/avatars
 /client/node_modules
 /client/compiled
 #/docker
 .env
 .env_docker
-/docker/.env
 /docker/client-nginx/logs
 /golang-chat-server
 /logs
 /golang-socketio-server
+/gopl.io
+/static
 
 ############### start from api ozzo
 # Compiled Object files, Static and Dynamic libs (Shared Objects)

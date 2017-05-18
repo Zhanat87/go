@@ -1,0 +1,1 @@
+ALTER TABLE "public"."artist" DROP COLUMN image;

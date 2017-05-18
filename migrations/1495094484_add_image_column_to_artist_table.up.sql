@@ -1,0 +1,1 @@
+ALTER TABLE "public"."artist" ADD COLUMN image character varying(100);

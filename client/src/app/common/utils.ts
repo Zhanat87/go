@@ -98,14 +98,14 @@ export function trim(str: string, charlist: any): string {
     return whitespace.indexOf(str.charAt(0)) === -1 ? str : ''
 }
 
-export function var_dump (variable: any): void {
+export function var_dump(variable: any): void {
     // "undefined", "object", "boolean", "number", "string", "symbol", Implementation-dependent, "function", "object"
     var typeOf = typeof variable;
     console.log('var_dump, typeOf is ', typeOf);
     switch (typeOf) {
         case 'object':
             console.log(Object.getOwnPropertyNames(variable).sort());
-            Object.getOwnPropertyNames(variable).forEach(function(val, idx, array) {
+            Object.getOwnPropertyNames(variable).forEach(function (val, idx, array) {
                 console.log(val + ' -> ' + variable[val]);
             });
             break;
@@ -122,7 +122,7 @@ export function getSelectedValues(select): any {
     var options = select && select.options;
     var opt;
 
-    for (var i=0, iLen=options.length; i<iLen; i++) {
+    for (var i = 0, iLen = options.length; i < iLen; i++) {
         opt = options[i];
 
         if (opt.selected) {
@@ -149,7 +149,8 @@ export function tryParseJSON(jsonString: string, defaultValue?: any): any {
         if (o && typeof o === "object") {
             return o;
         }
-    } catch (e) {}
+    } catch (e) {
+    }
     return defaultValue !== 'undefined' ? defaultValue : false;
 }
 
@@ -257,5 +258,6 @@ export function guid() {
             .toString(16)
             .substring(1);
     }
+
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
