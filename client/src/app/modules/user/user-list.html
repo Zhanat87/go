@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let row of data | paginate: { id: 'server', itemsPerPage: perPage, currentPage: currentPage, totalItems: total }">
+            <tr *ngFor="let row of data | paginate: { id: 'server', itemsPerPage: perPage, currentPage: currentPage, totalItems: total }; trackBy: track(row)">
                 <td>
                     <div class="col-xs-2" (click)="editModel(row.id)"><i class="ion-edit" title="edit"></i></div>
                     <div class="col-xs-2" *ngIf="!row.isDeleted" (click)="showDeleteModal(row.id)"><i class="ion-trash-b" title="delete"></i></div>

@@ -103,4 +103,15 @@ export abstract class BaseListPagination extends CommonListPagination {
         this.router.navigate([this.listUrl + '/' + id]);
     }
 
+    /**
+     * @link https://angular.io/docs/ts/latest/api/common/index/NgFor-directive.html
+     * @link https://netbasal.com/angular-2-improve-performance-with-trackby-cc147b5104e5
+     *
+     * @param row
+     * @returns mixed
+     */
+    track(row: any): any {
+        return row ? row.id : undefined;
+    }
+
 }
