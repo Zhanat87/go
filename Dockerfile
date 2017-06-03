@@ -27,7 +27,6 @@ FROM golang:latest
 
 ADD /bin/go /go/go_restful
 ADD /bin/migrate /go/migrate
-ADD /bin/socketio-server /go/socketio-server
 ADD config /go/config
 ADD migrations /go/migrations
 RUN mkdir /go/logs

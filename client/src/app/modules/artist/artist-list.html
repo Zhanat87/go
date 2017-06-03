@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let row of data | paginate: { id: 'server', itemsPerPage: perPage, currentPage: currentPage, totalItems: total }; trackBy: track(row)">
+            <tr *ngFor="let row of data | paginate: { id: 'server', itemsPerPage: perPage, currentPage: currentPage, totalItems: total }; trackBy: trackByFn">
                 <td>
                     <div class="col-xs-2" (click)="editModel(row.id)"><i class="ion-edit" title="edit"></i></div>
                     <div class="col-xs-2" (click)="showDeleteModal(row.id)"><i class="ion-trash-b" title="delete"></i></div>
@@ -30,27 +30,4 @@
 </div>
 <pagination-footer (pageChange)="getPage($event)" id="server"></pagination-footer>
 
-<!--deleteModal-->
-<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title pull-left">Delete artist</h4>
-                <button type="button" class="close pull-right" aria-label="Close" (click)="hideDeleteModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure that you want delete this artist?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" (click)="hideDeleteModal()">
-                    No
-                </button>
-                <button class="btn btn-primary confirm-btn" (click)="delete()">
-                    Yes
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<delete-modal [entity]="'artist'" (deleteEntity)="delete()"></delete-modal>

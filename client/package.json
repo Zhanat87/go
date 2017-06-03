@@ -172,7 +172,7 @@
     "build:electron.renderer": "npm run webpack -- --config config/electron/webpack.renderer.prod.js",
     "build:electron.main": "npm run webpack -- --config config/electron/webpack.electron.prod.js",
     "electron:start": "electron build",
-    "build:aot:prod": "npm run clean:dist && npm run clean:aot && webpack --config config/webpack.prod.js  --progress --profile --bail",
+    "build:aot:prod": "npm run clean:dist && npm run clean:aot && node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js --config config/webpack.prod.js  --progress --profile --bail",
     "build:aot": "npm run build:aot:prod",
     "clean:aot": "npm run rimraf -- compiled",
     "build:ci": "npm run build:prod && npm run build:aot"

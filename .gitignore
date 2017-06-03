@@ -3,6 +3,7 @@
 /bin
 /pkg
 /src/github.com
+!/src/github.com/Zhanat87/go
 /src/bitbucket.org
 /src/gopkg.in
 /src/golang.org
@@ -52,3 +53,103 @@ server
 
 # vendor
 /vendor
+docker/bin/
+docker/go/
+migrations/1495516697_create_category_table.down.sql
+migrations/1495516697_create_category_table.up.sql
+migrations/1495516709_create_article_table.down.sql
+migrations/1495516709_create_article_table.up.sql
+migrations/1495516719_create_gallery_table.down.sql
+migrations/1495516719_create_gallery_table.up.sql
+migrations/1495516728_create_comment_table.down.sql
+migrations/1495516728_create_comment_table.up.sql
+Would skip repository src/github.com/magiconair/properties
+Would skip repository src/github.com/oleiade/reflections
+Would skip repository src/github.com/pelletier/go-buffruneio
+Would skip repository src/github.com/pelletier/go-toml
+Would skip repository src/github.com/mattn/go-sqlite3
+Would skip repository src/github.com/mattn/go-colorable
+Would skip repository src/github.com/mattn/go-isatty
+Would skip repository src/github.com/fsnotify/fsnotify
+Would skip repository src/github.com/go-redis/redis
+Would skip repository src/github.com/mattes/migrate
+Would skip repository src/github.com/jinzhu/gorm
+Would skip repository src/github.com/jinzhu/inflection
+Would skip repository src/github.com/gocql/gocql
+Would skip repository src/github.com/go-bongo/bongo
+Would skip repository src/github.com/asaskevich/govalidator
+Would skip repository src/github.com/golang/snappy
+Would skip repository src/github.com/golang/gddo
+Would skip repository src/github.com/joho/godotenv
+Would skip repository src/github.com/go-sql-driver/mysql
+Would skip repository src/github.com/clbanning/x2j
+Would skip repository src/github.com/gorilla/websocket
+Would skip repository src/github.com/go-telegram-bot-api/telegram-bot-api
+Would skip repository src/github.com/satori/go.uuid
+Would skip repository src/github.com/dgrijalva/jwt-go
+Would skip repository src/github.com/hailocab/go-hostpool
+Would skip repository src/github.com/ugorji/go
+Would skip repository src/github.com/Sirupsen/logrus
+Would skip repository src/github.com/graarh/golang-socketio
+Would skip repository src/github.com/jmcvetta/neoism
+Would skip repository src/github.com/jmcvetta/randutil
+Would skip repository src/github.com/qiangxue/golang-restful-starter-kit
+Would skip repository src/github.com/fatih/color
+Would skip repository src/github.com/Zhanat87/go
+Would skip repository src/github.com/Zhanat87/golang-react
+Would skip repository src/github.com/Zhanat87/golang-hydra
+src/github.com/Zhanat87/golang-echo
+Would skip repository src/github.com/rs/cors
+Would skip repository src/github.com/rs/xhandler
+Would skip repository src/github.com/aws/aws-sdk-go
+Would skip repository src/github.com/valyala/fasttemplate
+Would skip repository src/github.com/lib/pq
+Would skip repository src/github.com/go-ozzo/ozzo-routing
+Would skip repository src/github.com/go-ozzo/ozzo-validation
+Would skip repository src/github.com/go-ozzo/ozzo-dbx
+Would skip repository src/github.com/technoweenie/multipartstreamer
+Would skip repository src/github.com/maxwellhealth/go-dotaccess
+Would skip repository src/github.com/herenow/go-crate
+Would skip repository src/github.com/kr/pretty
+Would skip repository src/github.com/kr/text
+Would skip repository src/github.com/spf13/afero
+Would skip repository src/github.com/spf13/viper
+Would skip repository src/github.com/spf13/jwalterweatherman
+Would skip repository src/github.com/spf13/cast
+Would skip repository src/github.com/spf13/pflag
+Would skip repository src/github.com/mitchellh/mapstructure
+Would skip repository src/github.com/edsrzf/mmap-go
+Would skip repository src/github.com/cznic/fileutil
+Would skip repository src/github.com/cznic/zappy
+Would skip repository src/github.com/cznic/sortutil
+Would skip repository src/github.com/cznic/lldb
+Would skip repository src/github.com/cznic/mathutil
+Would skip repository src/github.com/cznic/ql
+Would skip repository src/github.com/cznic/b
+Would skip repository src/github.com/cznic/strutil
+Would skip repository src/github.com/cznic/internal
+Would skip repository src/github.com/hashicorp/hcl
+Would skip repository src/github.com/stretchr/signature
+Would skip repository src/github.com/stretchr/codecs
+Would skip repository src/github.com/stretchr/gomniauth
+Would skip repository src/github.com/stretchr/tracer
+Would skip repository src/github.com/stretchr/testify
+Would skip repository src/github.com/stretchr/objx
+Would skip repository src/github.com/stretchr/stew
+Would skip repository src/github.com/Masterminds/glide
+Would skip repository src/github.com/labstack/echo
+Would skip repository src/github.com/labstack/gommon
+Would skip repository src/github.com/nfnt/resize
+Would skip repository src/github.com/googollee/go-socket.io
+Would skip repository src/github.com/googollee/go-engine.io
+Would skip repository src/gopkg.in/jmcvetta/napping.v3
+Would skip repository src/gopkg.in/gomail.v2
+Would skip repository src/gopkg.in/yaml.v2
+Would skip repository src/gopkg.in/guregu/null.v3
+Would skip repository src/gopkg.in/mgo.v2
+Would skip repository src/gopkg.in/inf.v0
+Would skip repository src/golang.org/x/net
+Would skip repository src/golang.org/x/sys
+Would skip repository src/golang.org/x/blog
+Would skip repository src/golang.org/x/text
+Would skip repository src/golang.org/x/crypto

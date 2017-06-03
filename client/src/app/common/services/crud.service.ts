@@ -5,8 +5,6 @@ import {CommonService} from "./service";
 
 export abstract class CommonCrudService extends CommonService {
 
-    // note: map() and mapAll() methods not must be abstract, because not all services implements crud
-    // need divide common service and extends from it common crud service
     abstract map(data): any;
 
     abstract mapAll(data): any;

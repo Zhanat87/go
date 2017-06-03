@@ -13,6 +13,8 @@ import {CommonPaginationHeaderComponent} from "../components/pagination/header/h
 
 import { CKEditorComponent } from '../components/ckeditor/ckeditor.component';
 
+import {CommonDeleteModalComponent} from "../components/modals/delete/delete";
+
 @NgModule({
     imports: [
         CommonModule,
@@ -27,6 +29,7 @@ import { CKEditorComponent } from '../components/ckeditor/ckeditor.component';
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
         CKEditorComponent,
+        CommonDeleteModalComponent,
     ],
     exports: [
         CommonModule,
@@ -40,6 +43,7 @@ import { CKEditorComponent } from '../components/ckeditor/ckeditor.component';
         CommonPaginationFooterComponent,
         CommonPaginationHeaderComponent,
         CKEditorComponent,
+        CommonDeleteModalComponent,
     ],
 })
 export class SharedModule {}

@@ -38,8 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 return tokenNotExpired(null, trim(this.localStorageService.get<string>('id_token'), '"'));
             }
         } else {
-            this.localStorageService.set('referrer', window.location.pathname);
-            this.router.navigate(['/login']);
+            this.logout();
             return false;
         }
     }
