@@ -27,7 +27,7 @@ FROM golang:latest
 
 #ADD /bin/go /go/go_restful
 ADD go /go/go_restful
-ADD ~/go/bin/migrate /go/migrate
+ADD migrate /go/migrate
 ADD config /go/config
 ADD migrations /go/migrations
 RUN mkdir /go/logs
