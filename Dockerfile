@@ -25,8 +25,9 @@ FROM golang:latest
 #RUN /go/bin/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
 #ENTRYPOINT /go/bin/go
 
-ADD /bin/go /go/go_restful
-ADD /bin/migrate /go/migrate
+#ADD /bin/go /go/go_restful
+ADD go /go/go_restful
+ADD ~/go/bin/migrate /go/migrate
 ADD config /go/config
 ADD migrations /go/migrations
 RUN mkdir /go/logs

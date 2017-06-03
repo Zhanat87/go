@@ -91,7 +91,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		}
 
 		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\naot compilation works now\r\nwebhook\r\n" +
-			"avatar crop upload\r\n")
+			"avatar crop upload\r\ntest")
 	})
 
 	if helpers.IsDocker() == false {

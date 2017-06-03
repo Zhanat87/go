@@ -7,7 +7,7 @@ cd client && npm run build:aot
 #npm run prebuild:prod && npm run build:prod
 # build socket server
 #cd ~/go/socketio-server && go build -ldflags "-X main.Env=docker" -o ~/go/bin/socketio-server
-cd ~/go && git add . && git commit -m 'deploy' && git push origin master
+cd ../ && git add . && git commit -m 'deploy' && git push origin master
 # stop & remove all docker containers
 docker stop $(docker ps -a -q)
 # not need remove, because db data was deleted in postgres
@@ -19,10 +19,11 @@ docker stop $(docker ps -a -q)
 # remove image
 docker rmi $(docker images --filter=reference='zhanat87/golang') -f
 # remove old src and upload new src
-rm -rf src/github.com/Zhanat87
-rm bin/go
-go get -u github.com/Zhanat87/go
-cd src/github.com/Zhanat87/go/ && go install && cd ../../../../
+#rm -rf src/github.com/Zhanat87
+rm go
+#go get -u github.com/Zhanat87/go
+#cd src/github.com/Zhanat87/go/ && go install && cd ../../../../
+go build
 # create new docker image, push to docker hub and pull
 docker build -t zhanat87/golang .
 docker push zhanat87/golang

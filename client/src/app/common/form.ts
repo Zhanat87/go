@@ -123,7 +123,10 @@ export abstract class CommonForm implements OnInit, OnDestroy, OnAfterSave {
 
     abstract getBreadCrumbTitle(): string;
 
-    onAfterSave(): void {
+    onAfterSave(model?: any): void {
+        if (model) {
+            this.model = model;
+        }
         this.redirectList();
     }
 

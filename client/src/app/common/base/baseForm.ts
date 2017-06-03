@@ -171,7 +171,7 @@ export abstract class BaseForm extends CommonForm implements AfterViewInit
         } else if (data.success) {
             this.onAfterSave();
         } else {
-            this.onAfterSave();
+            this.onAfterSave(data);
             if (this.development) {
                 console.log('response', data);
             }
