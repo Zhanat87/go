@@ -45,6 +45,21 @@ services:
   #    - ./postgres/.env
   #  dns: 8.8.8.8
 
+  # https://github.com/ankane/pghero/blob/master/guides/Docker.md
+  # https://github.com/ankane/pghero/blob/master/guides/Query-Stats.md
+  #
+  pghero:
+    image: ankane/pghero
+    container_name: pghero
+    ports:
+      - "8084:8080"
+    expose:
+      - "8084"
+    depends_on:
+      - postgresql
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable
+
   redis:
     image: phpdockerio/redis:latest
     container_name: redis

@@ -2,7 +2,7 @@
 
 # build client with aot, it's equivalent to: npm run build:aot:prod
 # aot compiled into client/compiled, need rewrite code for aot compilation
-cd client && npm run build:aot
+cd client && nvm use system && npm run build:aot
 #cd client && npm run prebuild:prod && npm run build:prod
 #npm run prebuild:prod && npm run build:prod
 # build socket server
@@ -25,7 +25,7 @@ rm go
 #cd src/github.com/Zhanat87/go/ && go install && cd ../../../../
 go build
 # create new docker image, push to docker hub and pull
-docker build -t zhanat87/golang -f .
+docker build -t zhanat87/golang .
 docker push zhanat87/golang
 #docker pull zhanat87/golang
 # list of all docker images on host machine

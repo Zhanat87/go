@@ -62,6 +62,30 @@ export const APP_MENU = [
                     }
                 }
             },
+            {
+                path: 'categories',
+                data: {
+                    menu: {
+                        title: 'Categories',
+                        icon: 'ion-grid',
+                        selected: false,
+                        expanded: false,
+                        order: 5
+                    }
+                }
+            },
+            {
+                path: 'news',
+                data: {
+                    menu: {
+                        title: 'News',
+                        icon: 'ion-ios-bookmarks-outline',
+                        selected: false,
+                        expanded: false,
+                        order: 6
+                    }
+                }
+            },
         ]
     }
 ];

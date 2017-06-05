@@ -29,6 +29,8 @@ export const routes: Routes = [
             {path: 'users', loadChildren: 'app/modules/user/user.module#UserModule'},
             {path: 'albums', loadChildren: 'app/modules/album/album.module#AlbumModule'},
             {path: 'artists', loadChildren: 'app/modules/artist/artist.module#ArtistModule'},
+            {path: 'categories', loadChildren: 'app/modules/category/category.module#CategoryModule'},
+            {path: 'news', loadChildren: 'app/modules/news/news.module#NewsModule'},
         ],
     },
     // simple layout

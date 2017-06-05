@@ -18,6 +18,8 @@ import { AlbumModule } from "./modules/album/album.module";
 import { UserModule } from "./modules/user/user.module";
 import { ArtistModule } from "./modules/artist/artist.module";
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoryModule } from "./modules/category/category.module";
+import { NewsModule } from "./modules/news/news.module";
 
 // component's without module
 import { PageComponents } from "./pages/pages.components";
@@ -61,6 +63,8 @@ export type StoreType = {
         AlbumModule,
         UserModule,
         ArtistModule,
+        CategoryModule,
+        // NewsModule,
     ],
 })
 

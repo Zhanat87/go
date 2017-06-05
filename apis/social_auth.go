@@ -34,8 +34,10 @@ func SocialAuth(userDAO *daos.UserDAO) routing.Handler {
 		gomniauth.WithProviders(
 			github.New(os.Getenv("GITHUB_CLIENT_ID"), os.Getenv("GITHUB_CLIENT_SECRET"),
 				os.Getenv("API_BASE_URL") + "auth/callback/github/" + uuid),
+			// work if remove uuid, but without uuid client was unknown
 			google.New(os.Getenv("GOOGLE_CLIENT_ID"), os.Getenv("GOOGLE_CLIENT_SECRET"),
 				os.Getenv("API_BASE_URL") + "auth/callback/google/" + uuid),
+			// return strange token
 			facebook.New(os.Getenv("FACEBOOK_APP_ID"), os.Getenv("FACEBOOK_SECRET_KEY"),
 				os.Getenv("API_BASE_URL") + "auth/callback/facebook/" + uuid),
 		)
@@ -159,7 +161,7 @@ type SocialAuthMessage struct {
 func sendSocialAuthMessage(user *models.User, uuid, token string, errorVar error) (error, bool) {
 	// connect to server, you can use your own transport settings
 	conn, err := gosocketio.Dial(
-		gosocketio.GetUrl("localhost", 5000, false),
+		gosocketio.GetUrl(os.Getenv("DOMAIN_NAME"), 5000, false),
 		transport.GetDefaultWebsocketTransport(),
 	)
 	defer conn.Close()

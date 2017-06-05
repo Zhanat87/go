@@ -91,7 +91,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		}
 
 		return c.Write(variables + "\r\n" + dsn + "\r\ndeploy\r\naot compilation works now\r\nwebhook\r\n" +
-			"avatar crop upload\r\ntest")
+			"avatar crop upload\r\n")
 	})
 
 	if helpers.IsDocker() == false {
@@ -159,6 +159,12 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	apis.ServeAlbumResource(rg, services.NewAlbumService(albumDAO))
 
 	apis.ServeUserResource(rg, userService)
+
+	categoryDAO := daos.NewCategoryDAO()
+	apis.ServeCategoryResource(rg, services.NewCategoryService(categoryDAO))
+
+	newsDAO := daos.NewNewsDAO()
+	apis.ServeNewsResource(rg, services.NewNewsService(newsDAO))
 
 	return router
 }

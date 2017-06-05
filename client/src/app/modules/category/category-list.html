@@ -1,0 +1,29 @@
+<pagination-header (perPageChange)="changePerPage($event)" (searchChange)="changeSearch($event)" [canCreate]="true"></pagination-header>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover table-considered">
+        <thead>
+            <tr>
+                <th><span style="margin: auto 20px;">actions</span></th>
+                <th>ID</th>
+                <th>title</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of data | paginate: { id: 'server', itemsPerPage: perPage, currentPage: currentPage, totalItems: total }; trackBy: trackByFn">
+                <td>
+                    <div class="col-xs-2" (click)="editModel(row.id)"><i class="ion-edit" title="edit"></i></div>
+                    <div class="col-xs-2" (click)="showDeleteModal(row.id)"><i class="ion-trash-b" title="delete"></i></div>
+                </td>
+                <td>
+                    {{ row.id }}
+                </td>
+                <td>
+                    {{ row.title }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<pagination-footer (pageChange)="getPage($event)" id="server"></pagination-footer>
+
+<delete-modal [entity]="'category'" (deleteEntity)="delete()"></delete-modal>

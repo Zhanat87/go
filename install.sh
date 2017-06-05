@@ -34,6 +34,9 @@ docker-compose up -d
 php sleep.php
 docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
 
+# run pghero stats
+docker run -it ankane/pghero bin/rake pghero:capture_query_stats
+
 # stop procecc in port if not stopped
 # lsof -i :5000
 # lsof -t -i:5000 - get procecc id
