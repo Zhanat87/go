@@ -35,7 +35,11 @@ php sleep.php
 docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
 
 # run pghero stats
-docker run -it ankane/pghero bin/rake pghero:capture_query_stats
+# 'postgresql' - not work as host, '172.18.0.5' - timeout, need add configs in postgresql.conf:
+#shared_preload_libraries = 'pg_stat_statements'
+#pg_stat_statements.track = all
+#docker run -it -e DATABASE_URL=postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable ankane/pghero bin/rake pghero:capture_query_stats
+#docker run -it -e DATABASE_URL=postgres://postgres:postgres@172.18.0.5:5432/go_restful?sslmode=disable ankane/pghero bin/rake pghero:capture_query_stats
 
 # stop procecc in port if not stopped
 # lsof -i :5000

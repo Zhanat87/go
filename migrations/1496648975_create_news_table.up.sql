@@ -28,13 +28,15 @@ create index news_rate_idx on news(rate);
 create index news_1_rate_idx on news_1(rate);
 create index news_2_rate_idx on news_2(rate);
 
-insert into news (category_id, title, author, rate)
-values (1, 'news #1', 'john', 1);
-insert into news_2 (category_id, title, author, rate)
-values (2, 'news #2', 'doe', 1);
-insert into news (category_id, title, author, rate)
-values (3, 'news #3', 'author 3', 1);
-insert into news_1 (category_id, title, author, rate)
-values (1, 'news #4', 'author 4', 1);
-insert into news (category_id, title, author, rate)
-values (1, 'news #5', 'author 5', 1), (2, 'news #6', 'author 6', 1), (3, 'news #7', 'author 7', 1);
+insert into news (category_id, title, author, rate, text)
+values (1, 'news #1', 'john', 1, 'text 1');
+insert into news_2 (category_id, title, author, rate, text)
+values (2, 'news #2', 'doe', 1, 'text 2');
+insert into news (category_id, title, author, rate, text)
+values (3, 'news #3', 'author 3', 1, 'text 3');
+insert into news_1 (category_id, title, author, rate, text)
+values (1, 'news #4', 'author 4', 1, 'text 4');
+insert into news (category_id, title, author, rate, text)
+values (1, 'news #5', 'author 5', 1, 'text 5'),
+(2, 'news #6', 'author 6', 1, 'text 6'),
+(3, 'news #7', 'author 7', 1, 'text 7');

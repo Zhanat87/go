@@ -9,7 +9,7 @@ type News struct {
 	Id         int    `json:"id" db:"id"`
 	CategoryId uint   `json:"category_id,string" db:"category_id"`
 	Author     string `json:"author" db:"author"`
-	Rate       int    `json:"rate" db:"rate"`
+	Rate       int    `json:"rate,string" db:"rate"`
 	Title      string `json:"title" db:"title"`
 	Text       string `json:"text" db:"text"`
 }
