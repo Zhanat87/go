@@ -30,8 +30,8 @@ export const routes: Routes = [
             {path: 'albums', loadChildren: 'app/modules/album/album.module#AlbumModule'},
             {path: 'artists', loadChildren: 'app/modules/artist/artist.module#ArtistModule'},
             {path: 'categories', loadChildren: 'app/modules/category/category.module#CategoryModule'},
-            {path: 'partition/news', loadChildren: 'app/modules/news/news.module#NewsModule'},
-            {path: 'shard/news', loadChildren: 'app/modules/newsShard/newsShard.module#NewsShardModule'},
+            {path: 'partition-news', loadChildren: 'app/modules/news/news.module#NewsModule'},
+            {path: 'shard-news', loadChildren: 'app/modules/newsShard/newsShard.module#NewsShardModule'},
         ],
     },
     // simple layout

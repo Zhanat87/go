@@ -13,7 +13,7 @@ docker stop $(docker ps -a -q)
 # docker ERROR: for  no such image:
 # http://stackoverflow.com/questions/37454548/docker-compose-no-such-image
 # docker rm
-docker-compose rm --all
+docker-compose rm --all --force
 
 # remove container
 docker rm $(docker ps -a -q --filter ancestor=zhanat87/golang) -f

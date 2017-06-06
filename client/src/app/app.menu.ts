@@ -75,7 +75,7 @@ export const APP_MENU = [
                 }
             },
             {
-                path: 'partition/news',
+                path: 'partition-news',
                 data: {
                     menu: {
                         title: 'Partitions news',
@@ -87,7 +87,7 @@ export const APP_MENU = [
                 }
             },
             {
-                path: 'shard/news',
+                path: 'shard-news',
                 data: {
                     menu: {
                         title: 'Shards news',

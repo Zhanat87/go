@@ -25,7 +25,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 
 export class NewsFormComponent extends BaseForm {
 
-    public listUrl = '/partition/news';
+    public listUrl = '/partition-news';
     public title = 'Partition news';
 
     public model = new News();

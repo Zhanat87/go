@@ -17,7 +17,7 @@ export class NewsShardList extends BaseListPagination {
 
     public data: NewsShard[];
 
-    public listUrl = '/shard/news';
+    public listUrl = '/shard-news';
     public title = 'Shard news';
 
     constructor (

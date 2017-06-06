@@ -25,7 +25,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 
 export class NewsShardFormComponent extends BaseForm {
 
-    public listUrl = '/shard/news';
+    public listUrl = '/shard-news';
     public title = 'Shard news';
 
     public model = new NewsShard();

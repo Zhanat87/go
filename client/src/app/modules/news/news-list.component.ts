@@ -17,7 +17,7 @@ export class NewsList extends BaseListPagination {
 
     public data: News[];
 
-    public listUrl = '/partition/news';
+    public listUrl = '/partition-news';
     public title = 'Partition news';
 
     constructor (

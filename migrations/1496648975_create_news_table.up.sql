@@ -12,13 +12,13 @@ ALTER TABLE ONLY "news_real" ADD CONSTRAINT "pk_news_real" PRIMARY KEY ("id");
 ALTER TABLE ONLY "news_real" ADD CONSTRAINT "news_category_id_fkey" FOREIGN KEY (category_id)
 REFERENCES "public"."category"(id) ON DELETE CASCADE NOT DEFERRABLE;
 
-create table news_1 (
+create table news_partition_1 (
     check (category_id = 1)
 ) inherits (news_real);
-create table news_2 (
+create table news_partition_2 (
     check (category_id = 2)
 ) inherits (news_real);
-create table news_other (
+create table news_partition_other (
     check (category_id NOT IN (1, 2))
 ) inherits (news_real);
 
@@ -43,11 +43,11 @@ CREATE FUNCTION news_partition() RETURNS TRIGGER LANGUAGE plpgsql
 AS $f$
   BEGIN
     IF NEW.category_id = 1 THEN
-        INSERT INTO news_1 SELECT NEW.*;
+        INSERT INTO news_partition_1 SELECT NEW.*;
     ELSIF NEW.category_id = 2 THEN
-        INSERT INTO news_2 SELECT NEW.*;
+        INSERT INTO news_partition_2 SELECT NEW.*;
     ELSE
-        INSERT INTO news_other SELECT NEW.*;
+        INSERT INTO news_partition_other SELECT NEW.*;
     END IF;
     RETURN NEW;
   END;
@@ -57,9 +57,9 @@ CREATE TRIGGER news_partition instead OF INSERT ON news
   FOR each ROW EXECUTE PROCEDURE news_partition();
 
 -- create rule news_insert_to_1 as on insert to news where (category_id = 1) returning id
--- do instead insert into news_1 values (new.*);
+-- do instead insert into news_partition_1 values (new.*);
 -- create rule news_insert_to_2 as on insert to news where (category_id = 2) returning id
--- do instead insert into news_2 values (new.*);
+-- do instead insert into news_partition_2 values (new.*);
 
 -- note: need when absent chief table
 -- https://gist.github.com/RhodiumToad/b82aac9aa4e3fbdda967d89b1e418aa4 - not work
@@ -71,13 +71,13 @@ CREATE TRIGGER news_partition instead OF INSERT ON news
 --     r news%rowtype;
 -- BEGIN
 --     IF NEW.category_id = 1 THEN
---         INSERT INTO news_1 VALUES (NEW.*) RETURNING * INTO r;
+--         INSERT INTO news_partition_1 VALUES (NEW.*) RETURNING * INTO r;
 --     ELSIF NEW.category_id = 2 THEN
---         INSERT INTO news_2 VALUES (NEW.*) RETURNING * INTO r;
+--         INSERT INTO news_partition_2 VALUES (NEW.*) RETURNING * INTO r;
 --     ELSE
 -- --         INSERT INTO news VALUES (NEW.*); recursion was
 -- --         RAISE EXCEPTION 'Category id out of range. Fix the news_insert_trigger() function!', NEW.category_id;
---         INSERT INTO news_other VALUES (NEW.*) RETURNING * INTO r;
+--         INSERT INTO news_partition_other VALUES (NEW.*) RETURNING * INTO r;
 --     END IF;
 -- --     RETURN NULL;
 -- --     RETURN NEW.id;
@@ -112,17 +112,17 @@ CREATE TRIGGER news_partition instead OF INSERT ON news
 
 create index news_real_rate_idx on news_real(rate);
 -- create index news_rate_idx on news(rate);
-create index news_1_rate_idx on news_1(rate);
-create index news_2_rate_idx on news_2(rate);
-create index news_other_rate_idx on news_other(rate);
+create index news_partition_1_rate_idx on news_partition_1(rate);
+create index news_partition_2_rate_idx on news_partition_2(rate);
+create index news_partition_other_rate_idx on news_partition_other(rate);
 
 insert into news (category_id, title, author, rate, text)
 values (1, 'news #1', 'john', 1, 'text 1');
-insert into news_2 (category_id, title, author, rate, text)
+insert into news_partition_2 (category_id, title, author, rate, text)
 values (2, 'news #2', 'doe', 1, 'text 2');
 insert into news (category_id, title, author, rate, text)
 values (3, 'news #3', 'author 3', 1, 'text 3');
-insert into news_1 (category_id, title, author, rate, text)
+insert into news_partition_1 (category_id, title, author, rate, text)
 values (1, 'news #4', 'author 4', 1, 'text 4');
 insert into news (category_id, title, author, rate, text)
 values (1, 'news #5', 'author 5', 1, 'text 5'),
