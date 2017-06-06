@@ -25,8 +25,8 @@ import { LocalStorageService } from 'angular-2-local-storage';
 
 export class NewsFormComponent extends BaseForm {
 
-    public listUrl = '/news';
-    public title = 'News';
+    public listUrl = '/partition/news';
+    public title = 'Partition news';
 
     public model = new News();
 
@@ -75,7 +75,7 @@ export class NewsFormComponent extends BaseForm {
     }
 
     getBreadCrumbTitle(): string {
-        return this.editMode ? 'News: ' + this.model.title : 'Create new news';
+        return this.editMode ? 'Partition news: ' + this.model.title : 'Create new partition news';
     }
 
 }

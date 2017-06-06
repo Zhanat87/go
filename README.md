@@ -12,7 +12,7 @@ Used technologies:
 * JWT-based authentication
 * social nets sign in / up
 * docker, docker-compose
-* postgres, golang migrations
+* postgres (partitions, shards), golang migrations
 * continuous integration and continuous delivery - run only deploy.sh script
 * digital ocean
 * redis

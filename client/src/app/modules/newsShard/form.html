@@ -1,0 +1,82 @@
+<div class="row" *ngIf="active">
+    <div class="col-lg-12">
+        <form (ngSubmit)="onSubmit()" #NewsShardForm="ngForm">
+
+            <div class="form-group">
+                <label for="category_id">
+                    Category
+                </label>
+                <select id="category_id" class="form-control" required [(ngModel)]="model.category_id" name="category_id">
+                    <option *ngFor="let category of categories" [value]="category.id">
+                        {{ category.title }}
+                    </option>
+                </select>
+                <br><br><br>
+                <div *ngIf="errors['category_id']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['category_id']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Title" required [(ngModel)]="model.title" name="title">
+                <br><br><br>
+                <div *ngIf="errors['title']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['title']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Text</label>
+                <ckeditor [(ngModel)]="model.text" name="text"></ckeditor>
+                <br><br><br>
+                <div *ngIf="errors['text']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['text']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" id="author" placeholder="Author" required [(ngModel)]="model.author" name="author">
+                <br><br><br>
+                <div *ngIf="errors['author']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['author']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="rate">Rate</label>
+                <input type="text" class="form-control" id="rate" placeholder="Rate" required [(ngModel)]="model.rate" name="rate">
+                <br><br><br>
+                <div *ngIf="errors['rate']" class="alert alert-danger">
+                    <div *ngFor="let error of errors['rate']" class="error">
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2" [class.hidden]="editMode">
+                    <a class="btn btn-info" [routerLink]="[listUrl]">cancel</a>
+                    <button class="btn btn-success" type="submit" [disabled]="blocked || !NewsShardForm.form.valid">create</button>
+                </div>
+
+                <div class="col-sm-11 col-sm-offset-1" [class.hidden]="!editMode">
+                    <a class="btn btn-info" [routerLink]="[listUrl]">cancel</a>
+                    <button class="btn btn-success" type="submit" [disabled]="blocked || !NewsShardForm.form.valid">save</button>
+
+                    <button class="btn btn-danger pull-right" type="button" (click)="remove($event)"
+                            id="Are you sure that you want delete this record?">delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

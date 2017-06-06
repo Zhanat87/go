@@ -75,14 +75,26 @@ export const APP_MENU = [
                 }
             },
             {
-                path: 'news',
+                path: 'partition/news',
                 data: {
                     menu: {
-                        title: 'News',
+                        title: 'Partitions news',
                         icon: 'ion-ios-bookmarks-outline',
                         selected: false,
                         expanded: false,
                         order: 6
+                    }
+                }
+            },
+            {
+                path: 'shard/news',
+                data: {
+                    menu: {
+                        title: 'Shards news',
+                        icon: 'ion-ios-bookmarks',
+                        selected: false,
+                        expanded: false,
+                        order: 7
                     }
                 }
             },

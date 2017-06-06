@@ -38,16 +38,66 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=go_restful
+#      - POSTGRES_HOST=172.17.0.1
+#      - DB_HOST=172.17.0.1
+#      - POSTGRES_PORT=5432
+#      - DB_PORT=5432
 #   note: if port not same like default, i.e. it was not exposed in dockerfile, need expose it here
     expose:
       - "5432"
   #  env_file:
   #    - ./postgres/.env
   #  dns: 8.8.8.8
+    links:
+      - postgresql1
+      - postgresql2
+    depends_on:
+      - postgresql1
+      - postgresql2
+    # https://docs.docker.com/compose/networking/
+    # http://docker-k8s-lab.readthedocs.io/en/latest/docker/bridged-network.html
+    # https://stackoverflow.com/questions/39493490/provide-static-ip-to-docker-containers-via-docker-compose
+    # https://fordodone.com/2016/03/30/docker-compose-static-ip-address-in-docker-compose-yml/
+    networks:
+      default:
+        ipv4_address: 172.18.0.4
+
+  postgresql1:
+    image: postgres:latest
+    container_name: postgresql1
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres_1/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_restful
+    expose:
+      - "5432"
+    networks:
+      default:
+        ipv4_address: 172.18.0.5
+
+  postgresql2:
+    image: postgres:latest
+    container_name: postgresql2
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./postgres_2/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_restful
+    expose:
+      - "5432"
+    networks:
+      default:
+        ipv4_address: 172.18.0.6
 
   # https://github.com/ankane/pghero/blob/master/guides/Docker.md
   # https://github.com/ankane/pghero/blob/master/guides/Query-Stats.md
-  #
   pghero:
     image: ankane/pghero
     container_name: pghero
@@ -59,6 +109,9 @@ services:
       - postgresql
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable
+    networks:
+      default:
+        ipv4_address: 172.18.0.7
 
   redis:
     image: phpdockerio/redis:latest
@@ -68,6 +121,10 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - ./redis-data:/data
+    networks:
+      default:
+        ipv4_address: 172.18.0.8
+
   # https://hub.docker.com/_/mongo/
 #  mongo:
 #    image: mongo
@@ -124,12 +181,18 @@ services:
 #      - echo from golang
 #      - exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
   # docker exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
+    networks:
+      default:
+        ipv4_address: 172.18.0.9
 
   golang-chat-server:
     image: zhanat87/golang-socketio-server:latest
     container_name: golang-socketio-server
     ports:
       - "5000:5000"
+    networks:
+      default:
+        ipv4_address: 172.18.0.10
 
   ###############################################################################
   # client-nginx
@@ -147,6 +210,9 @@ services:
       - ./client-nginx/logs:/var/log/nginx
     ports:
       - "8081:80"
+    networks:
+      default:
+        ipv4_address: 172.18.0.11
 
   # https://hub.docker.com/r/hardware/adminer/
   # порт adminer'а 8888, поэтому его надо перенаправить на 8083,
@@ -158,6 +224,11 @@ services:
       - "8888:8888"
     links:
       - postgresql
+      - postgresql1
+      - postgresql2
+    networks:
+      default:
+        ipv4_address: 172.18.0.12
 
 #  drone-server:
 #      image: drone/drone:0.5

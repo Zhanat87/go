@@ -20,6 +20,7 @@ import { ArtistModule } from "./modules/artist/artist.module";
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from "./modules/category/category.module";
 import { NewsModule } from "./modules/news/news.module";
+import { NewsShardModule } from "./modules/newsShard/newsShard.module";
 
 // component's without module
 import { PageComponents } from "./pages/pages.components";
@@ -64,7 +65,8 @@ export type StoreType = {
         UserModule,
         ArtistModule,
         CategoryModule,
-        // NewsModule,
+        NewsModule,
+        NewsShardModule,
     ],
 })
 

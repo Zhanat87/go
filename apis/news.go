@@ -28,11 +28,11 @@ type (
 // ServeNews sets up the routing of news endpoints and the corresponding handlers.
 func ServeNewsResource(rg *routing.RouteGroup, service newsService) {
 	r := &newsResource{service}
-	rg.Get("/news/<id>", r.get)
-	rg.Get("/news", r.query)
-	rg.Post("/news", r.create)
-	rg.Put("/news/<id>", r.update)
-	rg.Delete("/news/<id>", r.delete)
+	rg.Get("/partition/news/<id>", r.get)
+	rg.Get("/partition/news", r.query)
+	rg.Post("/partition/news", r.create)
+	rg.Put("/partition/news/<id>", r.update)
+	rg.Delete("/partition/news/<id>", r.delete)
 }
 
 func (r *newsResource) get(c *routing.Context) error {

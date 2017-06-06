@@ -9,7 +9,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 @Injectable()
 export class NewsService extends CommonListService {
 
-    public url = 'v1/news';
+    public url = 'v1/partition/news';
 
     constructor (public http: AuthHttp, protected localStorageService: LocalStorageService) {
         super();

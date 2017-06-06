@@ -78,10 +78,12 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	router.To("GET,HEAD", "/test", func(c *routing.Context) error {
 		c.Abort()  // skip all other middlewares/handlers
 		var variables string
-		if helpers.IsDocker() == false {
+		if c.Get("secret_key").(string) == os.Getenv("SECRET_KEY") {
 			for _, e := range os.Environ() {
 				variables += e + "\r\n"
 			}
+		} else {
+			variables += c.Get("secret_key").(string) + "\r\n"
 		}
 		_, err := sql.Open("postgres", dsn)
 		if err != nil {
@@ -163,8 +165,13 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	categoryDAO := daos.NewCategoryDAO()
 	apis.ServeCategoryResource(rg, services.NewCategoryService(categoryDAO))
 
+	// partitions
 	newsDAO := daos.NewNewsDAO()
 	apis.ServeNewsResource(rg, services.NewNewsService(newsDAO))
+
+	// shards
+	newsShardDAO := daos.NewNewsShardDAO()
+	apis.ServeNewsShardResource(rg, services.NewNewsShardService(newsShardDAO))
 
 	return router
 }
