@@ -58,9 +58,11 @@ services:
     # http://docker-k8s-lab.readthedocs.io/en/latest/docker/bridged-network.html
     # https://stackoverflow.com/questions/39493490/provide-static-ip-to-docker-containers-via-docker-compose
     # https://fordodone.com/2016/03/30/docker-compose-static-ip-address-in-docker-compose-yml/
+    # docker info
+    # docker version
     networks:
       default:
-        ipv4_address: 172.18.0.4
+        ipv4_address: 172.17.0.4
 
   postgresql1:
     image: postgres:latest
@@ -77,7 +79,7 @@ services:
       - "5432"
     networks:
       default:
-        ipv4_address: 172.18.0.5
+        ipv4_address: 172.17.0.5
 
   postgresql2:
     image: postgres:latest
@@ -94,7 +96,7 @@ services:
       - "5432"
     networks:
       default:
-        ipv4_address: 172.18.0.6
+        ipv4_address: 172.17.0.6
 
   # https://github.com/ankane/pghero/blob/master/guides/Docker.md
   # https://github.com/ankane/pghero/blob/master/guides/Query-Stats.md
@@ -111,7 +113,7 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable
     networks:
       default:
-        ipv4_address: 172.18.0.7
+        ipv4_address: 172.17.0.7
 
   redis:
     image: phpdockerio/redis:latest
@@ -123,7 +125,7 @@ services:
       - ./redis-data:/data
     networks:
       default:
-        ipv4_address: 172.18.0.8
+        ipv4_address: 172.17.0.8
 
   # https://hub.docker.com/_/mongo/
 #  mongo:
@@ -183,7 +185,7 @@ services:
   # docker exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
     networks:
       default:
-        ipv4_address: 172.18.0.9
+        ipv4_address: 172.17.0.9
 
   golang-chat-server:
     image: zhanat87/golang-socketio-server:latest
@@ -192,7 +194,7 @@ services:
       - "5000:5000"
     networks:
       default:
-        ipv4_address: 172.18.0.10
+        ipv4_address: 172.17.0.10
 
   ###############################################################################
   # client-nginx
@@ -212,7 +214,7 @@ services:
       - "8081:80"
     networks:
       default:
-        ipv4_address: 172.18.0.11
+        ipv4_address: 172.17.0.11
 
   # https://hub.docker.com/r/hardware/adminer/
   # порт adminer'а 8888, поэтому его надо перенаправить на 8083,
@@ -228,7 +230,7 @@ services:
       - postgresql2
     networks:
       default:
-        ipv4_address: 172.18.0.12
+        ipv4_address: 172.17.0.12
 
 #  drone-server:
 #      image: drone/drone:0.5
