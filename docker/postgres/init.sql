@@ -19,7 +19,7 @@ create extension postgres_fdw;
 
 -- for first shard:
 create server news_1_server foreign data wrapper postgres_fdw
-options (host '172.18.0.5', port '5432', dbname 'go_restful');
+options (host '192.168.0.5', port '5432', dbname 'go_restful');
 create user mapping for postgres server news_1_server
 options (user 'postgres', password 'postgres');
 
@@ -36,7 +36,7 @@ options (schema_name 'public', table_name 'news_shard_1');
 
 -- for second shard:
 create server news_2_server foreign data wrapper postgres_fdw
-options (host '172.18.0.6', port '5432', dbname 'go_restful');
+options (host '192.168.0.6', port '5432', dbname 'go_restful');
 create user mapping for postgres server news_2_server
 options (user 'postgres', password 'postgres');
 

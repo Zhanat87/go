@@ -7,6 +7,23 @@
 version: '3'
 #version: '2'
 
+# https://github.com/docker/compose/issues/4336
+# https://docs.docker.com/engine/userguide/networking/default_network/container-communication/#communicating-to-the-outside-world
+# sysctl net.ipv4.conf.all.forwarding
+# sudo iptables -L -n
+# sudo iptables -P FORWARD ACCEPT
+# sudo iptables -t nat -L -n
+# sudo apt-get update && sudo apt-get install bridge-utils
+# sudo brctl show
+# ip route - show linkdown in 192.168.0.0/16
+networks:
+  custom_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.0.0/16
+
+
 # jenkins on 8082 port - not need, .git web hooks not need
 # need golang webhook for conitinuos delivery and integration - https://github.com/adnanh/webhook
 
@@ -61,8 +78,8 @@ services:
     # docker info
     # docker version
     networks:
-      default:
-        ipv4_address: 172.18.0.4
+      custom_network:
+        ipv4_address: 192.168.0.4
 
   postgresql1:
     image: postgres:latest
@@ -78,8 +95,8 @@ services:
     expose:
       - "5432"
     networks:
-      default:
-        ipv4_address: 172.18.0.5
+      custom_network:
+        ipv4_address: 192.168.0.5
 
   postgresql2:
     image: postgres:latest
@@ -95,8 +112,8 @@ services:
     expose:
       - "5432"
     networks:
-      default:
-        ipv4_address: 172.18.0.6
+      custom_network:
+        ipv4_address: 192.168.0.6
 
   # https://github.com/ankane/pghero/blob/master/guides/Docker.md
   # https://github.com/ankane/pghero/blob/master/guides/Query-Stats.md
@@ -112,8 +129,8 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable
     networks:
-      default:
-        ipv4_address: 172.18.0.7
+      custom_network:
+        ipv4_address: 192.168.0.7
 
   redis:
     image: phpdockerio/redis:latest
@@ -124,8 +141,8 @@ services:
     volumes:
       - ./redis-data:/data
     networks:
-      default:
-        ipv4_address: 172.18.0.8
+      custom_network:
+        ipv4_address: 192.168.0.8
 
   # https://hub.docker.com/_/mongo/
 #  mongo:
@@ -184,8 +201,8 @@ services:
 #      - exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
   # docker exec -it golang /go/migrate -url postgres://postgres:postgres@172.17.0.2:5432/go_restful?sslmode=disable -path ./migrations up
     networks:
-      default:
-        ipv4_address: 172.18.0.9
+      custom_network:
+        ipv4_address: 192.168.0.9
 
   golang-chat-server:
     image: zhanat87/golang-socketio-server:latest
@@ -193,8 +210,8 @@ services:
     ports:
       - "5000:5000"
     networks:
-      default:
-        ipv4_address: 172.18.0.10
+      custom_network:
+        ipv4_address: 192.168.0.10
 
   ###############################################################################
   # client-nginx
@@ -213,8 +230,8 @@ services:
     ports:
       - "8081:80"
     networks:
-      default:
-        ipv4_address: 172.18.0.11
+      custom_network:
+        ipv4_address: 192.168.0.11
 
   # https://hub.docker.com/r/hardware/adminer/
   # порт adminer'а 8888, поэтому его надо перенаправить на 8083,
@@ -229,8 +246,8 @@ services:
       - postgresql1
       - postgresql2
     networks:
-      default:
-        ipv4_address: 172.18.0.12
+      custom_network:
+        ipv4_address: 192.168.0.12
 
 #  drone-server:
 #      image: drone/drone:0.5
