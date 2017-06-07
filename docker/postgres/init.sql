@@ -61,15 +61,105 @@ create view news_shard as
 
 ALTER VIEW news_shard ALTER COLUMN id SET DEFAULT NEXTVAL('news_shard_id_seq');
 
-create rule news_shard_insert as on insert to news_shard do instead nothing;
-create rule news_shard_update as on update to news_shard do instead nothing;
-create rule news_shard_delete as on delete to news_shard do instead nothing;
-create rule news_shard_1_insert as on insert to news_shard where category_id=1
-do instead insert into news_1_shard values (new.*);
-create rule news_shard_2_insert as on insert to news_shard where category_id=2
-do instead insert into news_2_shard values (new.*);
-create rule news_shard_other_insert as on insert to news_shard where category_id not in (1, 2)
-do instead insert into news_shard_other values (new.*);
+-- note: work, but need returning
+-- create rule news_shard_insert as on insert to news_shard do instead nothing;
+-- create rule news_shard_update as on update to news_shard do instead nothing;
+-- create rule news_shard_delete as on delete to news_shard do instead nothing;
+
+-- create rule news_shard_1_insert as on insert to news_shard where category_id=1
+-- do instead insert into news_1_shard values (new.*);
+-- create rule news_shard_2_insert as on insert to news_shard where category_id=2
+-- do instead insert into news_2_shard values (new.*);
+-- create rule news_shard_other_insert as on insert to news_shard where category_id not in (1, 2)
+-- do instead insert into news_shard_other values (new.*);
+
+-- https://www.postgresql.org/docs/current/static/plpgsql-trigger.html
+-- this is the actual shard insert trigger:
+CREATE FUNCTION news_shard_insert() RETURNS TRIGGER LANGUAGE plpgsql
+AS $f$
+  BEGIN
+    IF NEW.category_id = 1 THEN
+        INSERT INTO news_1_shard SELECT NEW.*;
+    ELSIF NEW.category_id = 2 THEN
+        INSERT INTO news_2_shard SELECT NEW.*;
+    ELSE
+        INSERT INTO news_shard_other SELECT NEW.*;
+    END IF;
+    RETURN NEW;
+  END;
+$f$;
+CREATE TRIGGER news_shard_insert instead OF INSERT ON news_shard
+  FOR each ROW EXECUTE PROCEDURE news_shard_insert();
+
+-- this is the actual shard update trigger:
+CREATE FUNCTION news_shard_update() RETURNS TRIGGER LANGUAGE plpgsql
+AS $f$
+  BEGIN
+    IF OLD.category_id = 1 THEN
+        IF NEW.category_id = 1 THEN
+            UPDATE news_1_shard SET category_id = NEW.category_id, author = NEW.author,
+                title = NEW.title, text = NEW.text, rate = NEW.rate WHERE id = OLD.id;
+        ELSE
+            DELETE FROM news_1_shard WHERE id = OLD.id;
+            IF NEW.category_id = 2 THEN
+                INSERT INTO news_2_shard (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            ELSE
+                INSERT INTO news_shard_other (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            END IF;
+        END IF;
+    ELSIF OLD.category_id = 2 THEN
+        IF NEW.category_id = 2 THEN
+            UPDATE news_2_shard SET category_id = NEW.category_id, author = NEW.author,
+                title = NEW.title, text = NEW.text, rate = NEW.rate WHERE id = OLD.id;
+        ELSE
+            DELETE FROM news_2_shard WHERE id = OLD.id;
+            IF NEW.category_id = 1 THEN
+                INSERT INTO news_1_shard (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            ELSE
+                INSERT INTO news_shard_other (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            END IF;
+        END IF;
+    ELSE
+        IF NEW.category_id NOT IN (1, 2) THEN
+            UPDATE news_shard_other SET category_id = NEW.category_id, author = NEW.author,
+                title = NEW.title, text = NEW.text, rate = NEW.rate WHERE id = OLD.id;
+        ELSE
+            DELETE FROM news_shard_other WHERE id = OLD.id;
+            IF NEW.category_id = 1 THEN
+                INSERT INTO news_1_shard (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            ELSIF NEW.category_id = 2 THEN
+                INSERT INTO news_2_shard (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            END IF;
+        END IF;
+    END IF;
+    RETURN NEW;
+  END;
+$f$;
+CREATE TRIGGER news_shard_update instead OF UPDATE ON news_shard
+  FOR each ROW EXECUTE PROCEDURE news_shard_update();
+
+-- this is the actual shard delete trigger:
+CREATE FUNCTION news_shard_delete() RETURNS TRIGGER LANGUAGE plpgsql
+AS $f$
+  BEGIN
+    IF OLD.category_id = 1 THEN
+        DELETE FROM news_1_shard WHERE id = OLD.id;
+    ELSIF OLD.category_id = 2 THEN
+        DELETE FROM news_2_shard WHERE id = OLD.id;
+    ELSE
+        DELETE FROM news_shard_other WHERE id = OLD.id;
+    END IF;
+    RETURN NULL;
+  END;
+$f$;
+CREATE TRIGGER news_shard_delete instead OF DELETE ON news_shard
+  FOR each ROW EXECUTE PROCEDURE news_shard_delete();
 
 -- note: need sleep/wait before shards postgres servers will starts
 -- https://www.if-not-true-then-false.com/2010/postgresql-sleep-function-pg_sleep-postgres-delay-execution/

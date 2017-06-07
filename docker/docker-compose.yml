@@ -199,7 +199,7 @@ services:
   ###############################################################################
   # client-nginx
   ###############################################################################
-
+  # docker-compose stop client-nginx && docker-compose build client-nginx && docker-compose start client-nginx
   client-nginx:
     image: phpdockerio/nginx:latest
     container_name: client-nginx

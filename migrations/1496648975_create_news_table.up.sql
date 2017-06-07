@@ -39,7 +39,7 @@ CREATE VIEW news AS SELECT * FROM news_real;
 ALTER VIEW news ALTER COLUMN id SET DEFAULT NEXTVAL('news_id_seq');
 
 -- this is the actual partition insert trigger:
-CREATE FUNCTION news_partition() RETURNS TRIGGER LANGUAGE plpgsql
+CREATE FUNCTION news_partition_insert() RETURNS TRIGGER LANGUAGE plpgsql
 AS $f$
   BEGIN
     IF NEW.category_id = 1 THEN
@@ -52,9 +52,78 @@ AS $f$
     RETURN NEW;
   END;
 $f$;
+CREATE TRIGGER news_partition_insert instead OF INSERT ON news
+  FOR each ROW EXECUTE PROCEDURE news_partition_insert();
 
-CREATE TRIGGER news_partition instead OF INSERT ON news
-  FOR each ROW EXECUTE PROCEDURE news_partition();
+-- this is the actual partition update trigger:
+CREATE FUNCTION news_partition_update() RETURNS TRIGGER LANGUAGE plpgsql
+AS $f$
+  BEGIN
+    IF OLD.category_id = 1 THEN
+        IF NEW.category_id = 1 THEN
+            UPDATE news_partition_1 SET category_id = NEW.category_id, author = NEW.author,
+                title = NEW.title, text = NEW.text, rate = NEW.rate WHERE id = OLD.id;
+        ELSE
+            DELETE FROM news_partition_1 WHERE id = OLD.id;
+            IF NEW.category_id = 2 THEN
+                INSERT INTO news_partition_2 (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            ELSE
+                INSERT INTO news_partition_other (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            END IF;
+        END IF;
+    ELSIF OLD.category_id = 2 THEN
+        IF NEW.category_id = 2 THEN
+            UPDATE news_partition_2 SET category_id = NEW.category_id, author = NEW.author,
+                title = NEW.title, text = NEW.text, rate = NEW.rate WHERE id = OLD.id;
+        ELSE
+            DELETE FROM news_partition_2 WHERE id = OLD.id;
+            IF NEW.category_id = 1 THEN
+                INSERT INTO news_partition_1 (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            ELSE
+                INSERT INTO news_partition_other (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            END IF;
+        END IF;
+    ELSE
+        IF NEW.category_id NOT IN (1, 2) THEN
+            UPDATE news_partition_other SET category_id = NEW.category_id, author = NEW.author,
+                title = NEW.title, text = NEW.text, rate = NEW.rate WHERE id = OLD.id;
+        ELSE
+            DELETE FROM news_partition_other WHERE id = OLD.id;
+            IF NEW.category_id = 1 THEN
+                INSERT INTO news_partition_1 (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            ELSIF NEW.category_id = 2 THEN
+                INSERT INTO news_partition_2 (id, category_id, author, title, text, rate)
+                    VALUES (OLD.id, NEW.category_id, NEW.author, NEW.title, NEW.text, NEW.rate);
+            END IF;
+        END IF;
+    END IF;
+    RETURN NEW;
+  END;
+$f$;
+CREATE TRIGGER news_partition_update instead OF UPDATE ON news
+  FOR each ROW EXECUTE PROCEDURE news_partition_update();
+
+-- this is the actual partition delete trigger:
+CREATE FUNCTION news_partition_delete() RETURNS TRIGGER LANGUAGE plpgsql
+AS $f$
+  BEGIN
+    IF OLD.category_id = 1 THEN
+        DELETE FROM news_partition_1 WHERE id = OLD.id;
+    ELSIF OLD.category_id = 2 THEN
+        DELETE FROM news_partition_2 WHERE id = OLD.id;
+    ELSE
+        DELETE FROM news_partition_other WHERE id = OLD.id;
+    END IF;
+    RETURN NULL;
+  END;
+$f$;
+CREATE TRIGGER news_partition_delete instead OF DELETE ON news
+  FOR each ROW EXECUTE PROCEDURE news_partition_delete();
 
 -- create rule news_insert_to_1 as on insert to news where (category_id = 1) returning id
 -- do instead insert into news_partition_1 values (new.*);
