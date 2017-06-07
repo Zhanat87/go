@@ -26,18 +26,28 @@ type (
 	}
 )
 
-// ServeNewsReplication sets up the routing of newsReplication endpoints and the corresponding handlers.
-func ServeNewsReplicationResource(rg *routing.RouteGroup, service newsReplicationService) {
+// ServeNewsReplication sets up the routing of newsReplication master endpoints and the corresponding handlers.
+func ServeNewsReplicationMasterResource(rg *routing.RouteGroup, service newsReplicationService) {
 	r := &newsReplicationResource{service}
-	rg.Get("/replication/news/<id>", r.get)
-	rg.Get("/replication/news", r.query)
+	rg.Use(
+		app.Transactional(getReplicationDbConnection(true)),
+	)
 	rg.Post("/replication/news", r.create)
 	rg.Put("/replication/news/<id>", r.update)
 	rg.Delete("/replication/news/<id>", r.delete)
 }
 
+// ServeNewsReplication sets up the routing of newsReplication slave endpoints and the corresponding handlers.
+func ServeNewsReplicationSlaveResource(rg *routing.RouteGroup, service newsReplicationService) {
+	r := &newsReplicationResource{service}
+	rg.Use(
+		app.Transactional(getReplicationDbConnection(false)),
+	)
+	rg.Get("/replication/news/<id>", r.get)
+	rg.Get("/replication/news", r.query)
+}
+
 func (r *newsReplicationResource) get(c *routing.Context) error {
-	setReplicationDbConnection(c, false)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return err
@@ -52,7 +62,6 @@ func (r *newsReplicationResource) get(c *routing.Context) error {
 }
 
 func (r *newsReplicationResource) query(c *routing.Context) error {
-	setReplicationDbConnection(c, false)
 	rs := app.GetRequestScope(c)
 	count, err := r.service.Count(rs)
 	if err != nil {
@@ -68,7 +77,6 @@ func (r *newsReplicationResource) query(c *routing.Context) error {
 }
 
 func (r *newsReplicationResource) create(c *routing.Context) error {
-	setReplicationDbConnection(c, true)
 	var model models.NewsReplication
 	if err := c.Read(&model); err != nil {
 		return err
@@ -82,7 +90,6 @@ func (r *newsReplicationResource) create(c *routing.Context) error {
 }
 
 func (r *newsReplicationResource) update(c *routing.Context) error {
-	setReplicationDbConnection(c, true)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return err
@@ -108,7 +115,6 @@ func (r *newsReplicationResource) update(c *routing.Context) error {
 }
 
 func (r *newsReplicationResource) delete(c *routing.Context) error {
-	setReplicationDbConnection(c, true)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return err
@@ -122,7 +128,7 @@ func (r *newsReplicationResource) delete(c *routing.Context) error {
 	return c.Write(response)
 }
 
-func setReplicationDbConnection(c *routing.Context, isMaster bool) {
+func getReplicationDbConnection(isMaster bool) *dbx.DB {
 	var dsn string
 	if isMaster {
 		dsn = app.Config.DSN_DOCKER_COMPOSE_V3_REPLICATION_MASTER
@@ -133,5 +139,5 @@ func setReplicationDbConnection(c *routing.Context, isMaster bool) {
 	if err != nil {
 		panic(err)
 	}
-	app.GetRequestScope(c).SetTx(db)
+	return db
 }

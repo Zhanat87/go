@@ -124,7 +124,7 @@ services:
     ports:
       - "5435:5432"
     volumes:
-      - ./postgres_replication_master/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgresql_replication_master/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -141,7 +141,7 @@ services:
     ports:
       - "5436:5432"
     volumes:
-      - ./postgres_replication_slave/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgresql_replication_slave/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -263,7 +263,7 @@ services:
   ###############################################################################
   # client-nginx
   ###############################################################################
-  # docker-compose stop client-nginx && docker-compose build client-nginx && docker-compose start client-nginx
+  # docker-compose restart client-nginx
   client-nginx:
     image: phpdockerio/nginx:latest
     container_name: client-nginx

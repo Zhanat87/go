@@ -175,7 +175,8 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 
 	// replications
 	newsReplicationDAO := daos.NewNewsReplicationDAO()
-	apis.ServeNewsReplicationResource(rg, services.NewNewsReplicationService(newsReplicationDAO))
+	apis.ServeNewsReplicationMasterResource(rg, services.NewNewsReplicationService(newsReplicationDAO))
+	apis.ServeNewsReplicationSlaveResource(rg, services.NewNewsReplicationService(newsReplicationDAO))
 
 	return router
 }
