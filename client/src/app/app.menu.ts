@@ -98,6 +98,18 @@ export const APP_MENU = [
                     }
                 }
             },
+            {
+                path: 'replication-news',
+                data: {
+                    menu: {
+                        title: 'Replication news',
+                        icon: 'ion-clipboard',
+                        selected: false,
+                        expanded: false,
+                        order: 8
+                    }
+                }
+            },
         ]
     }
 ];

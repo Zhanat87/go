@@ -21,6 +21,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from "./modules/category/category.module";
 import { NewsModule } from "./modules/news/news.module";
 import { NewsShardModule } from "./modules/newsShard/newsShard.module";
+import { NewsReplicationModule } from "./modules/newsReplication/newsReplication.module";
 
 // component's without module
 import { PageComponents } from "./pages/pages.components";
@@ -67,6 +68,7 @@ export type StoreType = {
         CategoryModule,
         NewsModule,
         NewsShardModule,
+        NewsReplicationModule,
     ],
 })
 

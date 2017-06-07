@@ -14,23 +14,25 @@ var Config appConfig
 
 type appConfig struct {
 	// the path to the error message file. Defaults to "config/errors.yaml"
-	ErrorFile             string `mapstructure:"error_file"`
+	ErrorFile                                string `mapstructure:"error_file"`
 	// the server port. Defaults to 8080
-	ServerPort            int    `mapstructure:"server_port"`
+	ServerPort                               int    `mapstructure:"server_port"`
 	// the data source name (DSN) for connecting to the database. required.
-	DSN                   string `mapstructure:"dsn"`
-	DSN_DOCKER            string `mapstructure:"dsn_docker"`
-	DSN_DOCKER_COMPOSE_V3 string `mapstructure:"dsn_docker_compose_v3"`
-	DSN_DOCKER_TCP        string `mapstructure:"dsn_docker_tcp"`
+	DSN                                      string `mapstructure:"dsn"`
+	DSN_DOCKER                               string `mapstructure:"dsn_docker"`
+	DSN_DOCKER_COMPOSE_V3                    string `mapstructure:"dsn_docker_compose_v3"`
+	DSN_DOCKER_COMPOSE_V3_REPLICATION_MASTER string `mapstructure:"dsn_docker_compose_v3_replication_master"`
+	DSN_DOCKER_COMPOSE_V3_REPLICATION_SLAVE  string `mapstructure:"dsn_docker_compose_v3_replication_slave"`
+	DSN_DOCKER_TCP                           string `mapstructure:"dsn_docker_tcp"`
 	// the signing method for JWT. Defaults to "HS256"
-	JWTSigningMethod      string `mapstructure:"jwt_signing_method"`
+	JWTSigningMethod                         string `mapstructure:"jwt_signing_method"`
 	// JWT signing key. required.
-	JWTSigningKey         string `mapstructure:"jwt_signing_key"`
+	JWTSigningKey                            string `mapstructure:"jwt_signing_key"`
 	// JWT verification key. required.
-	JWTVerificationKey    string `mapstructure:"jwt_verification_key"`
+	JWTVerificationKey                       string `mapstructure:"jwt_verification_key"`
 	// redis
-	REDIS_DSN             string `mapstructure:"redis_dsn"`
-	REDIS_DSN_DOCKER      string `mapstructure:"redis_dsn_docker"`
+	REDIS_DSN                                string `mapstructure:"redis_dsn"`
+	REDIS_DSN_DOCKER                         string `mapstructure:"redis_dsn_docker"`
 }
 
 func (config appConfig) Validate() error {
@@ -60,7 +62,7 @@ func (config appConfig) GetDSN() string {
 	//		os.Getenv("POSTGRESQL_PORT_5432_TCP_PORT"), os.Getenv("POSTGRESQL_ENV_POSTGRES_DB"))
 	//}
 	if os.Getenv("HOME") == "/root" {
-	//if helpers.IsDocker() {
+		//if helpers.IsDocker() {
 		return config.DSN_DOCKER_COMPOSE_V3
 	} else {
 		return config.DSN
@@ -93,7 +95,7 @@ func LoadConfig(configPaths ...string) error {
 
 func (config appConfig) GetRedisDSN() string {
 	if os.Getenv("HOME") == "/root" {
-	//if helpers.IsDocker() {
+		//if helpers.IsDocker() {
 		return config.REDIS_DSN_DOCKER
 	} else {
 		return config.REDIS_DSN

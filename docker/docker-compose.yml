@@ -118,6 +118,44 @@ services:
       custom_network:
         ipv4_address: 192.168.0.6
 
+  postgresql_replication_master:
+    image: postgres:latest
+    container_name: postgresql_replication_master
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./postgres_replication_master/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_restful
+    expose:
+      - "5432"
+    networks:
+      custom_network:
+        ipv4_address: 192.168.0.13
+
+  postgresql_replication_slave:
+    image: postgres:latest
+    container_name: postgresql_replication_slave
+    ports:
+      - "5436:5432"
+    volumes:
+      - ./postgres_replication_slave/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=go_restful
+    expose:
+      - "5432"
+    networks:
+      custom_network:
+        ipv4_address: 192.168.0.14
+    links:
+      - postgresql_replication_master
+    depends_on:
+      - postgresql_replication_master
+
   # https://github.com/ankane/pghero/blob/master/guides/Docker.md
   # https://github.com/ankane/pghero/blob/master/guides/Query-Stats.md
   pghero:
@@ -127,6 +165,8 @@ services:
       - "8084:8080"
     expose:
       - "8084"
+    links:
+      - postgresql
     depends_on:
       - postgresql
     environment:
@@ -183,10 +223,14 @@ services:
     links:
       - postgresql
       - redis
+      - postgresql_replication_master
+      - postgresql_replication_slave
 #      - mongo
     depends_on:
       - postgresql
       - redis
+      - postgresql_replication_master
+      - postgresql_replication_slave
 #      - mongo
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
@@ -248,6 +292,8 @@ services:
       - postgresql
       - postgresql1
       - postgresql2
+      - postgresql_replication_master
+      - postgresql_replication_slave
     networks:
       custom_network:
         ipv4_address: 192.168.0.12
