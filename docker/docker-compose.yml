@@ -119,12 +119,19 @@ services:
         ipv4_address: 192.168.0.6
 
   postgresql_replication_master:
-    image: postgres:latest
+#    image: postgres:latest
+    restart: always
     container_name: postgresql_replication_master
+    build:
+      context: postgresql_replication_master
+      dockerfile: Dockerfile
     ports:
       - "5435:5432"
-    volumes:
-      - ./postgresql_replication_master/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # docker exec -it postgresql_replication_master /bin/bash
+    # ls $PGDATA - /var/lib/postgresql/data
+#    volumes:
+#      - ./postgresql_replication_master/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+#      - ./postgresql_replication_master/configs:/var/lib/postgresql/data:z
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -136,12 +143,17 @@ services:
         ipv4_address: 192.168.0.13
 
   postgresql_replication_slave:
-    image: postgres:latest
+#    image: postgres:latest
+    restart: always
     container_name: postgresql_replication_slave
+    build:
+      context: postgresql_replication_slave
+      dockerfile: Dockerfile
     ports:
       - "5436:5432"
-    volumes:
-      - ./postgresql_replication_slave/init.sql:/docker-entrypoint-initdb.d/init.sql
+#    volumes:
+#      - ./postgresql_replication_slave/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+#      - ./postgresql_replication_slave/configs:/var/lib/postgresql/data:z
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
