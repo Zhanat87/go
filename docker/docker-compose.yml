@@ -16,13 +16,13 @@ version: '3'
 # sudo apt-get update && sudo apt-get install bridge-utils
 # sudo brctl show
 # ip route - show linkdown in 192.168.0.0/16
+# docker compose user specified IP address is supported only when connecting to networks with user configured subnets
 networks:
   custom_network:
     ipam:
       driver: default
       config:
         - subnet: 192.168.0.0/16
-
 
 # jenkins on 8082 port - not need, .git web hooks not need
 # need golang webhook for conitinuos delivery and integration - https://github.com/adnanh/webhook
@@ -80,6 +80,9 @@ services:
     networks:
       custom_network:
         ipv4_address: 192.168.0.4
+        # note: work local, but not work in digital ocean
+#      default:
+#        ipv4_address: 172.18.0.4
 
   postgresql1:
     image: postgres:latest
