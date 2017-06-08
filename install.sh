@@ -33,7 +33,8 @@ docker-compose up -d
 # wait for postgresql connection will worked
 php sleep.php
 docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
-
+# replication db
+docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate -url postgres://postgres:postgres@postgresql_replication_master:5432/go_restful?sslmode=disable -path /go/migrations/replication up
 # run pghero stats
 # 'postgresql' - not work as host, '172.18.0.5' - timeout, need add configs in postgresql.conf:
 #shared_preload_libraries = 'pg_stat_statements'
