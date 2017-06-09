@@ -29,11 +29,11 @@ func mockRequestScope(db *dbx.DB) app.RequestScope {
 	}
 }
 
-func (rs *requestScope) UserID() string {
-	return "tester"
+func (rs *requestScope) UserID() int {
+	return 1
 }
 
-func (rs *requestScope) SetUserID(id string) {
+func (rs *requestScope) SetUserID(id int) {
 }
 
 func (rs *requestScope) RequestID() string {

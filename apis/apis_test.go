@@ -49,7 +49,7 @@ func testAPI(method, URL, body string) *httptest.ResponseRecorder {
 func runAPITests(t *testing.T, tests []apiTestCase) {
 	for _, test := range tests {
 		res := testAPI(test.method, test.url, test.body)
-		assert.Equal(t, test.status, res.Code, test.tag)
+		assert.Equal(t, test.status, res.Code, test.tag + ", " + res.Body.String())
 		if test.response != "" {
 			assert.JSONEq(t, test.response, res.Body.String(), test.tag)
 		}

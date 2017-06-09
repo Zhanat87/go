@@ -7,6 +7,7 @@ import (
 	"github.com/Zhanat87/go/models"
 	"github.com/Zhanat87/go/testdata"
 	"github.com/stretchr/testify/assert"
+	"database/sql"
 )
 
 func TestArtistDAO(t *testing.T) {
@@ -30,6 +31,7 @@ func TestArtistDAO(t *testing.T) {
 			artist := &models.Artist{
 				Id:   1000,
 				Name: "tester",
+				Image: models.JsonNullString{sql.NullString{String:"", Valid:false}},
 			}
 			err := dao.Create(rs, artist)
 			assert.Nil(t, err)

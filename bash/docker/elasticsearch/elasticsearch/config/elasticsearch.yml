@@ -1,0 +1,21 @@
+# https://www.elastic.co/guide/en/elasticsearch/reference/2.4/setup-configuration.html
+# http://stackoverflow.com/questions/34920801/how-to-run-elasticsearch-2-1-1-as-root-user-in-linux-machine
+
+#network:
+#    host: 172.17.0.3
+#    host: 127.0.0.1
+#network.host: 172.17.0.1
+#network.host: 192.168.100.100
+
+#mlockall
+#bootstrap.memory_lock: true
+#bootstrap.mlockall: true
+
+#path:
+#  data: /data/data
+#  logs: /data/log
+#  plugins: /data/plugins
+#  work: /data/work
+
+#cluster:
+#  name: "adspy-cluster"

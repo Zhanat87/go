@@ -1,0 +1,129 @@
+###############################################################################
+# Docker for app
+###############################################################################
+
+# https://hub.docker.com/_/influxdb/
+# https://github.com/tutumcloud/influxdb
+influxdb:
+  image: influxdb:latest
+  container_name: influxdb
+  ports:
+    - "8083:8083"
+    - "8086:8086"
+  environment:
+    - ADMIN_USER=adspy
+    - INFLUXDB_INIT_PWD=adspy
+    - PRE_CREATE_DB=adspy
+
+# https://hub.docker.com/_/redis/
+redis:
+  image: phpdockerio/redis:latest
+  container_name: redis
+  ports:
+    - "6379:6379"
+
+# https://hub.docker.com/r/hardware/adminer/
+# https://github.com/hardware/adminer/blob/master/Dockerfile
+# порт adminer'а 8888, поэтому его надо перенаправить на 8083,
+# затем можно просто открыть localhost:8083
+adminer:
+#  build: .
+#  dockerfile: adminer/Dockerfile
+  image: hardware/adminer
+  container_name: adminer
+  ports:
+    - "8888:8888"
+  links:
+    - postgres
+#    - elasticsearch
+
+
+# https://github.com/docker-library/postgres/blob/edd455e5b1dbfddc280beb244228054374f2f3dd/9.4/Dockerfile
+postgres:
+  image: postgres:9.4
+  container_name: postgres
+  ports:
+    - "5433:5432"
+#  volumes:
+#    - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+#  Set environment to use a database
+  environment:
+    - POSTGRES_USER=adspy
+    - POSTGRES_PASSWORD=adspy
+    - POSTGRES_DB=adspy
+
+# https://github.com/docker-library/elasticsearch/blob/605ca406cbd254f70872af0df8fecf524d126c53/5.0/Dockerfile
+# https://hub.docker.com/_/elasticsearch/
+# https://www.elastic.co/guide/en/marvel/current/installing-marvel.html
+# http://ermaker.github.io/blog/2016/05/17/simple-setting-of-elasticsearch-on-docker.html
+elasticsearch:
+  build: .
+  dockerfile: elasticsearch/Dockerfile
+  container_name: elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+#  ulimits:
+#    memlock: -1
+#  mem_limit: 2g
+#  memswap_limit: 2g
+##  command: "-E bootstrap.ignore_system_bootstrap_checks=true"
+#  volumes:
+#    - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+#  environment:
+##    - ES_JAVA_OPTS="-Xms2g -Xmx2g"
+#    - ES_HEAP_SIZE=1g
+##    - MAX_OPEN_FILES=65535
+##    - MAX_LOCKED_MEMORY=unlimited
+
+# https://hub.docker.com/r/kenwdelong/elk-docker/~/dockerfile/
+# https://hub.docker.com/_/kibana/
+# https://github.com/docker-library/kibana/blob/43644e6ae40c53c05d94165506094035f0463ea6/5.0/Dockerfile
+#kibana:
+#  build: .
+#  dockerfile: kibana/Dockerfile
+#  container_name: kibana
+#  ports:
+#    - "5601:5601"
+#  links:
+#    - elasticsearch
+#  volumes:
+#    - ./kibana/config/:/opt/kibana/config/
+#  environment:
+##    - ELASTICSEARCH_URL=http://172.17.0.3:9200
+##    - ELASTICSEARCH_URL=http://127.0.0.1:9200
+##    - ELASTICSEARCH_URL=http://localhost:9200
+#    - ELASTICSEARCH_URL=http://192.168.100.100:9200
+
+###############################################################################
+# nginx
+###############################################################################
+
+nginx:
+  image: phpdockerio/nginx:latest
+  container_name: nginx
+  volumes:
+    - ./../:/var/www
+#  Inject configuration via volume
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    - ./nginx/logs:/var/log/nginx/
+  ports:
+    - "1025:80"
+  links:
+    - php-fpm
+
+###############################################################################
+# php-fpm
+###############################################################################
+php-fpm:
+  build: .
+  dockerfile: php-fpm/Dockerfile
+  container_name: php-fpm
+  volumes:
+    - ..:/var/www
+    - ./php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
+  links:
+    - postgres
+    - elasticsearch
+    - redis
+    - influxdb

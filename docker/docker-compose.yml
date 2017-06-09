@@ -22,7 +22,9 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 192.168.0.0/16
+        - subnet: 192.168.0.0/32
+  elk:
+    driver: bridge
 
 # jenkins on 8082 port - not need, .git web hooks not need
 # need golang webhook for conitinuos delivery and integration - https://github.com/adnanh/webhook
@@ -272,12 +274,14 @@ services:
       - redis
       - postgresql_replication_master
       - postgresql_replication_slave
+      - elasticsearch
 #      - mongo
     depends_on:
       - postgresql
       - redis
       - postgresql_replication_master
       - postgresql_replication_slave
+      - elasticsearch
 #      - mongo
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
@@ -405,13 +409,99 @@ services:
   #  image: phpdockerio/memcached:latest
   #  container_name: stack-memcached
 
-  #stack-elasticsearch:
-  #  build: .
-  #  dockerfile: elasticsearch/Dockerfile
-  #  container_name: stack-elasticsearch
-  #  ports:
-  #    - "9200:9200"
-  #    - "9300:9300"
+  # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+#  elasticsearch:
+#    container_name: elasticsearch
+#    restart: always
+#    build:
+#      context: elasticsearch
+#      dockerfile: Dockerfile
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
+#    networks:
+#      custom_network:
+#        ipv4_address: 192.168.0.15
+#    environment:
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+##    mem_limit: 1g
+#    # https://docs.docker.com/compose/compose-file/#resources
+#    # https://github.com/docker/compose/issues/4687
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 1g
+#
+#  elasticsearch_2:
+#    container_name: elasticsearch_2
+#    restart: always
+#    build:
+#      context: elasticsearch_2
+#      dockerfile: Dockerfile
+#    networks:
+#      custom_network:
+#        ipv4_address: 192.168.0.16
+#    environment:
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 1g
+#    links:
+#      - elasticsearch
+
+  # https://hub.docker.com/r/kenwdelong/elk-docker/~/dockerfile/
+  # https://hub.docker.com/_/kibana/ - deprecated
+  # https://github.com/docker-library/kibana/blob/43644e6ae40c53c05d94165506094035f0463ea6/5.0/Dockerfile
+  # https://github.com/elastic/kibana-docker
+  # https://www.elastic.co/guide/en/kibana/current/_pulling_the_image.html
+#  kibana:
+#    restart: always
+#    build:
+#      context: kibana
+#      dockerfile: Dockerfile
+#    container_name: kibana
+#    ports:
+#      - "5601:5601"
+#    links:
+#      - elasticsearch
+#  #  volumes:
+#  #    - ./kibana/config/:/opt/kibana/config/
+#    environment:
+#      - ELASTICSEARCH_URL=http://192.168.0.15:9200
+#    networks:
+#      custom_network:
+#        ipv4_address: 192.168.0.17
+
+  # https://hub.docker.com/_/logstash/ - deprecated
+  # https://github.com/elastic/logstash-docker
+  # https://github.com/deviantony/docker-elk/blob/master/docker-compose.yml
+#  logstash:
+#    restart: always
+#    image: docker.elastic.co/logstash/logstash:5.2.1
+#    container_name: logstash
+#    ports:
+#      - "5000:5000"
+#    environment:
+#      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+#    links:
+#      - elasticsearch
+#    networks:
+#      custom_network:
+#        ipv4_address: 192.168.0.18
 
   #stack-rabbitmq:
   #  image: rabbitmq:3-management
@@ -469,3 +559,64 @@ services:
   #    - "8081:8081"
   #  links:
   #    - stack-mongodb
+
+  # https://github.com/deviantony/docker-elk
+  elasticsearch:
+    build:
+      context: docker-elk/elasticsearch
+      dockerfile: Dockerfile
+    container_name: elasticsearch
+    volumes:
+      - ./docker-elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      custom_network:
+        ipv4_address: 192.168.0.15
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - elk
+
+  logstash:
+    build:
+      context: docker-elk/logstash
+      dockerfile: Dockerfile
+    container_name: logstash
+    volumes:
+      - ./docker-elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./docker-elk/logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5050:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    links:
+      - elasticsearch
+#    networks:
+#      custom_network:
+#        ipv4_address: 192.168.0.16
+    networks:
+      - elk
+
+  kibana:
+    build:
+      context: docker-elk/kibana
+      dockerfile: Dockerfile
+    container_name: kibana
+    volumes:
+      - ./docker-elk/kibana/config/:/usr/share/kibana/config
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch
+#    networks:
+#      custom_network:
+#        ipv4_address: 192.168.0.17
+    networks:
+      - elk

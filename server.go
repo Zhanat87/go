@@ -23,7 +23,7 @@ import (
 	"time"
 	"github.com/joho/godotenv"
 	"github.com/Zhanat87/go/helpers"
-	golang_errors "errors"
+	errs "errors"
 )
 
 func main() {
@@ -98,7 +98,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 
 	if helpers.IsDocker() == false {
 		router.To("GET", "/telegram/<msg>", func(c *routing.Context) error {
-			helpers.LogError(golang_errors.New(c.Param("msg")))
+			helpers.LogError(errs.New(c.Param("msg")))
 			return c.Write(fmt.Sprintf("send message to telegram success: %s", c.Param("msg")))
 		})
 	}

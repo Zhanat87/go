@@ -4,7 +4,8 @@ DROP TABLE IF EXISTS artist;
 CREATE TABLE artist
 (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(120)
+    name VARCHAR(120),
+    image character varying(100)
 );
 
 CREATE TABLE album
@@ -12,6 +13,7 @@ CREATE TABLE album
     id SERIAL PRIMARY KEY,
     title VARCHAR(160)  NOT NULL,
     artist_id INTEGER  NOT NULL,
+    image character varying(100),
     FOREIGN KEY (artist_id) REFERENCES artist (id) ON DELETE CASCADE
 );
 
