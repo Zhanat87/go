@@ -18,6 +18,7 @@ import (
 	"github.com/Zhanat87/go/daos"
 	"github.com/Zhanat87/go/errors"
 	"github.com/Zhanat87/go/services"
+	"github.com/Zhanat87/go/util"
 	"os"
 	"database/sql"
 	"github.com/dgrijalva/jwt-go"
@@ -110,8 +111,19 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	}))
 
 	router.Use(
-		app.Init(logger),
 		content.TypeNegotiator(content.JSON),
+	)
+
+	router.To("GET", "/utils", func(c *routing.Context) error {
+		c.Abort()  // skip all other middlewares/handlers
+		return c.Write(util.H{
+			"string": "test",
+			"number": 123,
+		})
+	})
+
+	router.Use(
+		app.Init(logger),
 		cors.Handler(cors.Options{
 			AllowOrigins: "*",
 			AllowHeaders: "*",
