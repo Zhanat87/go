@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"os/user"
 	"os"
+	"runtime"
+	"time"
+	"log"
 )
 
 func CurrentUser() *user.User {
@@ -17,4 +20,16 @@ func CurrentUser() *user.User {
 
 func IsDocker() bool {
 	return os.Getenv("HOME") == "/root"
+}
+
+func MonitorRuntime() {
+	log.Println("Number of CPUs:", runtime.NumCPU())
+	m := &runtime.MemStats{}
+	for {
+		r := runtime.NumGoroutine()
+		log.Println("Number of goroutines", r)
+		runtime.ReadMemStats(m)
+		log.Println("Allocated memory", m.Alloc)
+		time.Sleep(10 * time.Second)
+	}
 }

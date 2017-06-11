@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	_ "net/http/pprof"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/go-ozzo/ozzo-dbx"
@@ -27,6 +28,8 @@ import (
 )
 
 func main() {
+	go helpers.MonitorRuntime()
+
 	err := godotenv.Load()
 	if err != nil {
 		helpers.FailOnError(err, "Error loading .env file", true)
@@ -75,15 +78,13 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		return c.Write("OK " + app.Version)
 	})
 
-	router.To("GET,HEAD", "/test", func(c *routing.Context) error {
+	router.To("GET,HEAD", "/test/<secret_key>", func(c *routing.Context) error {
 		c.Abort()  // skip all other middlewares/handlers
 		var variables string
-		if c.Get("secret_key").(string) == os.Getenv("SECRET_KEY") {
+		if c.Param("secret_key") == os.Getenv("SECRET_KEY") {
 			for _, e := range os.Environ() {
 				variables += e + "\r\n"
 			}
-		} else {
-			variables += c.Get("secret_key").(string) + "\r\n"
 		}
 		_, err := sql.Open("postgres", dsn)
 		if err != nil {
