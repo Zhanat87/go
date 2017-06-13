@@ -1,6 +1,7 @@
 # golang image where workspace (GOPATH) configured at /go.
 # https://hub.docker.com/_/golang/
 FROM golang:latest
+MAINTAINER Iskakov Zhanat <iskakov_zhanat@mail.ru>
 # сначала надо залить все файлы в github
 # затем обновить все файлы с github'а
 # и тогда обновления появятся в докере
