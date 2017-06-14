@@ -167,6 +167,10 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		return c.Write(fmt.Sprintf("user id: %d", userId))
 	})
 
+	// gRPC
+	rg.Get("/currencies", apis.ExchangeRates())
+
+	// cruds
 	artistDAO := daos.NewArtistDAO()
 	apis.ServeArtistResource(rg, services.NewArtistService(artistDAO))
 

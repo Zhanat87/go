@@ -1,0 +1,25 @@
+syntax = "proto3";
+package currency;
+
+// The Currency service definition.
+service Currency {
+    // Get all exchange rates - A server-to-client streaming RPC.
+    rpc GetExchangeRates(EmptyRequest) returns (stream ExchangeRatesResponse) {}
+}
+
+message EmptyRequest {
+}
+
+// https://developers.google.com/protocol-buffers/docs/proto3#scalar
+message ExchangeRateResponse {
+    string title       = 1;
+    string pubDate     = 2;
+    float  description = 3;
+    int32  quant       = 4;
+    string index       = 5;
+    float  change      = 6;
+}
+
+message ExchangeRatesResponse {
+    repeated ExchangeRateResponse data = 1;
+}

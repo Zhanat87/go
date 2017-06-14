@@ -1,0 +1,57 @@
+<div class="currencyDiv">
+    <i class="ion-cash" title="show exchange rates" (click)="showExchangeRates()"></i>
+</div>
+<!--currencyModal-->
+<div bsModal #currencyModal="bs-modal" id="currencyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Exchange rate</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="hideCurrencyModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover table-considered">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>PubDate</th>
+                            <th>Description</th>
+                            <th>Quant</th>
+                            <th>Index</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="currencies">
+                        <tr *ngFor="let currency of currencies" class="{{ currency.index }}">
+                            <td>
+                                {{ currency.title }}
+                            </td>
+                            <td>
+                                {{ currency.pubDate }}
+                            </td>
+                            <td>
+                                {{ currency.description }}
+                            </td>
+                            <td>
+                                {{ currency.quant }}
+                            </td>
+                            <td>
+                                {{ currency.index }}
+                            </td>
+                            <td>
+                                {{ currency.change }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="hideCurrencyModal()">
+                    Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

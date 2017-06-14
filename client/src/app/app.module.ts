@@ -28,6 +28,9 @@ import { PageComponents } from "./pages/pages.components";
 import { MainLayoutComponent } from "./common/components/layouts/main/main.component";
 import { BlankLayoutComponent } from "./common/components/layouts/blank/blank.component";
 
+// widget's modules
+import { CurrencyModule } from "./widgets/currency/currency.module";
+
 import {CoreModule} from "./common/modules/core.module";
 
 export type StoreType = {
@@ -69,6 +72,9 @@ export type StoreType = {
         NewsModule,
         NewsShardModule,
         NewsReplicationModule,
+
+        // widget's modules
+        CurrencyModule,
     ],
 })
 

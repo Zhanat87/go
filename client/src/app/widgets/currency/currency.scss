@@ -1,0 +1,20 @@
+.currencyDiv {
+  position: absolute;
+  top: 22px;
+  left: 220px;
+  cursor: pointer;
+  i {
+    font-size: 20px;
+    color: greenyellow;
+  }
+}
+#currencyModal {
+  color: #000;
+  font-size: 16px;
+  tr.DOWN {
+    color: red;
+  }
+  tr.UP {
+    color: green;
+  }
+}

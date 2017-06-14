@@ -2,6 +2,10 @@ package util
 
 import (
 	"encoding/xml"
+	"io/ioutil"
+	"bytes"
+	"log"
+	"net/http"
 )
 
 type H map[string]interface{}
@@ -28,4 +32,34 @@ func (h H) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		return err
 	}
 	return nil
+}
+
+func FetchURL(url string) []byte {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatalf("unable to GET '%s': %s", url, err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf("unable to read body '%s': %s", url, err)
+	}
+	return body
+}
+
+func ParseXML(xmlDoc []byte, target interface{}) {
+	reader := bytes.NewReader(xmlDoc)
+	decoder := xml.NewDecoder(reader)
+	if err := decoder.Decode(target); err != nil {
+		log.Fatalf("unable to parse XML '%s':\n%s", err, xmlDoc)
+	}
+}
+
+func InArray(str string, list []string) bool {
+	for _, v := range list {
+		if v == str {
+			return true
+		}
+	}
+	return false
 }

@@ -49,12 +49,13 @@ import {
     BaThemePreloader,
     BaThemeSpinner
 } from './services';
-import { LogoutService } from './../pages/login/logout.service';
+import { LogoutService } from '../pages/login/logout.service';
 
 import {
     EmailValidator,
     EqualPasswordsValidator
 } from './validators';
+import {CurrencyModule} from "../widgets/currency/currency.module";
 
 const NGA_COMPONENTS = [
     BaAmChart,
@@ -104,7 +105,7 @@ const NGA_VALIDATORS = [
     declarations: [
         ...NGA_PIPES,
         ...NGA_DIRECTIVES,
-        ...NGA_COMPONENTS
+        ...NGA_COMPONENTS,
     ],
     imports: [
         CommonModule,
@@ -112,11 +113,12 @@ const NGA_VALIDATORS = [
         FormsModule,
         ReactiveFormsModule,
         NgUploaderModule,
+        CurrencyModule,
     ],
     exports: [
         ...NGA_PIPES,
         ...NGA_DIRECTIVES,
-        ...NGA_COMPONENTS
+        ...NGA_COMPONENTS,
     ]
 })
 export class NgaModule {

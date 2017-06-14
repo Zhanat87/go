@@ -23,8 +23,8 @@ networks:
       driver: default
       config:
         - subnet: 192.168.0.0/32
-  elk:
-    driver: bridge
+#  elk:
+#    driver: bridge
 
 # jenkins on 8082 port - not need, .git web hooks not need
 # need golang webhook for conitinuos delivery and integration - https://github.com/adnanh/webhook
@@ -274,14 +274,14 @@ services:
       - redis
       - postgresql_replication_master
       - postgresql_replication_slave
-      - elasticsearch
+#      - elasticsearch
 #      - mongo
     depends_on:
       - postgresql
       - redis
       - postgresql_replication_master
       - postgresql_replication_slave
-      - elasticsearch
+#      - elasticsearch
 #      - mongo
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
@@ -310,6 +310,15 @@ services:
     networks:
       custom_network:
         ipv4_address: 192.168.0.10
+
+  golang-grpc-protobuf-server:
+    image: zhanat87/golang-grpc-protobuf-server:latest
+    container_name: golang-grpc-protobuf-server
+    ports:
+      - "50051:50051"
+    networks:
+      custom_network:
+        ipv4_address: 192.168.0.3
 
   ###############################################################################
   # client-nginx
@@ -561,62 +570,62 @@ services:
   #    - stack-mongodb
 
   # https://github.com/deviantony/docker-elk
-  elasticsearch:
-    build:
-      context: docker-elk/elasticsearch
-      dockerfile: Dockerfile
-    container_name: elasticsearch
-    volumes:
-      - ./docker-elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    networks:
-      custom_network:
-        ipv4_address: 192.168.0.15
-    environment:
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    networks:
-      - elk
-
-  logstash:
-    build:
-      context: docker-elk/logstash
-      dockerfile: Dockerfile
-    container_name: logstash
-    volumes:
-      - ./docker-elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ./docker-elk/logstash/pipeline:/usr/share/logstash/pipeline
-    ports:
-      - "5050:5000"
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    links:
-      - elasticsearch
+#  elasticsearch:
+#    build:
+#      context: docker-elk/elasticsearch
+#      dockerfile: Dockerfile
+#    container_name: elasticsearch
+#    volumes:
+#      - ./docker-elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
 #    networks:
 #      custom_network:
-#        ipv4_address: 192.168.0.16
-    networks:
-      - elk
-
-  kibana:
-    build:
-      context: docker-elk/kibana
-      dockerfile: Dockerfile
-    container_name: kibana
-    volumes:
-      - ./docker-elk/kibana/config/:/usr/share/kibana/config
-    ports:
-      - "5601:5601"
-    links:
-      - elasticsearch
+#        ipv4_address: 192.168.0.15
+#    environment:
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
 #    networks:
-#      custom_network:
-#        ipv4_address: 192.168.0.17
-    networks:
-      - elk
+#      - elk
+#
+#  logstash:
+#    build:
+#      context: docker-elk/logstash
+#      dockerfile: Dockerfile
+#    container_name: logstash
+#    volumes:
+#      - ./docker-elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+#      - ./docker-elk/logstash/pipeline:/usr/share/logstash/pipeline
+#    ports:
+#      - "5050:5000"
+#    environment:
+#      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+#    links:
+#      - elasticsearch
+##    networks:
+##      custom_network:
+##        ipv4_address: 192.168.0.16
+#    networks:
+#      - elk
+#
+#  kibana:
+#    build:
+#      context: docker-elk/kibana
+#      dockerfile: Dockerfile
+#    container_name: kibana
+#    volumes:
+#      - ./docker-elk/kibana/config/:/usr/share/kibana/config
+#    ports:
+#      - "5601:5601"
+#    links:
+#      - elasticsearch
+##    networks:
+##      custom_network:
+##        ipv4_address: 192.168.0.17
+#    networks:
+#      - elk
