@@ -1,2 +1,2 @@
 <?php
-sleep(10);
+sleep(30);
