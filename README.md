@@ -18,3 +18,4 @@ Used technologies:
 * redis
 * socket.io
 * send errors to telegram or email
+* gRPC, protobuf

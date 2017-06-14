@@ -10,10 +10,7 @@ import (
 	"google.golang.org/grpc"
 
 	pb "github.com/Zhanat87/go/grpc/currency"
-)
-
-const (
-	address = "localhost:50051"
+	"os"
 )
 
 // getExchangeRates calls the RPC method GetExchangeRates of CurrencyServer
@@ -42,7 +39,7 @@ func getExchangeRates(client pb.CurrencyClient, emptyRequest *pb.EmptyRequest) *
 func ExchangeRates() routing.Handler {
 	return func(c *routing.Context) error {
 		// Set up a connection to the gRPC server.
-		conn, err := grpc.Dial(address, grpc.WithInsecure())
+		conn, err := grpc.Dial(os.Getenv("GRPC_SERVER"), grpc.WithInsecure())
 		if err != nil {
 			log.Fatalf("did not connect: %v", err)
 		}
