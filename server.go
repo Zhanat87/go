@@ -169,6 +169,7 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 
 	// gRPC
 	rg.Get("/currencies", apis.ExchangeRates())
+	rg.Get("/weather-info/<lat>/<lon>", apis.WeatherInfo())
 
 	// cruds
 	artistDAO := daos.NewArtistDAO()

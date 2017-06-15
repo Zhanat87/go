@@ -55,7 +55,7 @@ import {
     EmailValidator,
     EqualPasswordsValidator
 } from './validators';
-import {CurrencyModule} from "../widgets/currency/currency.module";
+import {WidgetsModules} from "../widgets/widgets.modules";
 
 const NGA_COMPONENTS = [
     BaAmChart,
@@ -113,7 +113,7 @@ const NGA_VALIDATORS = [
         FormsModule,
         ReactiveFormsModule,
         NgUploaderModule,
-        CurrencyModule,
+        WidgetsModules,
     ],
     exports: [
         ...NGA_PIPES,

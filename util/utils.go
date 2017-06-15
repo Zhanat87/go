@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
+	"encoding/json"
 )
 
 type H map[string]interface{}
@@ -62,4 +63,13 @@ func InArray(str string, list []string) bool {
 		}
 	}
 	return false
+}
+
+func ParseJsonData(encoded []byte) map[string]interface{} {
+	var j map[string]interface{}
+	err := json.Unmarshal(encoded, &j)
+	if err != nil {
+		panic(err)
+	}
+	return j
 }

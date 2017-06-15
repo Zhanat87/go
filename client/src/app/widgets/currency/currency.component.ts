@@ -7,9 +7,6 @@ import {ModalDirective} from 'ngx-bootstrap/modal';
     selector: 'currency',
     templateUrl: './currency.html',
     styleUrls: ['./currency.scss'],
-    providers: [
-       CurrencyService,
-    ],
 })
 export class CurrencyComponent implements OnInit {
 

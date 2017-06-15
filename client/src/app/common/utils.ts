@@ -194,6 +194,29 @@ export function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+/*
+ https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+ https://www.w3schools.com/html/html5_geolocation.asp
+ */
+export function setCurrentPosition() {
+    let options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    navigator.geolocation.getCurrentPosition(
+        function (pos) {
+            localStorage.setItem('lat', pos.coords.latitude.toString());
+            localStorage.setItem('lon', pos.coords.longitude.toString());
+        },
+        function (err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        },
+        options
+    );
+}
+
 // note: may be move to separate file with dates functions
 export function today(): string {
     var today = new Date();

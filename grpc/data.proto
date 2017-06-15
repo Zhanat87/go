@@ -1,0 +1,40 @@
+// protoc -I grpc/ grpc/data.proto --go_out=plugins=grpc:grpc
+
+syntax = "proto3";
+package grpc;
+
+// The gRPC common service definition.
+service GrpcService {
+    // Get all exchange rates - A server-to-client streaming RPC.
+    rpc GetExchangeRates(EmptyRequest) returns (stream ExchangeRatesResponse) {}
+
+    // Get weather info - A server-to-client streaming RPC.
+    rpc GetWeatherInfo(WeatherRequest) returns (stream WeatherResponse) {}
+}
+
+message EmptyRequest {}
+
+// https://developers.google.com/protocol-buffers/docs/proto3#scalar
+message ExchangeRateResponse {
+    string title       = 1;
+    string pubDate     = 2;
+    float  description = 3;
+    int32  quant       = 4;
+    string index       = 5;
+    float  change      = 6;
+}
+
+message ExchangeRatesResponse {
+    repeated ExchangeRateResponse data = 1;
+}
+
+message WeatherRequest {
+    double latitude  = 1;
+    double longitude = 2;
+}
+
+message WeatherResponse {
+    double temp     = 1;
+    double pressure = 2;
+    double humidity = 3;
+}

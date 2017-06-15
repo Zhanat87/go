@@ -1,0 +1,45 @@
+<div class="weatherDiv">
+    <i class="ion-umbrella" title="show weather info" (click)="showWeatherInfo()"></i>
+</div>
+<!--weatherModal-->
+<div bsModal #weatherModal="bs-modal" id="weatherModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Weather info</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="hideWeatherModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover table-considered">
+                    <thead>
+                        <tr>
+                            <th>Temperature</th>
+                            <th>Pressure</th>
+                            <th>Humidity</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="weather">
+                        <tr>
+                            <td>
+                                {{ weather.temp }} &#x2103;
+                            </td>
+                            <td>
+                                {{ weather.pressure }} hPa
+                            </td>
+                            <td>
+                                {{ weather.humidity }} %
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="hideWeatherModal()">
+                    Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

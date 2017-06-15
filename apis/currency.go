@@ -2,32 +2,29 @@ package apis
 
 import (
 	"github.com/go-ozzo/ozzo-routing"
-	"github.com/Zhanat87/go/grpc/currency"
 	"io"
 	"log"
-
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"
-
-	pb "github.com/Zhanat87/go/grpc/currency"
+	grpc_local "github.com/Zhanat87/go/grpc"
 	"os"
+	"google.golang.org/grpc"
 )
 
 // getExchangeRates calls the RPC method GetExchangeRates of CurrencyServer
-func getExchangeRates(client pb.CurrencyClient, emptyRequest *pb.EmptyRequest) *currency.ExchangeRatesResponse {
+func getExchangeRates(client grpc_local.GrpcServiceClient, emptyRequest *grpc_local.EmptyRequest) *grpc_local.ExchangeRatesResponse {
 	// calling the streaming API
 	stream, err := client.GetExchangeRates(context.Background(), emptyRequest)
 	if err != nil {
 		log.Fatalf("Error on get exchange rates: %v", err)
 	}
-	var data *currency.ExchangeRatesResponse
+	var data *grpc_local.ExchangeRatesResponse
 	for {
 		resp, err := stream.Recv()
 		if err == io.EOF {
 			break
 		}
 		if err != nil {
-			log.Fatalf("%v.GetExchangeRates(_) = _, %v", client, err)
+			log.Fatalf("%v.GetExchangeRates(_) = _, %v, test123", client, err)
 		}
 		log.Printf("data: %v", data)
 		data = resp
@@ -44,9 +41,7 @@ func ExchangeRates() routing.Handler {
 			log.Fatalf("did not connect: %v", err)
 		}
 		defer conn.Close()
-		// Creates a new CurrencyClient
-		client := pb.NewCurrencyClient(conn)
 
-		return c.Write(getExchangeRates(client, &pb.EmptyRequest{}))
+		return c.Write(getExchangeRates(grpc_local.NewGrpcServiceClient(conn), &grpc_local.EmptyRequest{}))
 	}
 }
