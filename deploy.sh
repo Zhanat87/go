@@ -32,7 +32,7 @@ docker push zhanat87/golang
 docker images
 
 # remove clients compiled files
-rm -rf client/compiled && rm -rf client/dist
+#rm -rf client/compiled && rm -rf client/dist
 
 curl http://zhanat.site:9000/hooks/install-webhook
 

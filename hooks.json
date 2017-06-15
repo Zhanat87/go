@@ -8,5 +8,10 @@
     "id": "golang-socketio-server",
     "execute-command": "/root/zhanat.site/golang-socketio-server/install.sh",
     "command-working-directory": "/root/zhanat.site/golang-socketio-server"
+  },
+  {
+    "id": "golang-grpc-protobuf-server",
+    "execute-command": "/root/zhanat.site/golang-grpc-protobuf-server/install.sh",
+    "command-working-directory": "/root/zhanat.site/golang-grpc-protobuf-server"
   }
 ]
