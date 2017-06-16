@@ -20,3 +20,4 @@ Used technologies:
 * send errors to telegram or email
 * gRPC, protobuf
 * tests
+* web crawlers

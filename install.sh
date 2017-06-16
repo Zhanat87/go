@@ -48,6 +48,9 @@ docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate
 #kill -9 $(lsof -t -i:5000)
 #docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/socketio-server &
 
+# parse mcdonalds menu
+docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/mcdonaldsMenu
+
 # list of all docker images on host machine
 # build client
 #cd ../client && npm run prebuild:prod && npm run build:prod

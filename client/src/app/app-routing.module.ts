@@ -14,6 +14,7 @@ import {ChatComponent} from "./pages/chat/chat.component";
 import {RegisterComponent} from "./pages/register/register.component";
 import {PasswordResetRequestComponent} from "./pages/passwordResetRequest/password-reset-request.component";
 import {PasswordResetComponent} from "./pages/passwordReset/password-reset.component";
+import {McdonaldsComponent} from "./pages/mcdonalds/mcdonalds.component";
 
 export const routes: Routes = [
 
@@ -26,6 +27,7 @@ export const routes: Routes = [
             {path: '', redirectTo: 'index', pathMatch: 'full'},
             {path: 'index', component: HomeComponent},
             {path: 'chat', component: ChatComponent},
+            {path: 'mcdonalds-menu', component: McdonaldsComponent},
             {path: 'users', loadChildren: 'app/modules/user/user.module#UserModule'},
             {path: 'albums', loadChildren: 'app/modules/album/album.module#AlbumModule'},
             {path: 'artists', loadChildren: 'app/modules/artist/artist.module#ArtistModule'},

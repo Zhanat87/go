@@ -237,15 +237,18 @@ services:
         ipv4_address: 192.168.0.8
 
   # https://hub.docker.com/_/mongo/
-#  mongo:
-#    image: mongo
-#    container_name: mongo
-#    ports:
-#      - "27017:27017"
-#  #  environment:
-#  #    - MONGO_URL=mongodb://mongodb:27019
-#    command:
-#      - mongod --smallfiles --quiet --logpath=/dev/null
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+  #  environment:
+  #    - MONGO_URL=mongodb://mongodb:27019
+    command:
+      - mongod --smallfiles --quiet --logpath=/dev/null
+    networks:
+      custom_network:
+        ipv4_address: 192.168.0.2
 
   ###############################################################################
   # golang
@@ -276,7 +279,7 @@ services:
       - postgresql_replication_slave
       - golang-grpc-protobuf-server
 #      - elasticsearch
-#      - mongo
+      - mongo
     depends_on:
       - postgresql
       - redis
@@ -284,7 +287,7 @@ services:
       - postgresql_replication_slave
       - golang-grpc-protobuf-server
 #      - elasticsearch
-#      - mongo
+      - mongo
 #    command: ["./wait-for-postgres.sh", "postgresql", "python", "test.py"]
 #    command: ["./wait-for-it.sh", "postgresql:5432", "--", "echo", "postgres is up"]
 #    command: ["./wait-for-it.sh", "postgresql:5433", "--", "php", "test.php"]

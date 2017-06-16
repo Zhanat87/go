@@ -5,6 +5,7 @@ import { ChatComponent } from './chat/chat.component';
 import { RegisterComponent } from './register/register.component';
 import { PasswordResetRequestComponent } from './passwordResetRequest/password-reset-request.component';
 import { PasswordResetComponent } from './passwordReset/password-reset.component';
+import { McdonaldsComponent } from './mcdonalds/mcdonalds.component';
 
 export const PageComponents = [
     PageNotFoundComponent,
@@ -14,4 +15,5 @@ export const PageComponents = [
     RegisterComponent,
     PasswordResetRequestComponent,
     PasswordResetComponent,
+    McdonaldsComponent,
 ];

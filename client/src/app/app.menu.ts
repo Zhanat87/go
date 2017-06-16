@@ -110,6 +110,18 @@ export const APP_MENU = [
                     }
                 }
             },
+            {
+                path: 'mcdonalds-menu',
+                data: {
+                    menu: {
+                        title: 'Mcdonalds menu',
+                        icon: 'ion-ios-cart-outline',
+                        selected: false,
+                        expanded: false,
+                        order: 9
+                    }
+                }
+            },
         ]
     }
 ];

@@ -1,0 +1,16 @@
+<div class="row mcdonaldsMenuDiv">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="mcdonaldsItems">
+        <div *ngFor="let row of mcdonaldsItems" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
+            <h3>
+                {{ row.title }}
+            </h3>
+            <p>
+                {{ row.price }}
+            </p>
+            <img src="{{ row.image }}" />
+            <div>
+                {{ row.description }}
+            </div>
+        </div>
+    </div>
+</div>

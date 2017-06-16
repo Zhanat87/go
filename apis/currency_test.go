@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// go test apis/currency_test.go
 func TestExchangeRates(t *testing.T) {
 	// Set up a connection to the gRPC server.
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())

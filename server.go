@@ -167,6 +167,8 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 		return c.Write(fmt.Sprintf("user id: %d", userId))
 	})
 
+	rg.Get("/mcdonalds", apis.Mcdonalds())
+
 	// gRPC
 	rg.Get("/currencies", apis.ExchangeRates())
 	rg.Get("/weather-info/<lat>/<lon>", apis.WeatherInfo())
