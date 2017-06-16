@@ -49,7 +49,7 @@ docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate
 #docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/socketio-server &
 
 # parse mcdonalds menu
-docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/mcdonaldsMenu
+MONGODB_DSN=mongo:27017 go run ../cli/mcdonaldsMenu/main.go
 
 # list of all docker images on host machine
 # build client
