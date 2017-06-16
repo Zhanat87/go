@@ -244,8 +244,8 @@ services:
       - "27017:27017"
   #  environment:
   #    - MONGO_URL=mongodb://mongodb:27019
-    command:
-      - mongod --smallfiles --quiet --logpath=/dev/null
+#    command:
+#      - mongod --smallfiles --quiet --logpath=/dev/null
     networks:
       custom_network:
         ipv4_address: 192.168.0.2
