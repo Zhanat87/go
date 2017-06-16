@@ -29,7 +29,6 @@ MAINTAINER Iskakov Zhanat <iskakov_zhanat@mail.ru>
 #ADD /bin/go /go/go_restful
 ADD go /go/go_restful
 ADD migrate /go/migrate
-ADD cli/mcdonaldsMenu/mcdonaldsMenu /go/mcdonaldsMenu
 ADD config /go/config
 ADD migrations /go/migrations
 RUN mkdir /go/logs
