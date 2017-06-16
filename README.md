@@ -19,3 +19,4 @@ Used technologies:
 * socket.io
 * send errors to telegram or email
 * gRPC, protobuf
+* tests
