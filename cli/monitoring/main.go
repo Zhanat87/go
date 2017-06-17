@@ -3,7 +3,7 @@ go run cli/monitoring/main.go
 cd cli/monitoring && go build && cd ../..
 cli/monitoring/monitoring
 GRPC_SERVER=192.168.0.3:50051 DOMAIN_NAME=zhanat.site API_BASE_URL=http://zhanat.site:8080/ \
-/root/zhanat.site/cli/monitoring/monitoring
+/root/zhanat.site/cli/monitoring/monitoring &
  */
 package main
 
@@ -101,6 +101,6 @@ func main() {
 			"Zhanat site liveness", "All services and microservices works fine!")
 		helpers.SendErrorIfNeed(err)
 
-		time.Sleep(10 * time.Second)
+		time.Sleep(1 * time.Minute)
 	}
 }
