@@ -2,8 +2,11 @@
 go run cli/monitoring/main.go
 cd cli/monitoring && go build && cd ../..
 cli/monitoring/monitoring
+https://stackoverflow.com/questions/12486691/how-do-i-get-my-golang-web-server-to-run-in-the-background
+https://askubuntu.com/questions/38126/how-to-redirect-output-to-screen-as-well-as-a-file
 GRPC_SERVER=192.168.0.3:50051 DOMAIN_NAME=zhanat.site API_BASE_URL=http://zhanat.site:8080/ \
 /root/zhanat.site/cli/monitoring/monitoring &
+echo $! | tee monitoring_pid.txt
  */
 package main
 
@@ -101,6 +104,6 @@ func main() {
 			"Zhanat site liveness", "All services and microservices works fine!")
 		helpers.SendErrorIfNeed(err)
 
-		time.Sleep(1 * time.Minute)
+		time.Sleep(1 * time.Hour)
 	}
 }
