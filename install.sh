@@ -29,7 +29,7 @@ docker pull zhanat87/golang
 #docker rmi postgres
 # start docker-compose
 # sudo service postgresql stop
-docker-compose up -d
+docker-compose up -d && docker-compose ps
 # wait for postgresql connection will worked
 php sleep.php
 docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate -url postgres://postgres:postgres@postgresql:5432/go_restful?sslmode=disable -path /go/migrations up
