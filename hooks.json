@@ -13,5 +13,10 @@
     "id": "golang-grpc-protobuf-server",
     "execute-command": "/root/zhanat.site/golang-grpc-protobuf-server/install.sh",
     "command-working-directory": "/root/zhanat.site/golang-grpc-protobuf-server"
+  },
+  {
+    "id": "update-webhook",
+    "execute-command": "/root/zhanat.site/update.sh",
+    "command-working-directory": "/root/zhanat.site"
   }
 ]
