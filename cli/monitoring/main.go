@@ -1,6 +1,7 @@
 /*
 go run cli/monitoring/main.go
-cd cli/monitoring && go build
+cd cli/monitoring && go build && cd ../..
+cli/monitoring/monitoring
 GRPC_SERVER=192.168.0.3:50051 DOMAIN_NAME=zhanat.site API_BASE_URL=http://zhanat.site:8080/ \
 /root/zhanat.site/cli/monitoring/monitoring
  */
@@ -85,17 +86,21 @@ func checkGrpcServerLiveness() {
 }
 
 func main() {
-	err := godotenv.Load()
-	helpers.SendErrorIfNeed(err)
+	for {
+		err := godotenv.Load()
+		helpers.SendErrorIfNeed(err)
 
-	checkApiServerLiveness()
+		checkApiServerLiveness()
 
-	checkSocketIoServerLiveness()
+		checkSocketIoServerLiveness()
 
-	checkGrpcServerLiveness()
+		checkGrpcServerLiveness()
 
-	// report about app liveness
-	_, err = helpers.SendEmail(os.Getenv("MAIL_TO_ADDRESS"),
-		"Zhanat site liveness", "All services and microservices works fine!")
-	helpers.SendErrorIfNeed(err)
+		// report about app liveness
+		_, err = helpers.SendEmail(os.Getenv("MAIL_TO_ADDRESS"),
+			"Zhanat site liveness", "All services and microservices works fine!")
+		helpers.SendErrorIfNeed(err)
+
+		time.Sleep(10 * time.Second)
+	}
 }
