@@ -1,5 +1,6 @@
 /*
 go run cli/monitoring/main.go
+cd cli/monitoring && go build
  */
 package main
 
