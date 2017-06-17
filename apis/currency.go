@@ -26,8 +26,8 @@ func getExchangeRates(client grpc_local.GrpcServiceClient, emptyRequest *grpc_lo
 		if err != nil {
 			log.Fatalf("%v.GetExchangeRates(_) = _, %v, test123", client, err)
 		}
-		log.Printf("data: %v", data)
 		data = resp
+		log.Printf("data: %v", data)
 	}
 
 	return data

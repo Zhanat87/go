@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"encoding/json"
+	"golang.org/x/net/html"
 )
 
 type H map[string]interface{}
@@ -72,4 +73,16 @@ func ParseJsonData(encoded []byte) map[string]interface{} {
 		panic(err)
 	}
 	return j
+}
+
+func GetHtmlElementAttrValue(t html.Token, attr string) (ok bool, v string) {
+	// Iterate over all of the Token's attributes until we find an "href"
+	for _, a := range t.Attr {
+		if a.Key == attr {
+			v = a.Val
+			ok = true
+		}
+	}
+
+	return
 }

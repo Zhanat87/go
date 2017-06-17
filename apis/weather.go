@@ -27,8 +27,8 @@ func getWeatherInfo(client grpc_local.GrpcServiceClient, weatherRequest *grpc_lo
 		if err != nil {
 			log.Fatalf("%v.GetWeatherInfo(_) = _, %v", client, err)
 		}
-		log.Printf("data: %v", data)
 		data = resp
+		log.Printf("data: %v", data)
 	}
 
 	return data

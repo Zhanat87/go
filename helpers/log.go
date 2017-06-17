@@ -51,3 +51,10 @@ func LogError(error error) {
 	}
 	defer rsp.Body.Close()
 }
+
+func SendErrorIfNeed(err error) {
+	if err != nil {
+		log.Println(err)
+		LogError(err)
+	}
+}

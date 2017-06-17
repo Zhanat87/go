@@ -9,6 +9,8 @@ db.items.find()
 
 https://github.com/PuerkitoBio/goquery
 go get github.com/PuerkitoBio/goquery
+
+cd cli/mcdonaldsMenu && go build
  */
 
 package main
@@ -43,18 +45,6 @@ func getHref(t html.Token) (ok bool, href string) {
 
 	// "bare" return will return the variables (ok, href) as defined in
 	// the function definition
-	return
-}
-
-func getHtmlElementAttrValue(t html.Token, attr string) (ok bool, v string) {
-	// Iterate over all of the Token's attributes until we find an "href"
-	for _, a := range t.Attr {
-		if a.Key == attr {
-			v = a.Val
-			ok = true
-		}
-	}
-
 	return
 }
 

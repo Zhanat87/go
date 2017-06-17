@@ -5,3 +5,4 @@
 .env
 .env_docker
 /static
+cli/monitoring/.env

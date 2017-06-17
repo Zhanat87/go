@@ -5,6 +5,9 @@ package grpc;
 
 // The gRPC common service definition.
 service GrpcService {
+    // Check grpc server liveness.
+    rpc CheckGrpcServerLiveness(EmptyRequest) returns (stream LivenessResponse) {}
+
     // Get all exchange rates - A server-to-client streaming RPC.
     rpc GetExchangeRates(EmptyRequest) returns (stream ExchangeRatesResponse) {}
 
@@ -12,7 +15,16 @@ service GrpcService {
     rpc GetWeatherInfo(WeatherRequest) returns (stream WeatherResponse) {}
 }
 
+// https://github.com/google/protobuf/blob/master/src/google/protobuf/empty.proto
+// https://stackoverflow.com/questions/31768665/can-i-define-a-grpc-call-with-a-null-request-or-response
+// https://stackoverflow.com/questions/29687243/protobuf-rpc-service-method-without-parameters
+// note: The reason this is required is so that if you later need to add an optional parameter,
+// you can do so without breaking existing code.
 message EmptyRequest {}
+
+message LivenessResponse {
+    string msg = 1;
+}
 
 // https://developers.google.com/protocol-buffers/docs/proto3#scalar
 message ExchangeRateResponse {

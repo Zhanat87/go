@@ -8,6 +8,8 @@ Links:
 Used technologies:
 
 * golang 1.8+
+* microservices architeture
+* self-made microservices monitoring, simple kubernetes
 * js, angular2+ (aot compilation), typescript, node, npm
 * JWT-based authentication
 * social nets sign in / up

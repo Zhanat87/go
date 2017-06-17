@@ -2,21 +2,25 @@
   {
     "id": "install-webhook",
     "execute-command": "/root/zhanat.site/install.sh",
-    "command-working-directory": "/root/zhanat.site"
+    "command-working-directory": "/root/zhanat.site",
+    "response-message": "Executing install-webhook script"
   },
   {
     "id": "golang-socketio-server",
     "execute-command": "/root/zhanat.site/golang-socketio-server/install.sh",
-    "command-working-directory": "/root/zhanat.site/golang-socketio-server"
+    "command-working-directory": "/root/zhanat.site/golang-socketio-server",
+    "response-message": "Executing golang-socketio-server script"
   },
   {
     "id": "golang-grpc-protobuf-server",
     "execute-command": "/root/zhanat.site/golang-grpc-protobuf-server/install.sh",
-    "command-working-directory": "/root/zhanat.site/golang-grpc-protobuf-server"
+    "command-working-directory": "/root/zhanat.site/golang-grpc-protobuf-server",
+    "response-message": "Executing golang-grpc-protobuf-server script"
   },
   {
     "id": "update-webhook",
     "execute-command": "/root/zhanat.site/update.sh",
-    "command-working-directory": "/root/zhanat.site"
+    "command-working-directory": "/root/zhanat.site",
+    "response-message": "Executing update-webhook script"
   }
 ]

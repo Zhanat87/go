@@ -74,6 +74,11 @@ func main() {
 func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router {
 	router := routing.New()
 
+	router.To("GET,HEAD", "/liveness", func(c *routing.Context) error {
+		c.Abort()  // skip all other middlewares/handlers
+		return c.Write("api works!")
+	})
+
 	router.To("GET,HEAD", "/ping", func(c *routing.Context) error {
 		c.Abort()  // skip all other middlewares/handlers
 		return c.Write("OK " + app.Version)
