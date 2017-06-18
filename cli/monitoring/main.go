@@ -1,6 +1,6 @@
 /*
 go run cli/monitoring/main.go
-cd cli/monitoring && ENV=prod go build && cd ../..
+cd cli/monitoring && go build && cd ../..
 cli/monitoring/monitoring
 https://stackoverflow.com/questions/12486691/how-do-i-get-my-golang-web-server-to-run-in-the-background
 https://askubuntu.com/questions/38126/how-to-redirect-output-to-screen-as-well-as-a-file
@@ -90,13 +90,7 @@ func checkGrpcServerLiveness() {
 
 func main() {
 	for {
-		var envFile string
-		if os.Getenv("ENV") == "prod" {
-			envFile = ".env_prod"
-		} else {
-			envFile = ".env"
-		}
-		err := godotenv.Load(envFile)
+		err := godotenv.Load()
 		helpers.SendErrorIfNeed(err)
 
 		checkApiServerLiveness()

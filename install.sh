@@ -52,8 +52,9 @@ docker exec -it $(docker ps -a -q --filter ancestor=zhanat87/golang) /go/migrate
 MONGODB_DSN=mongo:27017 ../cli/mcdonaldsMenu/mcdonaldsMenu
 
 # run monitoring script for check state
+cd ../cli/monitoring
 kill -9 "echo "$(cat pid.txt)""
-../cli/monitoring/monitoring &
+./monitoring &
 echo $! | tee pid.txt
 
 # list of all docker images on host machine
