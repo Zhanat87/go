@@ -6,7 +6,7 @@ https://stackoverflow.com/questions/12486691/how-do-i-get-my-golang-web-server-t
 https://askubuntu.com/questions/38126/how-to-redirect-output-to-screen-as-well-as-a-file
 GRPC_SERVER=192.168.0.3:50051 DOMAIN_NAME=zhanat.site API_BASE_URL=http://zhanat.site:8080/ \
 /root/zhanat.site/cli/monitoring/monitoring &
-echo $! | tee monitoring_pid.txt
+echo $! | tee ../pid.txt
  */
 package main
 
