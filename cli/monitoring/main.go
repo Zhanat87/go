@@ -6,6 +6,7 @@ https://stackoverflow.com/questions/12486691/how-do-i-get-my-golang-web-server-t
 https://askubuntu.com/questions/38126/how-to-redirect-output-to-screen-as-well-as-a-file
 /root/zhanat.site/cli/monitoring/monitoring &
 echo $! | tee ../pid.txt
+ps -ef | grep monitoring
  */
 package main
 
