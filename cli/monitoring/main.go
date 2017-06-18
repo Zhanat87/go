@@ -23,6 +23,7 @@ import (
 	grpc_local "github.com/Zhanat87/go/grpc"
 	"google.golang.org/grpc"
 	"io"
+	"fmt"
 )
 
 // go run ~/go/src/github.com/Zhanat87/go/server.go
@@ -91,9 +92,9 @@ func main() {
 	for {
 		var envFile string
 		if os.Getenv("ENV") == "prod" {
-			envFile = "env_prod"
+			envFile = ".env_prod"
 		} else {
-			envFile = "env"
+			envFile = ".env"
 		}
 		err := godotenv.Load(envFile)
 		helpers.SendErrorIfNeed(err)
@@ -105,9 +106,11 @@ func main() {
 		checkGrpcServerLiveness()
 
 		// report about app liveness
-		_, err = helpers.SendEmail(os.Getenv("MAIL_TO_ADDRESS"),
-			"Zhanat site liveness", "All services and microservices works fine!")
+		msg := "All services and microservices works fine!"
+		_, err = helpers.SendEmail(os.Getenv("MAIL_TO_ADDRESS"), "Zhanat site liveness", msg)
 		helpers.SendErrorIfNeed(err)
+
+		fmt.Println(msg)
 
 		time.Sleep(1 * time.Hour)
 	}
