@@ -6,3 +6,4 @@
 .env_docker
 /static
 cli/monitoring/.env
+cli/monitoring/.env_prod

@@ -53,7 +53,7 @@ MONGODB_DSN=mongo:27017 ../cli/mcdonaldsMenu/mcdonaldsMenu
 
 # run monitoring script for check state
 kill -9 "echo "$(cat pid.txt)""
-GRPC_SERVER=192.168.0.3:50051 DOMAIN_NAME=zhanat.site API_BASE_URL=http://zhanat.site:8080/ ../cli/monitoring/monitoring &
+../cli/monitoring/monitoring &
 echo $! | tee pid.txt
 
 # list of all docker images on host machine
