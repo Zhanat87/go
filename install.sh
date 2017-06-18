@@ -53,7 +53,7 @@ MONGODB_DSN=mongo:27017 ../cli/mcdonaldsMenu/mcdonaldsMenu
 
 # run monitoring script for check state
 cd ../cli/monitoring
-kill -9 "echo "$(cat pid.txt)""
+kill -9 "$(cat pid.txt)"
 ./monitoring &
 echo $! | tee pid.txt
 

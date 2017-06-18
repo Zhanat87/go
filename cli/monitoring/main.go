@@ -23,7 +23,6 @@ import (
 	grpc_local "github.com/Zhanat87/go/grpc"
 	"google.golang.org/grpc"
 	"io"
-	"fmt"
 )
 
 // go run ~/go/src/github.com/Zhanat87/go/server.go
@@ -100,11 +99,9 @@ func main() {
 		checkGrpcServerLiveness()
 
 		// report about app liveness
-		msg := "All services and microservices works fine!"
-		_, err = helpers.SendEmail(os.Getenv("MAIL_TO_ADDRESS"), "Zhanat site liveness", msg)
+		_, err = helpers.SendEmail(os.Getenv("MAIL_TO_ADDRESS"), "Zhanat site liveness",
+			"All services and microservices works fine!")
 		helpers.SendErrorIfNeed(err)
-
-		fmt.Println(msg)
 
 		time.Sleep(1 * time.Hour)
 	}
