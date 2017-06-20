@@ -23,7 +23,7 @@ func (dao *AlbumDAO) Get(rs app.RequestScope, id int) (*models.Album, error) {
 
 // Get reads the album with the specified ID from the database.
 func (dao *AlbumDAO) GetForClient(rs app.RequestScope, id int) (album *models.AlbumForClient, err error) {
-	q := rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name").
+	q := rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name", "album.image").
 		From("album").Where(dbx.HashExp{"album.id": id}).
 		LeftJoin("artist", dbx.NewExp("\"artist\".\"id\" = \"album\".\"artist_id\""))
 
@@ -38,7 +38,12 @@ func (dao *AlbumDAO) GetForClient(rs app.RequestScope, id int) (album *models.Al
 // The Album.Id field will be populated with an automatically generated ID upon successful saving.
 func (dao *AlbumDAO) Create(rs app.RequestScope, album *models.Album) error {
 	album.Id = 0
-	return rs.Tx().Model(album).Insert()
+	album.BeforeInsert()
+	res := rs.Tx().Model(album).Insert()
+	//rs.Infof("res: %v", res) // res = nil
+	//rs.Infof("album: %v", album) // album - mapped row
+	album.AfterSave()
+	return res
 }
 
 // Update saves the changes to an album in the database.
@@ -47,7 +52,10 @@ func (dao *AlbumDAO) Update(rs app.RequestScope, id int, album *models.Album) er
 		return err
 	}
 	album.Id = id
-	return rs.Tx().Model(album).Exclude("Id").Update()
+	album.BeforeUpdate()
+	res := rs.Tx().Model(album).Exclude("Id").Update()
+	album.AfterSave()
+	return res
 }
 
 // Delete deletes an album with the specified ID from the database.
@@ -56,6 +64,7 @@ func (dao *AlbumDAO) Delete(rs app.RequestScope, id int) error {
 	if err != nil {
 		return err
 	}
+	album.BeforeDelete()
 	return rs.Tx().Model(album).Delete()
 }
 
@@ -74,7 +83,7 @@ func (dao *AlbumDAO) Query2(rs app.RequestScope, offset, limit int) ([]models.Al
 
 // Query retrieves the album records with the specified offset and limit from the database.
 func (dao *AlbumDAO) Query(rs app.RequestScope, offset, limit int) (albums []models.AlbumForClient, err error) {
-	err = rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name").
+	err = rs.Tx().Select("album.id", "title", "artist_id", "artist.name AS artist_name", "album.image").
 		From("album").
 		LeftJoin("artist", dbx.NewExp("\"artist\".\"id\" = \"album\".\"artist_id\"")).
 		OrderBy("album.id").

@@ -29,7 +29,7 @@ import (
 )
 
 func main() {
-	go helpers.MonitorRuntime()
+	//go helpers.MonitorRuntime()
 
 	err := godotenv.Load()
 	if err != nil {

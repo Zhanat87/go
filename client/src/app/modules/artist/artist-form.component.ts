@@ -96,7 +96,7 @@ export class ArtistFormComponent extends BaseForm {
     }
 
     get image(): string {
-        return this.model.image ? Environment.API_ENDPOINT + 'static/artists/images/' + this.model.image : '';
+        return this.model.image ? Environment.API_ENDPOINT + 'static/artists/images/300_' + this.model.image : '';
     }
 
 }

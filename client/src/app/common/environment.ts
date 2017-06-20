@@ -13,4 +13,6 @@ export class Environment {
     public static SOCKET_URL = window.location.href.substr(0, 16) == 'http://localhost' ?
         'http://localhost:5000/' : 'http://zhanat.site:5000/';
 
+    public static AWS_S3_BUCKET_URL = 'https://s3.eu-central-1.amazonaws.com/test-golang-bucket/';
+
 }

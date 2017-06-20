@@ -15,7 +15,7 @@
 
             <div class="form-group">
                 <div *ngIf="model.image">
-                    <img [src]="image" width="100" />
+                    <img [src]="image" />
                     <br><br>
                     <a class="btn btn-danger" (click)="deleteImage($event)">
                         <i class="ion-trash-b" title="delete image"></i>
@@ -24,7 +24,7 @@
                 </div>
                 <label for="file">Image</label>
                 <input type="file" class="form-control" id="file" name="file" (change)="onChangeImage($event)" />
-                <div class="hidden" id="image"></div>
+                <div class="displayNone" id="image"></div>
                 <br><br><br>
                 <div *ngIf="errors['image']" class="alert alert-danger">
                     <div *ngFor="let error of errors['image']" class="error">

@@ -31,7 +31,7 @@ export class ArtistList extends BaseListPagination {
     }
 
     getImage(artist: Artist): string {
-        return artist.image ? Environment.API_ENDPOINT + 'static/artists/images/' + artist.image : '';
+        return artist.image ? Environment.API_ENDPOINT + 'static/artists/images/100_' + artist.image : '';
     }
 
 }

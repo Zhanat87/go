@@ -23,3 +23,4 @@ Used technologies:
 * gRPC, protobuf
 * tests
 * web crawlers
+* mongodb

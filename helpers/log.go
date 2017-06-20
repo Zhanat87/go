@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"bytes"
+	"github.com/Sirupsen/logrus"
 )
 
 func FailOnError(err error, msg string, sendErrorEmail bool) {
@@ -21,6 +22,10 @@ func FailOnError(err error, msg string, sendErrorEmail bool) {
 
 func LogInfo(msg string, sendErrorEmail bool) {
 	saveToFile(msg, "golang_info", sendErrorEmail)
+}
+
+func LogInfoF(key, value string) {
+	logrus.New().Infof(key + ": %s", value)
 }
 
 func saveToFile(msg string, filename string, sendErrorEmail bool) {
