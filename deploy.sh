@@ -36,6 +36,6 @@ docker images
 
 curl http://zhanat.site:9000/hooks/install-webhook
 
-echo "deploy success"
+echo "\r\ndeploy success"
 
 # simple docker golang with drone.io deploy
