@@ -24,3 +24,4 @@ Used technologies:
 * tests
 * web crawlers
 * mongodb
+* aws s3

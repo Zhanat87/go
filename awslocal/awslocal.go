@@ -44,6 +44,7 @@ func (awsS3Local *AwsS3Local) RemoveFile(file string) bool {
 	return true
 }
 
+// https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGET.html
 func (awsS3Local *AwsS3Local) ListObjects(prefix string) *s3.ListObjectsOutput {
 	params := &s3.ListObjectsInput{
 		Bucket: aws.String(os.Getenv("AWS_BUCKET")),
