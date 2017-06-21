@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"time"
 	"log"
+	"github.com/joho/godotenv"
 )
 
 func CurrentUser() *user.User {
@@ -31,5 +32,12 @@ func MonitorRuntime() {
 		runtime.ReadMemStats(m)
 		log.Println("Allocated memory", m.Alloc)
 		time.Sleep(10 * time.Second)
+	}
+}
+
+func LoadEnvFile() {
+	err := godotenv.Load()
+	if err != nil {
+		panic("Error loading .env file" + err.Error())
 	}
 }

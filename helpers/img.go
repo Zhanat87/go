@@ -55,8 +55,8 @@ func SaveImageToDisk(path, fileNameBase, data string) (string, error) {
 }
 
 func MakeThumbnails(basename, path string) int64 {
-	LogInfoF("MakeThumbnails", "start")
-	defer LogInfoF("MakeThumbnails", "end")
+	//LogInfoF("MakeThumbnails", "start")
+	//defer LogInfoF("MakeThumbnails", "end")
 	sizes := make(chan int64)
 	var wg sync.WaitGroup // number of working goroutines
 	for _, width := range ThumbnailsSizes {
@@ -147,8 +147,8 @@ func RemoveImageWithThumbnails(basePath, imageName string) {
 	}
 }
 
-func RemoveImageDirWithLatency(basePath string) {
-	time.Sleep(5 * time.Second)
+func RemoveImageDirWithLatency(basePath string, latency int) {
+	time.Sleep(time.Duration(latency) * time.Second)
 	err := os.RemoveAll(basePath)
 	if err != nil {
 		LogInfo("RemoveImageDirWithLatency error: " + err.Error(), false)

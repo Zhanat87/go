@@ -23,7 +23,6 @@ import (
 	"database/sql"
 	"github.com/dgrijalva/jwt-go"
 	"time"
-	"github.com/joho/godotenv"
 	"github.com/Zhanat87/go/helpers"
 	errs "errors"
 )
@@ -31,10 +30,7 @@ import (
 func main() {
 	//go helpers.MonitorRuntime()
 
-	err := godotenv.Load()
-	if err != nil {
-		helpers.FailOnError(err, "Error loading .env file", true)
-	}
+	helpers.LoadEnvFile()
 
 	// load application configurations
 	if err := app.LoadConfig("./config"); err != nil {

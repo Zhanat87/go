@@ -70,7 +70,13 @@ func (m *Album) SaveImage() {
 				panic(err)
 			}
 			helpers.MakeThumbnails(img, path)
-			awslocal.NewAwsS3Local().MoveDir(path)
+			ok, err := awslocal.NewAwsS3Local().MoveDir(path)
+			if err != nil {
+				panic(err)
+			}
+			if ok {
+				go helpers.RemoveImageDirWithLatency(path, 5)
+			}
 			if imageNotEmpty {
 				m.RemoveImage(imageString)
 			}
@@ -81,9 +87,10 @@ func (m *Album) SaveImage() {
 
 func (m *Album) RemoveImage(image string) {
 	basePath := ALBUMS_BASE_IMAGE_PATH + image[:strings.Index(image, ".")]
-	awslocal.NewAwsS3Local().RemoveFile(basePath + "/" + image)
+	awsS3Local := awslocal.NewAwsS3Local()
+	awsS3Local.RemoveFile(basePath + "/" + image)
 	for _, width := range helpers.ThumbnailsSizes {
-		awslocal.NewAwsS3Local().RemoveFile(basePath + "/" + strconv.Itoa(int(width)) + "_" + image)
+		awsS3Local.RemoveFile(basePath + "/" + strconv.Itoa(int(width)) + "_" + image)
 	}
 }
 

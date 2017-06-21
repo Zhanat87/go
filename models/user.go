@@ -30,16 +30,16 @@ type User struct {
 	Status             int    `json:"status,string" db:"status"`
 	Created_at         string `json:"created_at,omitempty" db:"created_at"`
 	Updated_at         string `json:"updated_at,omitempty" db:"updated_at"`
-	Provider       	   JsonNullString `json:"provider,omitempty" db:"provider"`
+	Provider           JsonNullString `json:"provider,omitempty" db:"provider"`
 	ProviderId         JsonNullString `json:"provider_id,omitempty" db:"provider_id"`
 }
 
 type UserIdentity struct {
-	Id                 int    `json:"id"`
-	Username           string `json:"username"`
-	Email              string `json:"email"`
-	Avatar             string `json:"avatar,omitempty"`
-	AvatarString       string `json:"avatar_string,omitempty"`
+	Id           int    `json:"id"`
+	Username     string `json:"username"`
+	Email        string `json:"email"`
+	Avatar       string `json:"avatar,omitempty"`
+	AvatarString string `json:"avatar_string,omitempty"`
 }
 
 func (m User) Validate() error {

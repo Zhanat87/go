@@ -4,7 +4,7 @@ import (
 	"github.com/Zhanat87/go/helpers"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/awsutil"
+	//"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -33,15 +33,19 @@ func NewAwsS3Local() *AwsS3Local {
 	return &AwsS3Local{AwsS3: s3.New(session.New(), cfg)}
 }
 
-func (awsS3Local *AwsS3Local) RemoveFile(file string) bool {
+func (awsS3Local *AwsS3Local) RemoveFile(file string) (bool, error) {
 	params := &s3.DeleteObjectInput{
 		Bucket: aws.String(os.Getenv("AWS_BUCKET")),
 		Key:    aws.String(file),
 	}
-	resp, err := awsS3Local.AwsS3.DeleteObject(params)
-	helpers.FailOnError(err, "failed remove file from aws s3", true)
-	helpers.LogInfo(awsutil.StringValue(resp), true)
-	return true
+	_, err := awsS3Local.AwsS3.DeleteObject(params)
+	//resp, err := awsS3Local.AwsS3.DeleteObject(params)
+	//helpers.FailOnError(err, "failed remove file from aws s3", true)
+	//helpers.LogInfo(awsutil.StringValue(resp), true)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGET.html
@@ -86,11 +90,10 @@ func (awsS3Local *AwsS3Local) MoveFile(filePath string) (bool, error) {
 }
 
 func (awsS3Local *AwsS3Local) MoveDir(dirPath string) (bool, error) {
-	helpers.LogInfoF("MoveDir", "start")
-	defer helpers.LogInfoF("MoveDir", "end")
+	//helpers.LogInfoF("MoveDir", "start")
+	//defer helpers.LogInfoF("MoveDir", "end")
 	files, err := ioutil.ReadDir(dirPath)
 	if err != nil {
-		panic(err)
 		return false, err
 	}
 
@@ -109,8 +112,6 @@ func (awsS3Local *AwsS3Local) MoveDir(dirPath string) (bool, error) {
 		wg.Wait()
 		close(filesCountChannel)
 	}()
-
-	go helpers.RemoveImageDirWithLatency(dirPath)
 
 	return true, nil
 }

@@ -7,3 +7,5 @@
 /static
 cli/monitoring/.env
 cli/monitoring/.env_prod
+awslocal/.env
+awslocal/files_for_tests
