@@ -14,6 +14,7 @@ import (
 	"strings"
 	"github.com/Zhanat87/go/db"
 	"github.com/Zhanat87/go/helpers"
+	"github.com/Zhanat87/go/jwtlocal"
 	golang_errors "errors"
 	"github.com/go-redis/redis"
 	"github.com/satori/go.uuid"
@@ -67,7 +68,7 @@ func SignIn(signingKey string) routing.Handler {
 }
 
 func JWTHandler(c *routing.Context, j *jwt.Token) error {
-	if ok, err := helpers.CheckJWTTokenIsValid(c); ok != true {
+	if ok, err := jwtlocal.CheckJWTTokenIsValid(c); ok != true {
 		return golang_errors.New(err.Error())
 	}
 	// @link http://stackoverflow.com/questions/18041334/convert-interface-to-int-in-golang
@@ -85,7 +86,7 @@ func SignOut() routing.Handler {
 		t := time.Now().Unix()
 		delta := unixTime - t
 
-		err := db.NewRedis().Set(helpers.GetJWTToken(c), true, time.Second * time.Duration(delta)).Err()
+		err := db.NewRedis().Set(jwtlocal.GetJWTToken(c), true, time.Second * time.Duration(delta)).Err()
 		if err != nil {
 			errors.InternalServerError(err)
 		}
@@ -114,7 +115,7 @@ func SignUp(service userService) routing.Handler {
 func RefreshJWTToken(signingKey string) routing.Handler {
 	return func(c *routing.Context) error {
 		client := db.NewRedis()
-		token := helpers.GetJWTToken(c)
+		token := jwtlocal.GetJWTToken(c)
 		_, err := client.Get(token + "_refresh").Result()
 		if err == redis.Nil {
 			userDAO := daos.NewUserDAO()

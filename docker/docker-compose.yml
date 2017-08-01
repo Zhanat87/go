@@ -134,15 +134,15 @@ services:
     links:
       - postgresql
       - redis
-      - postgresql_replication_master
-      - postgresql_replication_slave
+#      - postgresql_replication_master
+#      - postgresql_replication_slave
       - golang-grpc-protobuf-server
       - mongo
     depends_on:
       - postgresql
       - redis
-      - postgresql_replication_master
-      - postgresql_replication_slave
+#      - postgresql_replication_master
+#      - postgresql_replication_slave
       - golang-grpc-protobuf-server
       - mongo
     ports:
@@ -150,6 +150,25 @@ services:
     networks:
       custom_network:
         ipv4_address: 192.168.0.9
+
+  # https://github.com/variadico/hellodocker
+  proxy:
+    image: nginx:latest
+    ports:
+      - "80:80" # host:container
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      # connect host's ./nginx.conf with container's nginx.conf
+      # :ro == read only perms in container
+    links:
+      - golang:app # [other container]:[alias in this container]
+        # creates environment variables in proxy container
+        # with ip and port info for go container
+        # also creates entries in /etc/hosts with ip info
+    networks:
+      custom_network:
+        ipv4_address: 192.168.0.15
 
   golang-chat-server:
     image: zhanat87/golang-socketio-server:latest
@@ -191,8 +210,8 @@ services:
       - postgresql
       - postgresql1
       - postgresql2
-      - postgresql_replication_master
-      - postgresql_replication_slave
+#      - postgresql_replication_master
+#      - postgresql_replication_slave
     networks:
       custom_network:
         ipv4_address: 192.168.0.12

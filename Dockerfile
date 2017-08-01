@@ -31,6 +31,7 @@ ADD go /go/go_restful
 ADD migrate /go/migrate
 ADD config /go/config
 ADD migrations /go/migrations
+ADD static /go/static
 RUN mkdir /go/logs
 # http://stackoverflow.com/questions/30741995/cannot-execute-run-mkdir-in-a-dockerfile
 RUN mkdir -p /go/static/users/avatars

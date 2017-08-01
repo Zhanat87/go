@@ -136,6 +136,8 @@ func buildRouter(logger *logrus.Logger, db *dbx.DB, dsn string) *routing.Router 
 	userDAO := daos.NewUserDAO()
 	router.Get("/auth/*", apis.SocialAuth(userDAO))
 
+	router.Get("/user-email/<username>", apis.UserEmail(userDAO))
+
 	rg := router.Group("/v1")
 
 	userService := services.NewUserService(userDAO)

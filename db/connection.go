@@ -1,33 +1,24 @@
 package db
 
 import (
-	"sync"
-	"github.com/jinzhu/gorm"
+	"database/sql"
+	_ "github.com/lib/pq"
+	"github.com/Zhanat87/go/helpers"
+	"github.com/Zhanat87/go/app"
+	//"os"
 )
 
-type singleton gorm.DB
+var Connection *sql.DB
 
-var (
-	once sync.Once
-
-	instance singleton
-)
-
-/*
-https://github.com/tmrts/go-patterns/blob/master/creational/singleton.md
-http://stackoverflow.com/questions/41257847/how-to-create-singleton-db-class-in-golang
-note: best decision: it's call db open every time
- */
-func New() singleton {
-	// call only one time
-	once.Do(func() {
-		instance, err := gorm.Open("postgres", "host=localhost user=postgres dbname=go_restful sslmode=disable password=postgres")
-		// can't call defer close here
-		defer instance.Close()
-		if err != nil {
-			return
-		}
-	})
-
-	return instance
+func init() {
+	//Dsn := "host=" + os.Getenv("DB_HOST") +
+	//	" port=" + os.Getenv("DB_PORT") +
+	//	" user=" + os.Getenv("DB_USER") +
+	//	" password=" + os.Getenv("DB_PASSWORD") +
+	//	" dbname=" + os.Getenv("DB_DATABASE") +
+	//	" sslmode=disable"
+	Dsn := app.Config.GetDSN()
+	var err error
+	Connection, err = sql.Open("postgres", Dsn)
+	helpers.FailOnError(err, "error postgres connection", false)
 }
